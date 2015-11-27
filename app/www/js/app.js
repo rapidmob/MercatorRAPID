@@ -1,10 +1,10 @@
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'rapidMobile' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+// 'rapidMobile.controllers' is found in controllers.js
+angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -25,11 +25,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
+  
+
     .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
+    controller: 'LoginCtrl',
+    onEnter: function($state, Auth){
+        if(!Auth.isLoggedIn()){
+           $state.go('login');
+        }
+    }
   })
 
   .state('app.search', {
@@ -53,8 +60,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/playlists',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/playlists.html'
         }
       }
     })
@@ -63,11 +69,33 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: '/playlists/:playlistId',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        templateUrl: 'templates/playlist.html'
+      }
+    }
+  })
+
+  .state('login', {
+    url: "/login",
+    templateUrl: "components/user/login.html",
+    controller: 'LoginCtrl'
+  })
+  
+  .state('app.mis-flown', {
+    url: '/mis/flown',
+    views: {
+      'menuContent': {
+        templateUrl: 'components/mis/flown.html'
+      }
+    }
+  })
+  .state('app.mis-sales', {
+    url: '/mis/sales',
+    views: {
+      'menuContent': {
+        templateUrl: 'components/mis/sales.html'
       }
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/login');
 });

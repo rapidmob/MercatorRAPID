@@ -18,9 +18,6 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close ng-click="login()">
-          Login
-        </ion-item>
         <ion-item menu-close href="#/app/search">
           Search
         </ion-item>
@@ -29,6 +26,15 @@
         </ion-item>
         <ion-item menu-close href="#/app/playlists">
           Playlists
+        </ion-item>
+		    <ion-item menu-close href="#/app/mis/flown">
+          Passenger Flown
+        </ion-item>
+        <ion-item menu-close href="#/app/mis/sales">
+          Passenger Sales
+        </ion-item>
+        <ion-item nav-clear menu-close ng-click="logout()">
+          Logout
         </ion-item>
       </ion-list>
     </ion-content>
