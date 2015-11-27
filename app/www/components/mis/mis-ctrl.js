@@ -1,9 +1,5 @@
-(function () {
-    'use strict';
+angular.module('rapidMobile.controllers', [])
 
-    angular.module('rapidMobile.controllers').controller('MisCtrl', ['$stateParams', MisCtrl]);
+.controller('MisCtrl', function($scope, $state) {
 
-    function MisCtrl($stateParams) {
-        var vm = this;
-    };
-})();
+})

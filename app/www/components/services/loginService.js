@@ -24,6 +24,7 @@ angular.module('rapidMobile.services', ['ngCookies'])
 //     }
 // })
 
+
 .factory('Auth', function ($cookieStore) {
    var _user = $cookieStore.get('rapidMobile.user');
    var setUser = function (user) {
