@@ -4,7 +4,7 @@
 // 'rapidMobile' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'rapidMobile.controllers' is found in controllers.js
-angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.services'])
+angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.services', 'tabSlideBox'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
