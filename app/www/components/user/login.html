@@ -1,21 +1,32 @@
-<ion-header-bar>
-  <h1 class="title">Login</h1>
-</ion-header-bar>
-<ion-content>
-  <form ng-submit="doLogin()">
-    <div class="list">
-      <label class="item item-input">
-        <span class="input-label">Username</span>
-        <input type="text" ng-model="loginData.username">
-      </label>
-      <label class="item item-input">
-        <span class="input-label">Password</span>
-        <input type="password" ng-model="loginData.password">
-      </label>
-      <label class="item">
-        <button class="button button-block button-positive" type="submit">Log in</button>
-      </label>
-    </div>
-  </form>
-</ion-content>
+<ion-content class="login-bg">
+<div id="mydiv">
+<div class="row">
+	<div class="col-33 login-topmargin" >
+    
+    <center><img src="img/logo.png" alt="" ></center>
 
+  
+   <form class="list" ng-submit="doLogin()">
+            <ion-list>
+                <label class="item newitem item-input">
+                    <span class="ion-person white-icon"></span>
+                    <input type="text" id="uname" class="login-input" placeholder="Username" ng-model="loginData.username">
+                </label>
+            </ion-list>
+            <label class="item newitem item-input">
+                <span class="ion-locked white-icon"></span>
+                <input type="password" id="upass" class="login-input" placeholder="Password" ng-model="loginData.password">
+            </label>
+            <div class="spacer" style="width: 300px; height: 50px;"></div>
+          <center> <button class="button button-energized button-block login-btn-width" type="submit">Login</button>
+          <br>  <p style="font-size:25px;color:#FFF">
+     
+       <input type="checkbox" class="login-check">
+     
+     Keep me logged in
+	
+  </p> </center>
+        </form>
+		</div>
+		</div>
+		</div>

@@ -21,3 +21,30 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+
+
+//$big-bg:      'http://www.indoamerican-news.com/wp-content/uploads/2015/08/BANNER_DREAMS-TAKE-FLIGHT.jpg';
+$big-bg-color: 					  #123294;
+.login-bg{
+		//background: url($big-bg) no-repeat center center fixed;
+		//background-size: cover;
+		background-color: $big-bg-color;
+}
+.white-icon{
+	color: $light;
+}
+#uname::-webkit-input-placeholder, #upass::-webkit-input-placeholder {
+   color: $light;
+}
+
+#uname:-moz-placeholder, #upass:-moz-placeholder { /* Firefox 18- */
+   color: $light;  
+}
+
+#uname::-moz-placeholder, #upass::-moz-placeholder {  /* Firefox 19+ */
+   color: $light;  
+}
+
+#uname:-ms-input-placeholder, #upass:-ms-input-placeholder {  
+   color: $light;  
+}

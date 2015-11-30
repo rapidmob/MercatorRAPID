@@ -9088,3 +9088,23 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+.login-bg {
+  background-color: #123294; }
+
+.white-icon {
+  color: #fff; }
+
+#uname::-webkit-input-placeholder, #upass::-webkit-input-placeholder {
+  color: #fff; }
+
+#uname:-moz-placeholder, #upass:-moz-placeholder {
+  /* Firefox 18- */
+  color: #fff; }
+
+#uname::-moz-placeholder, #upass::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #fff; }
+
+#uname:-ms-input-placeholder, #upass:-ms-input-placeholder {
+  color: #fff; }

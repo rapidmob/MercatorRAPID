@@ -8,6 +8,24 @@
 					</ion-scroll>
 				</div>
 	    	</div>
+			
+			 <div class="row">
+   <div class="col-50 padding-horizontal metric-modifier">METRIC SNAPSHOT</div>
+   <div class="col-10" style="text-align:right"><img src="img/download.png" /></div>
+   <div class="col-10">
+   <div class="button-bar button-small ">
+  <a class="button button-energized">Month</a>
+  <a class="button">Year</a>
+</div>
+   </div>
+   <div class="col-10">
+   <div class="button-bar button-small button-energized">
+  <a class="button button-energized">Graph</a>
+  <a class="button">Grid</a>
+</div>
+   </div>
+   
+   </div>
 	        <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 	            <ion-slide>
 	                <nvd3 options="options" data="data"></nvd3>
@@ -41,5 +59,8 @@
 	            </ion-slide>
 	        </ion-slide-box>
   		</tab-slide-box>
+		
+		
+		
 	</ion-content>
 </ion-view>

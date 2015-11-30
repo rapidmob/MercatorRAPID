@@ -11,3 +11,59 @@
 .tabbed-slidebox .tsb-icons:after{
 	display:none;
 }
+
+.newitem {
+    border: 0;
+    outline: 0;
+    background: transparent!important;
+    border-bottom: 1px solid #fff !important;
+    border-top-color: transparent!important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.login-input{
+	   
+    padding-top: 4px!important;
+    padding-left: 19px!important;
+    height: 53px!important;
+    color: #fff!important;
+    vertical-align: middle;
+    font-size: 20px!important;
+    line-height: 23px!important;
+	
+}
+.login-topmargin{
+	/*margin-top: 130px;*/
+}
+.login-check{
+	height: 20px;
+	width: 20px;
+	background-color: #fff !important;
+	border: 2px solid #fff !important;
+	background-color: transparent !important;
+}
+.login-btn-width{
+	width: 200px;
+}
+#mydiv {
+    position:fixed;
+    top: 40%;
+    left: 50%;
+    width:80em;
+    height:29em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    
+}
+.metric-modifier{
+	font-size: 16px;
+	font-weight: bold;
+}
+.scroll-content{
+	
+	/*background-color: #f8f8f8 !important;*/
+}
+.button-modifier{
+	
+	
+}
