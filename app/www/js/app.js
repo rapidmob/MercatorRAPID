@@ -23,9 +23,7 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
-
-  
+  $stateProvider 
 
     .state('app', {
     url: '/app',
