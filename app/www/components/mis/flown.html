@@ -1,6 +1,45 @@
-<ion-view view-title="MIS:: Passenger Flown">
-  <ion-content>
-    <h1>Passenger Flown</h1>
-    <div>Dashboard1 Sample content</div>
-  </ion-content>
+<ion-view view-title="Passenger Flown">
+	<ion-content>
+  		<tab-slide-box tab="0">
+	    	<div class="tsb-icons">
+	    		<div class="tsb-ic-wrp">
+					<ion-scroll direction="x" class="tsb-hscroll">
+					  <a href="" class="tab" ng-repeat="tab in tabs" on-finish-render="">{{tab.title}}</a>
+					</ion-scroll>
+				</div>
+	    	</div>
+	        <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+	            <ion-slide>
+	                <nvd3 options="options" data="data"></nvd3>
+	            </ion-slide>
+	            <ion-slide>
+	                <h3>Games content</h3>
+	            </ion-slide>
+	            <ion-slide>
+	                <h3>Mail content</h3>
+	            </ion-slide>
+				<ion-slide>
+	                <h3>Car content</h3>
+	            </ion-slide>
+	            <ion-slide>
+	                <h3>Profile content</h3>
+	            </ion-slide>
+	            <ion-slide>
+	                <h3>Favourites content</h3>
+	            </ion-slide>
+				<ion-slide>
+	                <h3>Chats content</h3>
+	            </ion-slide>
+				<ion-slide>
+	                <h3>Settings content</h3>
+	            </ion-slide>
+				<ion-slide>
+	                <h3>Photos content</h3>
+	            </ion-slide>
+				<ion-slide>
+	                <h3>Pets content</h3>
+	            </ion-slide>
+	        </ion-slide-box>
+  		</tab-slide-box>
+	</ion-content>
 </ion-view>
