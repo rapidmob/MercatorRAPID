@@ -1,4 +1,4 @@
-angular.module('rapidMobile.controllers', ['ngAnimate'])
+angular.module('rapidMobile.controllers',[])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 

@@ -24,7 +24,7 @@ function SimplePubSub() {
     };
 };
 
-angular.module('rapidMobile.controllers')
+angular.module('tabSlideBox')
 .directive('onFinishRender', function ($timeout) {
     return {
         restrict: 'A',
