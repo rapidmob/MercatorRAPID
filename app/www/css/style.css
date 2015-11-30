@@ -1,22 +1,13 @@
 /* Empty. Add your own CSS if you like */
 /* Empty. Add your own CSS if you like */
-		.slider-slide h3{
-			color:#fff;
-			margin-top:10px;
-		}
-		.scroll {
-			height:100%;
-		}
-		
-		.tabbed-slidebox .tsb-icons:after {
-			display:none;
-		}
+.slider-slide h3{
+	color:#fff;
+	margin-top:10px;
+}
+.scroll{
+	height:100%;
+}
 
-		.tab {
-		float: none;
-		display: inline-block;
-        width: 12%;
-        height: 85px;
-        margin: 11px;
-        padding: 10px;
-       }
+.tabbed-slidebox .tsb-icons:after{
+	display:none;
+}
