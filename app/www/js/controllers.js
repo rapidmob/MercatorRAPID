@@ -19,7 +19,6 @@ angular.module('rapidMobile.controllers', ['ngAnimate'])
     $scope.modal = modal;
   });
 
-
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();

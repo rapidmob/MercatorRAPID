@@ -1,5 +1,8 @@
-angular.module('rapidMobile.controllers')
+(function () {
+    'use strict';
+    angular.module('rapidMobile.controllers').controller('OperationalCtrl', ['$stateParams', OperationalCtrl]);
 
-.controller('OperationalCtrl', function($scope, $state) {
-
-})
+    function OperationalCtrl($stateParams) {
+        var vm = this;
+    };
+})();

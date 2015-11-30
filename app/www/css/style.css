@@ -1,45 +1,14 @@
 /* Empty. Add your own CSS if you like */
 /* Empty. Add your own CSS if you like */
-            /*.container {
-            	margin-top: 40px;
-            }         
-            #tabs  {
-				overflow:hidden;
-				white-space: nowrap;
-			}
-
-			.tabb {
-				float:none;
-				display:inline-block;
-			}
-
-			.arrow {
-				padding:10px;
-				position:absolute;
-				background-color:#fff;
-				z-index:2
-			}
-
-			#leftArr {
-				left:0;
-			}
-
-			#rightArr {
-				right:0;
-			}
-			.menutitle {
-				z-index: 100;
-			}*/
-
-			.slider-slide h3{
+		.slider-slide h3{
 			color:#fff;
 			margin-top:10px;
 		}
-		.scroll{
+		.scroll {
 			height:100%;
 		}
 		
-		.tabbed-slidebox .tsb-icons:after{
+		.tabbed-slidebox .tsb-icons:after {
 			display:none;
 		}
 

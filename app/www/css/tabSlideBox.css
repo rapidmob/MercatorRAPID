@@ -19,7 +19,7 @@
 
 .tabbed-slidebox .tsb-icons {
     text-align: center;
-    margin: 10px 0;
+    margin: 10px 0 -5px 0;
     position: relative;
 	background-color:#fff;
 }
@@ -50,7 +50,7 @@
     height: 100%;
     overflow: hidden;
 }
-
+/*
 .tabbed-slidebox .tsb-icons:after {
     width: 0;
     height: 0;
@@ -64,6 +64,7 @@
     left: 50%;
     margin-left: -14px;
 }
+*/
 .tsb-hscroll.scroll-view{
   	white-space: nowrap;
 	margin:0 auto;
@@ -81,9 +82,9 @@
 	line-height: 1.5em;
 	text-decoration: none;
 	margin: 0 15px;
-	border-bottom: 3px solid transparent;
+	border-bottom: 3px solid rgb(244, 172, 8);
 }
 .tabbed-slidebox .tsb-icons .scroll a.active {
 	font-size: 1.8em;
-	border-bottom: 3px solid #ccc;
+	/*border-bottom: 3px solid #ccc;*/
 }
