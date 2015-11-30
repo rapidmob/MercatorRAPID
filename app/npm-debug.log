@@ -1,0 +1,226 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'update' ]
+2 info using npm@2.5.1
+3 info using node@v0.12.0
+4 silly mapToRegistry name gulp
+5 silly mapToRegistry using default registry
+6 silly mapToRegistry registry https://registry.npmjs.org/
+7 silly mapToRegistry uri https://registry.npmjs.org/gulp
+8 silly mapToRegistry name gulp-sass
+9 silly mapToRegistry using default registry
+10 silly mapToRegistry registry https://registry.npmjs.org/
+11 silly mapToRegistry uri https://registry.npmjs.org/gulp-sass
+12 silly mapToRegistry name gulp-concat
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/gulp-concat
+16 silly mapToRegistry name gulp-minify-css
+17 silly mapToRegistry using default registry
+18 silly mapToRegistry registry https://registry.npmjs.org/
+19 silly mapToRegistry uri https://registry.npmjs.org/gulp-minify-css
+20 silly mapToRegistry name gulp-rename
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/gulp-rename
+24 silly mapToRegistry name bower
+25 silly mapToRegistry using default registry
+26 silly mapToRegistry registry https://registry.npmjs.org/
+27 silly mapToRegistry uri https://registry.npmjs.org/bower
+28 silly mapToRegistry name gulp-util
+29 silly mapToRegistry using default registry
+30 silly mapToRegistry registry https://registry.npmjs.org/
+31 silly mapToRegistry uri https://registry.npmjs.org/gulp-util
+32 silly mapToRegistry name shelljs
+33 silly mapToRegistry using default registry
+34 silly mapToRegistry registry https://registry.npmjs.org/
+35 silly mapToRegistry uri https://registry.npmjs.org/shelljs
+36 verbose request uri https://registry.npmjs.org/gulp-sass
+37 verbose request no auth needed
+38 info attempt registry request try #1 at 12:50:24 AM
+39 verbose request id df363983b6901745
+40 verbose etag "YEYT5OCJ8EPZGE373VGBELKT"
+41 http request GET https://registry.npmjs.org/gulp-sass
+42 verbose request uri https://registry.npmjs.org/gulp
+43 verbose request no auth needed
+44 info attempt registry request try #1 at 12:50:24 AM
+45 verbose etag "320I5HBD0CTYF2I0PQ7DIIZ7O"
+46 http request GET https://registry.npmjs.org/gulp
+47 verbose request uri https://registry.npmjs.org/gulp-concat
+48 verbose request no auth needed
+49 info attempt registry request try #1 at 12:50:24 AM
+50 verbose etag "1Z7HDVZ87BSL9GI8YBFZDQ3KH"
+51 http request GET https://registry.npmjs.org/gulp-concat
+52 verbose request uri https://registry.npmjs.org/gulp-minify-css
+53 verbose request no auth needed
+54 info attempt registry request try #1 at 12:50:24 AM
+55 verbose etag "5PDT4QAOBULPCQT7XJVZB9MIP"
+56 http request GET https://registry.npmjs.org/gulp-minify-css
+57 verbose request uri https://registry.npmjs.org/shelljs
+58 verbose request no auth needed
+59 info attempt registry request try #1 at 12:50:24 AM
+60 verbose etag "3QF9H1XJ00DXG50BTQ3T781V7"
+61 http request GET https://registry.npmjs.org/shelljs
+62 verbose request uri https://registry.npmjs.org/gulp-rename
+63 verbose request no auth needed
+64 info attempt registry request try #1 at 12:50:24 AM
+65 verbose etag "9WQ5G50T00STOIPX50TD7SIEL"
+66 http request GET https://registry.npmjs.org/gulp-rename
+67 verbose request uri https://registry.npmjs.org/gulp-util
+68 verbose request no auth needed
+69 info attempt registry request try #1 at 12:50:24 AM
+70 verbose etag "4JGP0W7H82T2WC2LQGRIGIM5K"
+71 http request GET https://registry.npmjs.org/gulp-util
+72 verbose request uri https://registry.npmjs.org/bower
+73 verbose request no auth needed
+74 info attempt registry request try #1 at 12:50:25 AM
+75 verbose etag "4R01ELD5UM1LJEMT18X281OQV"
+76 http request GET https://registry.npmjs.org/bower
+77 http 304 https://registry.npmjs.org/gulp-minify-css
+78 silly get cb [ 304,
+78 silly get   { date: 'Sat, 28 Nov 2015 19:20:26 GMT',
+78 silly get     via: '1.1 varnish',
+78 silly get     'cache-control': 'max-age=60',
+78 silly get     etag: '"5PDT4QAOBULPCQT7XJVZB9MIP"',
+78 silly get     age: '46',
+78 silly get     connection: 'keep-alive',
+78 silly get     'x-served-by': 'cache-fra1232-FRA',
+78 silly get     'x-cache': 'HIT',
+78 silly get     'x-cache-hits': '1',
+78 silly get     'x-timer': 'S1448738426.265503,VS0,VE0',
+78 silly get     vary: 'Accept' } ]
+79 verbose etag https://registry.npmjs.org/gulp-minify-css from cache
+80 verbose get saving gulp-minify-css to C:\Users\inabhure\AppData\Roaming\npm-cache\registry.npmjs.org\gulp-minify-css\.cache.json
+81 http 304 https://registry.npmjs.org/bower
+82 silly get cb [ 304,
+82 silly get   { date: 'Sat, 28 Nov 2015 19:20:26 GMT',
+82 silly get     via: '1.1 varnish',
+82 silly get     'cache-control': 'max-age=60',
+82 silly get     etag: '"4R01ELD5UM1LJEMT18X281OQV"',
+82 silly get     age: '17',
+82 silly get     connection: 'keep-alive',
+82 silly get     'x-served-by': 'cache-fra1225-FRA',
+82 silly get     'x-cache': 'HIT',
+82 silly get     'x-cache-hits': '1',
+82 silly get     'x-timer': 'S1448738426.264989,VS0,VE0',
+82 silly get     vary: 'Accept' } ]
+83 verbose etag https://registry.npmjs.org/bower from cache
+84 verbose get saving bower to C:\Users\inabhure\AppData\Roaming\npm-cache\registry.npmjs.org\bower\.cache.json
+85 http 304 https://registry.npmjs.org/gulp
+86 silly get cb [ 304,
+86 silly get   { date: 'Sat, 28 Nov 2015 19:20:26 GMT',
+86 silly get     via: '1.1 varnish',
+86 silly get     'cache-control': 'max-age=60',
+86 silly get     etag: '"320I5HBD0CTYF2I0PQ7DIIZ7O"',
+86 silly get     age: '0',
+86 silly get     connection: 'keep-alive',
+86 silly get     'x-served-by': 'cache-fra1231-FRA',
+86 silly get     'x-cache': 'HIT',
+86 silly get     'x-cache-hits': '1',
+86 silly get     'x-timer': 'S1448738426.271613,VS0,VE1',
+86 silly get     vary: 'Accept' } ]
+87 verbose etag https://registry.npmjs.org/gulp from cache
+88 verbose get saving gulp to C:\Users\inabhure\AppData\Roaming\npm-cache\registry.npmjs.org\gulp\.cache.json
+89 http 304 https://registry.npmjs.org/gulp-util
+90 silly get cb [ 304,
+90 silly get   { date: 'Sat, 28 Nov 2015 19:20:26 GMT',
+90 silly get     via: '1.1 varnish',
+90 silly get     'cache-control': 'max-age=60',
+90 silly get     etag: '"4JGP0W7H82T2WC2LQGRIGIM5K"',
+90 silly get     age: '9',
+90 silly get     connection: 'keep-alive',
+90 silly get     'x-served-by': 'cache-fra1246-FRA',
+90 silly get     'x-cache': 'HIT',
+90 silly get     'x-cache-hits': '1',
+90 silly get     'x-timer': 'S1448738426.344718,VS0,VE0',
+90 silly get     vary: 'Accept' } ]
+91 verbose etag https://registry.npmjs.org/gulp-util from cache
+92 verbose get saving gulp-util to C:\Users\inabhure\AppData\Roaming\npm-cache\registry.npmjs.org\gulp-util\.cache.json
+93 http 304 https://registry.npmjs.org/gulp-rename
+94 silly get cb [ 304,
+94 silly get   { date: 'Sat, 28 Nov 2015 19:20:26 GMT',
+94 silly get     via: '1.1 varnish',
+94 silly get     'cache-control': 'max-age=60',
+94 silly get     etag: '"9WQ5G50T00STOIPX50TD7SIEL"',
+94 silly get     age: '1',
+94 silly get     connection: 'keep-alive',
+94 silly get     'x-served-by': 'cache-fra1221-FRA',
+94 silly get     'x-cache': 'HIT',
+94 silly get     'x-cache-hits': '1',
+94 silly get     'x-timer': 'S1448738426.347700,VS0,VE0',
+94 silly get     vary: 'Accept' } ]
+95 verbose etag https://registry.npmjs.org/gulp-rename from cache
+96 verbose get saving gulp-rename to C:\Users\inabhure\AppData\Roaming\npm-cache\registry.npmjs.org\gulp-rename\.cache.json
+97 silly mapToRegistry name abbrev
+98 silly mapToRegistry using default registry
+99 silly mapToRegistry registry https://registry.npmjs.org/
+100 silly mapToRegistry uri https://registry.npmjs.org/abbrev
+101 silly mapToRegistry name archy
+102 silly mapToRegistry using default registry
+103 silly mapToRegistry registry https://registry.npmjs.org/
+104 silly mapToRegistry uri https://registry.npmjs.org/archy
+105 silly mapToRegistry name bower-config
+106 silly mapToRegistry using default registry
+107 silly mapToRegistry registry https://registry.npmjs.org/
+108 silly mapToRegistry uri https://registry.npmjs.org/bower-config
+109 silly mapToRegistry name bower-endpoint-parser
+110 silly mapToRegistry using default registry
+111 silly mapToRegistry registry https://registry.npmjs.org/
+112 silly mapToRegistry uri https://registry.npmjs.org/bower-endpoint-parser
+113 silly mapToRegistry name bower-json
+114 silly mapToRegistry using default registry
+115 silly mapToRegistry registry https://registry.npmjs.org/
+116 silly mapToRegistry uri https://registry.npmjs.org/bower-json
+117 silly mapToRegistry name bower-logger
+118 silly mapToRegistry using default registry
+119 silly mapToRegistry registry https://registry.npmjs.org/
+120 silly mapToRegistry uri https://registry.npmjs.org/bower-logger
+121 silly mapToRegistry name bower-registry-client
+122 silly mapToRegistry using default registry
+123 silly mapToRegistry registry https://registry.npmjs.org/
+124 silly mapToRegistry uri https://registry.npmjs.org/bower-registry-client
+125 silly mapToRegistry name cardinal
+126 silly mapToRegistry using default registry
+127 silly mapToRegistry registry https://registry.npmjs.org/
+128 silly mapToRegistry uri https://registry.npmjs.org/cardinal
+129 silly mapToRegistry name chalk
+130 silly mapToRegistry using default registry
+131 silly mapToRegistry registry https://registry.npmjs.org/
+132 silly mapToRegistry uri https://registry.npmjs.org/chalk
+133 silly mapToRegistry name chmodr
+134 silly mapToRegistry using default registry
+135 silly mapToRegistry registry https://registry.npmjs.org/
+136 silly mapToRegistry uri https://registry.npmjs.org/chmodr
+137 silly mapToRegistry name configstore
+138 silly mapToRegistry using default registry
+139 silly mapToRegistry registry https://registry.npmjs.org/
+140 silly mapToRegistry uri https://registry.npmjs.org/configstore
+141 silly mapToRegistry name decompress-zip
+142 silly mapToRegistry using default registry
+143 silly mapToRegistry registry https://registry.npmjs.org/
+144 silly mapToRegistry uri https://registry.npmjs.org/decompress-zip
+145 silly mapToRegistry name destroy
+146 silly mapToRegistry using default registry
+147 silly mapToRegistry registry https://registry.npmjs.org/
+148 silly mapToRegistry uri https://registry.npmjs.org/destroy
+149 verbose stack Error: Unsupported URL Type: github:sheerun/fs-write-stream-atomic#v1.0.4-fix
+149 verbose stack     at parseUrl (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-package-arg\npa.js:173:13)
+149 verbose stack     at npa (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-package-arg\npa.js:74:12)
+149 verbose stack     at shouldUpdate (C:\Program Files\nodejs\node_modules\npm\lib\outdated.js:298:7)
+149 verbose stack     at C:\Program Files\nodejs\node_modules\npm\lib\outdated.js:265:25
+149 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:52:35
+149 verbose stack     at Array.forEach (native)
+149 verbose stack     at C:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:52:11
+149 verbose stack     at Array.forEach (native)
+149 verbose stack     at asyncMap (C:\Program Files\nodejs\node_modules\npm\node_modules\slide\lib\async-map.js:51:8)
+149 verbose stack     at next (C:\Program Files\nodejs\node_modules\npm\lib\outdated.js:264:5)
+150 verbose cwd D:\Mercator\Rapid\app\MercatorRAPID\app
+151 error Windows_NT 6.1.7601
+152 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "update"
+153 error node v0.12.0
+154 error npm  v2.5.1
+155 error Unsupported URL Type: github:sheerun/fs-write-stream-atomic#v1.0.4-fix
+156 error If you need help, you may report this error at:
+156 error     <http://github.com/npm/npm/issues>
+157 verbose exit [ 1, true ]

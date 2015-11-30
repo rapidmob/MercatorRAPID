@@ -1,4 +1,4 @@
-angular.module('rapidMobile.controllers', [])
+angular.module('rapidMobile.controllers')
 
 .controller('LoginCtrl', function($scope, $state, Auth) {
   // Form data for the login modal
