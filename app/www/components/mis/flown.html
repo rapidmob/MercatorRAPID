@@ -1,5 +1,12 @@
-<ion-view view-title="Passenger Flown">
-	<ion-content>
+
+
+<ion-view>
+<ion-nav-title>
+      <div class="row"><div class="col">Test</div><div class="col">Test</div><div class="col">Test</div></div>
+    </ion-nav-title>
+
+
+	<ion-content class="has-header-new">
   		<tab-slide-box tab="0">
 	    	<div class="tsb-icons">
 	    		<div class="tsb-ic-wrp">
@@ -12,19 +19,24 @@
 			 <div class="row">
    <div class="col-50 padding-horizontal metric-modifier">METRIC SNAPSHOT</div>
    <div class="col-10" style="text-align:right"><img src="img/download.png" /></div>
-   <div class="col-10">
+   <div class="col-20">
    <div class="button-bar button-small ">
-  <a class="button button-energized">Month</a>
+  <a class="button button-energized button-modifier">Month</a>
   <a class="button">Year</a>
 </div>
    </div>
-   <div class="col-10">
-   <div class="button-bar button-small button-energized">
-  <a class="button button-energized">Graph</a>
+   <div class="col-20">
+   <div class="button-bar button-small button-energized ">
+  <a class="button button-energized button-modifier">Graph</a>
   <a class="button">Grid</a>
 </div>
    </div>
    
+   </div>
+   <div class="row">
+   	<div class="col box padding-horizontal">test</div>
+   	<div class="col box col-offset-5 padding-horizontal">test</div>
+   	<div class="col box col-offset-5 padding-horizontal">test</div>
    </div>
 	        <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
 	            <ion-slide>
@@ -63,4 +75,4 @@
 		
 		
 	</ion-content>
-</ion-view>
+

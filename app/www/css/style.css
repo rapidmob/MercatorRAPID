@@ -64,6 +64,19 @@
 	/*background-color: #f8f8f8 !important;*/
 }
 .button-modifier{
+	    line-height: 34px;
+        min-height: 40px;
 	
-	
+}
+.box{
+    height: 300px;
+    border-radius: 2px 2px 2px 2px;
+    border: 2px solid #cdcdcd;
+    
+}
+.nav-height{
+    height: 70px !important;
+}
+.has-header-new{
+    margin-top: 30px !important;
 }
