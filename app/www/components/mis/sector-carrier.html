@@ -1,0 +1,44 @@
+<div class="row section-margin sector-head net-revenue">
+    <div class="col col-40 padding-horizontal padding-vertical metric-modifier pull-left">SECTOR & CARRIER ANALYSIS</div>
+    <div class="col col-60">
+      <div class="row btn-section responsive-sm">
+        <div class=" pull-right padding-horizontal download-btn">
+          <button class="button export"><img src="img/download.svg" /></button>
+        </div>
+        <select class="select-height button-custom-color button-bg cust-sel-width" ng-model="toggle.sectorOrder">
+          <option value="top5">Top 5</option>
+          <!-- <option value="top10">Top 10</option> -->
+          <option value="bottom5">Bottom 5</option>
+          <!-- <option value="bottom15">Bottom 15</option> -->
+        </select>
+        <div class=" button-bar button-small padding-horizontal ">
+          <a class="button button-custom-color button-modifier no-border rev button-inactive" 
+          ng-class="{'button-custom-color': toggle.sectorRevOrPax=='revenue'}"
+          ng-click="toggleSector('revenue')">Revenue</a>
+          <a class="button button-modifier no-border button-inactive pax" 
+          ng-class="{'button-custom-color': toggle.sectorRevOrPax=='paxcount'}"
+          ng-click="toggleSector('paxcount')">PAX Count</a>
+        </div>
+        <div class=" button-bar button-small button-energized padding-horizontal padding-left-zero padding-right-zero">
+          <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars" ></i></a>
+          <a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view" ></i></a>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row section-margin">
+  <div class="col col-50 padding-horizontal" ng-repeat="sector in SectorCarrierAnalysisCharts | filter: sectorCarrierFilter">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-80 no-padding pull-left graph-title">{{sector.heading1}}</div>
+        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont sector-padding">
+          <!-- <nvd3 data="topSectorsResult" options="options.sectorChart" class="with-3d-shadow with-transitions"></nvd3> -->
+          <he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items"></he-progress-bar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

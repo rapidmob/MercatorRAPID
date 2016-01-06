@@ -1,45 +1,112 @@
-<ion-view view-title="Passenger Flown">
-	<ion-content>
-  		<tab-slide-box tab="0">
-	    	<div class="tsb-icons">
-	    		<div class="tsb-ic-wrp">
-					<ion-scroll direction="x" class="tsb-hscroll">
-					  <a href="" class="tab" ng-repeat="tab in tabs" on-finish-render="">{{tab.title}}</a>
-					</ion-scroll>
-				</div>
-	    	</div>
-	        <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
-	            <ion-slide>
-	                <nvd3 options="options" data="data"></nvd3>
-	            </ion-slide>
-	            <ion-slide>
-	                <h3>Games content</h3>
-	            </ion-slide>
-	            <ion-slide>
-	                <h3>Mail content</h3>
-	            </ion-slide>
-				<ion-slide>
-	                <h3>Car content</h3>
-	            </ion-slide>
-	            <ion-slide>
-	                <h3>Profile content</h3>
-	            </ion-slide>
-	            <ion-slide>
-	                <h3>Favourites content</h3>
-	            </ion-slide>
-				<ion-slide>
-	                <h3>Chats content</h3>
-	            </ion-slide>
-				<ion-slide>
-	                <h3>Settings content</h3>
-	            </ion-slide>
-				<ion-slide>
-	                <h3>Photos content</h3>
-	            </ion-slide>
-				<ion-slide>
-	                <h3>Pets content</h3>
-	            </ion-slide>
-	        </ion-slide-box>
-  		</tab-slide-box>
-	</ion-content>
+<ion-view class="">
+  <ion-nav-title >
+    <div class="row">
+      <div class="col pull-left header-logo"><img src="img/logo.png" alt="" ></div>
+      <div class="col no-padding line-height-10 text-center">
+        <div class="pas-head-title">Passenger Flown</div>
+        <div class="pas-head-subtitle">Month:
+          <label>
+          <select class="selectmonth" ng-model="header.flownMonth" ng-change="updateHeader()">
+            <option ng-repeat="month in subHeader.paxFlownMisMonths" value="{{month.flowMonth}}">{{month.flowMonth}}</option>
+          </select>
+          <i class="icon ion-chevron-down move-left"></i></label>
+        </div>
+      </div>
+      <div class="col no-padding user-info">
+        <div class="last-login">{{subHeader.lastRefresh}}</div>
+        <div class="profile-name">
+          <!--Blaine Cooper &#9662;-->
+          <div class="dropdown"> <span onclick="myFunction()" class="dropbtn">{{header.username}}&nbsp;<i class="icon ion-chevron-down" ></i></span>
+            <div id="myDropdown" class="dropdown-content"> 
+              <a href="#home">Home</a> 
+              <a href="#about">About</a> 
+              <a href="#contact">Contact</a> 
+            </div>
+          </div>
+        </div>
+        <div class="profile-img"><img ng-src="img/profile.jpg" class="img-circle" alt="" ></div>
+      </div>
+    </div>
+  </ion-nav-title>
+  <div class="">
+    <div class="row border-bottom header-padding">
+      <div class="col col-20 no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{subHeader.paxFlownMisMonths[header.headerIndex].flowMonth}})</span></div>
+      <div class="no-padding cust-font">(Expected: <span class="heade2-values">
+      {{subHeader.paxFlownMisMonths[header.headerIndex].expectedCount}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">Processed: <span class="heade2-values">{{subHeader.paxFlownMisMonths[header.headerIndex].processedCount}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">Completed: <span class="heade2-values">{{subHeader.paxFlownMisMonths[header.headerIndex].completedCount}}</span>)</div>
+      
+      <div class="col no-padding pull-right cust-font">(Currency: <span class="heade2-values">{{subHeader.currency}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">PAX count: <span class="heade2-values">{{subHeader.paxCount}}</span>)</div>
+    
+      <div class="col no-padding pull-right margin-top-1">
+        <input id="checkbox-1" class="checkbox-custom checkbox-custom1" name="checkbox-1" type="checkbox" ng-model="header.surcharge">
+        <label for="checkbox-1" class="checkbox-custom-label"></label>
+        &nbsp;&nbsp;<span class="heade3-values">Surcharge</span></div>
+    </div>
+  </div>
+  <ion-content scroll="false" class="title-height">
+    <tab-slide-box tab="0">
+      <div class="tsb-icons no-margin">
+          <div class="tsb-ic-wrp">
+          <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
+          	<div class="row no-padding">
+	          	<div class="tab-section-tabs text-center no-padding"  ng-repeat="tab in tabs">
+	            	<a href="" class="tab text-center" on-finish-render=""><span>{{tab.title}}</span></a>
+	            </div>
+            </div>
+          </ion-scroll>
+        </div>
+        </div>      
+      <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+        <ion-slide >
+          <ion-scroll style="height:100%">
+			<div ng-if="favMetricResult" ng-include="'components/mis/metric.html'"></div>
+			<div ng-include="'components/mis/target-actual.html'"></div>
+			<div ng-include="'components/mis/revenue-analysis.html'"></div>        
+      		<div class="clear"></div>
+        	<h1>&nbsp;</h1>    
+        	<h1>&nbsp;</h1>  
+          </ion-scroll>
+        </ion-slide>
+        <ion-slide>
+			<!-- Include metric.html-->
+			<ion-scroll class="scroll-height">
+				<div ng-include="'components/mis/metric.html'"></div>
+				<div class="clear"></div>
+				<h1>&nbsp;</h1>
+				<h1>&nbsp;</h1>	
+			</ion-scroll>
+        </ion-slide>
+        <ion-slide>
+			<ion-scroll class="scroll-height">
+				<div ng-include="'components/mis/target-actual.html'"></div>
+				<div class="clear"></div>
+				<h1>&nbsp;</h1>	
+			</ion-scroll>
+		</ion-slide>
+        <ion-slide>
+			<ion-scroll class="scroll-height">			
+				<div ng-include="'components/mis/revenue-analysis.html'"></div>
+				<div class="clear"></div>
+				<h1>&nbsp;</h1>
+			</ion-scroll>
+        </ion-slide>
+        <ion-slide>
+          <ion-scroll class="scroll-height">
+            <div ng-include="'components/mis/sector-carrier.html'"></div>
+			<div class="clear"></div>
+			<h1>&nbsp;</h1>
+          </ion-scroll>
+        </ion-slide>
+        <ion-slide>
+          <ion-scroll class="scroll-height">
+          	<div ng-include="'components/mis/route-revenue.html'"></div>
+			<div class="clear"></div>
+			<h1>&nbsp;</h1>
+          </ion-scroll>
+        </ion-slide>  
+     </ion-slide-box>
+    </tab-slide-box>
+  </ion-content>
 </ion-view>

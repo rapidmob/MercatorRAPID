@@ -1,0 +1,114 @@
+<div class="row responsive-sm section-margin content-head">
+  <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">METRIC SNAPSHOT</div>
+  <div class="col col-50">
+    <div class="row btn-section">
+      <div class=" pull-right padding-horizontal download-btn"><button class="button export"><img src="img/download.svg" /></button></div>
+      <div class=" button-bar button-small padding-horizontal ">
+        <a class="button button-custom-color button-modifier no-border button-inactive" ng-click="toggleMetric('month')" ng-class="{'button-custom-color': toggle.monthOrYear=='month'}">Month</a>
+        <a class="button button-modifier no-border button-inactive" ng-click="toggleMetric('year')" ng-class="{'button-custom-color': toggle.monthOrYear=='year'}">Year</a>
+      </div>
+      <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+        <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars" ></i></a>
+        <a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view" ></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row no-padding">
+  <div class="col pull-right">
+    <div id="chart_legend" ng-show="toggle.monthOrYear=='month'">
+      <div class="chart_legend middle" style="display: block;">{{metricLegends.month[2]}}</div>
+      <div class="chart_legend to">{{metricLegends.month[1]}}</div>
+      <div class="chart_legend from">{{metricLegends.month[0]}}</div>
+    </div>
+    <div id="chart_legend" ng-show="toggle.monthOrYear=='year'">
+      <div class="chart_legend to">{{metricLegends.year[1]}}</div>
+      <div class="chart_legend from">{{metricLegends.year[0]}}</div>
+    </div>
+  </div>
+</div>
+<div class="row responsive-sm metric" ng-repeat="metric in metricResult"  ng-if="$index % 3 === 0">
+  <div class="col col-33 padding-horizontal" ng-if="$index < metricResult.length">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-80 no-padding pull-left graph-title">{{metricResult[$index].chartName}}</div>
+        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont metric-modifier">
+          <nvd3 data="[{ values: metricResult[$index].values}]" options="options.metric" events="events" api="{}"></nvd3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-50 no-padding pull-left graph-title">
+          <div ng-class="{'graph-percent-red': metricResult[$index].trends[0].trend == 'down',
+                    'graph-percent-blue' : metricResult[$index].trends[0].trend == 'up'}"> {{metricResult[$index].trends[0].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[$index].trends[0].trend}} icon-larger" ng-class="{'icon-larger-red': metricResult[$index].trends[0].trend == 'down',
+                    'icon-larger-blue' : metricResult[$index].trends[0].trend == 'up'}"></i> </div>
+          <div class="graph-percent-title">{{metricResult[$index].trends[0].label}}</div>
+        </div>
+        <div ng-show="metricResult[$index].trends[1]" class="col col-50 no-padding pull-right graph-title">
+          <div ng-class="{'graph-percent-red': metricResult[$index].trends[1].trend == 'down',
+                    'graph-percent-blue' : metricResult[$index].trends[1].trend == 'up'}"> {{metricResult[$index].trends[1].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[$index].trends[1].trend}} icon-larger" ng-class="{'icon-larger-red': metricResult[$index].trends[1].trend == 'down',
+                    'icon-larger-blue' : metricResult[$index].trends[1].trend == 'up'}"></i> </div>
+          <div class="graph-percent-title">{{metricResult[$index].trends[1].label}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-33 padding-horizontal" ng-if="$index + 1 < metricResult.length">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-80 no-padding pull-left graph-title">{{metricResult[$index + 1].chartName}}</div>
+        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont metric-modifier">
+          <nvd3 data="[{ values: metricResult[$index + 1].values}]" options="options.metric" events="events" api="{}"></nvd3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-50 no-padding pull-left graph-title">
+          <div ng-class="{'graph-percent-red': metricResult[$index+1].trends[0].trend == 'down',
+                    'graph-percent-blue' : metricResult[$index+1].trends[0].trend == 'up'}"> {{metricResult[$index+1].trends[0].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[$index+1].trends[0].trend}} icon-larger" ng-class="{'icon-larger-red': metricResult[$index+1].trends[0].trend == 'down',
+                    'icon-larger-blue' : metricResult[$index+1].trends[0].trend == 'up'}"></i> </div>
+          <div class="graph-percent-title">{{metricResult[$index+1].trends[0].label}}</div>
+        </div>
+        <div ng-show="metricResult[$index+1].trends[1]" class="col col-50 no-padding pull-right graph-title">
+          <div ng-class="{'graph-percent-red': metricResult[$index+1].trends[1].trend == 'down',
+                    'graph-percent-blue' : metricResult[$index+1].trends[1].trend == 'up'}"> {{metricResult[$index+1].trends[1].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[$index+1].trends[1].trend}} icon-larger" ng-class="{'icon-larger-red': metricResult[$index+1].trends[1].trend == 'down',
+                    'icon-larger-blue' : metricResult[$index+1].trends[1].trend == 'up'}"></i> </div>
+          <div class="graph-percent-title">{{metricResult[$index+1].trends[1].label}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-33 padding-horizontal" ng-show="!metricResult[$index + 1]"> </div>
+  <div class="col col-33 padding-horizontal" ng-if="$index + 2 < metricResult.length">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-80 no-padding pull-left graph-title">{{metricResult[$index + 2].chartName}}</div>
+        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont metric-modifier">
+          <nvd3 data="[{ values: metricResult[$index + 2].values}]" options="options.metric" events="events" api="{}"></nvd3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col col-50 no-padding pull-left graph-title">
+          <div ng-class="{'graph-percent-red': metricResult[$index+2].trends[0].trend == 'down',
+                    'graph-percent-blue' : metricResult[$index+2].trends[0].trend == 'up'}"> {{metricResult[$index+2].trends[0].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[$index+2].trends[0].trend}} icon-larger" ng-class="{'icon-larger-red': metricResult[$index+2].trends[0].trend == 'down',
+                    'icon-larger-blue' : metricResult[$index+2].trends[0].trend == 'up'}"></i> </div>
+          <div class="graph-percent-title">{{metricResult[$index+2].trends[0].label}}</div>
+        </div>
+        <div ng-show="metricResult[$index+2].trends[1]" class="col col-50 no-padding pull-right graph-title">
+          <div ng-class="{'graph-percent-red': metricResult[$index+2].trends[1].trend == 'down',
+                    'graph-percent-blue' : metricResult[$index+2].trends[1].trend == 'up'}"> {{metricResult[$index+2].trends[1].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[$index+2].trends[1].trend}} icon-larger" ng-class="{'icon-larger-red': metricResult[$index+2].trends[1].trend == 'down',
+                    'icon-larger-blue' : metricResult[$index+2].trends[1].trend == 'up'}"></i> </div>
+          <div class="graph-percent-title">{{metricResult[$index+2].trends[1].label}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-33 padding-horizontal" ng-show="!metricResult[$index + 2]"> </div>
+</div>

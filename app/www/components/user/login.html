@@ -1,4 +1,4 @@
-<ion-header-bar>
+<!--<ion-header-bar>
   <h1 class="title">Login</h1>
 </ion-header-bar>
 <ion-content>
@@ -17,5 +17,50 @@
       </label>
     </div>
   </form>
-</ion-content>
+</ion-content>-->
+<ion-view hide-nav-bar="true">
+  <ion-content class="login-bg">
+
+        <div class="login-topmargin" >
+        <div>
+        
+          <center><img src="img/logo.png" alt="" ></center>
+          <center class="login-subtitle">RAPID DASHBOARD VERSION 1.0</center>
+              <form autocomplete="off" name="loginForm" class="list" ng-submit="doLogin(loginForm)" novalidate>
+                <div class="row invalidErrorMessage" ng-show="invalidMessage">
+                    <div class="col">
+                    <i class="icon ion-alert-circled"></i>
+                    <span class="col-center visible invalidError-text ng-binding">&nbsp;{{eroormessage}}</span>
+                    </div>
+                </div>
+                  <div class="item item-input row newitem">
+                      <span class="ion-person white-icon"></span>
+                      <input type="text" name="username" ng-focus="clearError()" class="login-input" placeholder="Username" ng-model="loginData.username" required>
+                      <div ng-click="loginData.username = null" ng-show="!loginForm.username.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
+                  </div>       
+                  <span ng-show="(loginForm.username.$dirty && loginForm.username.$error.required && !invalidMessage)" class="help-block errorspan ng-binding">Username is required</span>
+                  <div class="item newitem item-input row">
+                      <span class="ion-locked white-icon"></span>
+                      <input type="password"name="password" ng-focus="clearError()" class="login-input" placeholder="Password" ng-model="loginData.password" required>
+                      <div ng-click="loginData.password = null" ng-show="!loginForm.password.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
+                  </div>      
+                  <span ng-show="(loginForm.password.$dirty && loginForm.password.$error.required && !invalidMessage)" class="help-block errorspan ng-binding">Password is required</span>
+                  <div class="spacer" style="width: 300px; height: 50px;"></div>
+                <center> <button class="button button-custom-color login-btn-width" type="submit">Login</button>
+                <br/>   
+                <div class="row checkbox-wrap">
+                  <div class="col">   
+                    <input class="checkbox-custom" name="login-checkbox" type="checkbox">
+                    <label for="login-checkbox" class="checkbox-custom-label"></label>
+                      Keep me logged in
+                  </div>
+                  <div class="col">Trouble logging in?</div>
+                </div>
+                </center>
+              </form>
+              </div>
+              
+        </div>
+  </ion-content>
+</ion-view>
 

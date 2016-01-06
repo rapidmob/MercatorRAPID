@@ -1,0 +1,270 @@
+/* Customization element styles*/
+
+/* Logo configuration
+----------------------------------------------------------------------
+*/
+
+/* Logo image */
+$logo-image: "res/img/skychain logo.png";
+$logo-bg_image: "res/img/flightdetails-pattern-bg.png";
+
+/* Main colors configuration
+----------------------------------------------------------------------
+*/
+
+/*
+--------Brand Colors----------------
+*/
+/* Branding background */
+$branding-bg: #ffeb3b;
+/* Branding text color */
+$branding-text-color: $branding-bg;
+/* Link color */
+$link-color: #fbc02d;
+/* Control element color */
+$control-color: #f5a623;
+/* Control text color */
+$control-text-color: #fff;
+/* Secondary background color */
+$header-bg: #252c38 !default;
+/* Page background */
+$page-bg: #eeeeee;
+/* Button Colour */
+$default-button-color: #FFA10D;
+
+$button-bg-color: #F5A623;
+$button-bg-color-inactive: #D5D3D3;
+$menu-bg-hover: #0A1356;
+
+
+/*
+--------End Brand Colors------------
+*/
+
+/*
+--------System Colors---------------
+*/
+/* Item background color */
+$item-bg: #fff !default;
+/* Large text color */
+$large-text-color: #000 !default;
+/* Placeholder text color alternative */
+$placeholder-text-color: #999999;
+/* Primary border */
+$primary-border: #999999 !default;
+/* Secondary text color */
+$primary-text-color: #555555;
+/* Secondary border */
+$additional-text-color: #888888;
+/* Item background */
+$element-bg: $header-bg;
+/* Shadow */
+$shadow-color: rgba(0,0,0,0.75);
+/*
+--------End System Colors-----------
+*/
+
+/*
+--------Message / Other Colors------
+/* Confirmation color */
+$confirmation-color: #7ed321;
+/* Error color */
+$error-color: #db4432;
+/*
+--------End Message / Other Colors--
+*/
+
+
+
+/*
+--------------------------------------------------------------
+*/
+
+
+/* Redefining the variables */
+$primary-control-bg: $item-bg;
+$primary-control-border: $control-color;
+$primary-control-text-color: $primary-text-color;
+$primary-control-active-bg: $control-color;
+$primary-control-active-border: $control-color;
+$primary-control-active-text-color: $item-bg;
+$control-bg-color: $control-color;
+
+$login-row-divider-color: rgba($page-bg, 0.2);
+$unconfirmed-color: $additional-text-color;
+$confirmed-color: $confirmation-color;
+
+$progress-bar-alloted-unconfirmed: lighten($confirmation-color, 30%);
+$progress-bar-alloted-confirmed: $confirmation-color;
+$progress-bar-freesale-unconfirmed: $primary-border;
+$progress-bar-freesale-confirmed: lighten($primary-border, 30%);
+
+
+$primary-drop-down-text-color:$item-bg;
+$primary-drop-down-border: $primary-border;
+$primary-drop-down-bg: $header-bg;
+$primary-drop-down-active-bg:darken($item-bg, 40%);
+
+$primary-icon-color: $control-color;
+$secondary-icon-color: $primary-border;
+
+$radio-primary-unselected: $primary-border;
+$radio-primary-selected: $control-color;
+$radio-primary-text: $primary-text-color;
+
+$fifth-bg-color: rgba($page-bg, 0.15);
+
+/* Ionic elements customization
+---------------------------------------------------------------------
+*/
+
+/* Primary ionic color style */
+$stable:                          $item-bg; //white 
+/* Secondary ionic color style */
+$dark:							  $header-bg; //black
+/* Third ionic color style */
+$light:                           $control-bg-color; //orange
+
+/* Ionic button color style */
+$button-stable-text: 			  $large-text-color;
+$button-stable-border:            $primary-border;
+$button-stable-active-bg:         lighten($stable, 40%) !default;
+$button-light-text: 			  $control-text-color;
+$button-light-border:             $control-bg-color;
+$button-light-active-bg:          lighten($light, 20%) !default;
+
+/* Ionic button calm style */
+$button-calm-bg:				$primary-control-bg;
+$button-calm-border:			$primary-control-border;
+$button-calm-text:      		$primary-control-text-color;
+$button-calm-active-bg:         $primary-control-active-bg;
+$button-calm-active-border:     $primary-control-active-border;
+$button-calm-active-text:    	$primary-control-active-text-color;
+
+
+/* Ionic menu background style */
+$menu-bg:                         $item-bg;
+
+$item-dark-bg:					  $header-bg !default;
+
+/* Ionic item divider color style */
+$item-divider-bg:                 $item-bg !default;
+$item-divider-color:              $large-text-color !default;
+$item-divider-padding:            5px 15px !default;
+
+/* Import of Ionic styles*/
+// @import "../bower_components/ionic/scss/ionic";
+
+/* Ionic list item color style */
+$item-stable-bg: 				  $stable;
+$item-default-bg:                 $item-stable-bg !default;
+// $item-default-border:             $item-stable-border !default;
+// $item-default-text:               $item-stable-text !default;
+$item-default-active-bg:          $page-bg !default;
+// $item-default-active-border:      $item-stable-active-border !default;
+
+/* Ionic input color style */
+$input-color:                     $button-stable-text !default;
+// $input-border:                    $item-default-border !default;
+// $input-border-width:              $item-border-width !default;
+$input-label-color:               $dark !default;
+$input-color-placeholder:         lighten($dark, 40%) !default;
+$input-bg:                        $stable !default;
+$input-bg-disabled:               $stable !default;
+
+
+/* Ionic drop-downs color style */
+$drop-down-text-color:            $primary-drop-down-text-color !default;
+$drop-down-border:                $primary-drop-down-border !default;
+$drop-down-bg:                    $primary-drop-down-bg !default;
+$drop-down-selected-bg:           $primary-drop-down-active-bg !default;
+
+/* Ionic Toggle calm  style */
+$primary-toggle-bg:					$primary-border;
+$primary-toggle-handle-bg:			$item-bg;
+$primary-toggle-selected-bg:		$control-color;
+
+$toggle-button-bg:					$primary-toggle-bg;
+$toggle-button-active-bg:			$primary-toggle-selected-bg;
+$toggle-button-handle-bg:			$primary-toggle-handle-bg;
+
+$icon-selected-color:				$primary-icon-color;
+$icon-unselected-color:				$secondary-icon-color;
+
+$radio-unselected:					$radio-primary-unselected;
+$radio-selected:					$radio-primary-selected;
+$radio-label-text:					$radio-primary-text;
+
+$assertive:                       $error-color !default;
+
+/* Styles customization
+----------------------------------------------------------------------------
+*/
+
+.scroll-content-page {
+	@extend .scroll-content;
+	/*background: url($img-bg) no-repeat center center fixed;
+  	background-size: cover;*/
+  	background-color: $page-bg;
+}
+
+.control-element {
+	background: $control-bg-color;
+	color: $control-text-color;
+}
+
+/* Text format */
+
+.primary-text-color{
+	color: $large-text-color;
+}
+.secondary-color{
+	color: $item-bg;
+}
+.third-text-color{
+	color: $primary-text-color;
+}
+.fourth-text-color{
+	color: $placeholder-text-color;
+}
+.fifth-text-color{
+	color: $link-color;
+}
+.sixth-text-color{
+	color: $branding-text-color;
+}
+.confirm-text {
+	color: $confirmed-color;
+}
+.error-text {
+	color: $error-color;
+}
+
+/* Material floating button */
+%mfb-component__button{
+	background-color: $control-bg-color;
+	.mfb-component__child-icon {
+		font-size: 18px !important;
+		line-height: 56px !important;
+	}
+}
+.button-bg{
+	background-color: $default-button-color;
+	min-height: 30px !important;
+	border: none;
+    border-radius: 2px;
+    height: 35px;
+    margin-top: 2px;
+}
+.button-bg option{
+	background-color: #fff;
+	min-height: 30px !important;
+	color: #000000;
+}
+.button-bg option:hover{
+	background-color: #cdcdcd!important;
+	
+}
+
+$btn-icon-color: #9B9B9B;
+

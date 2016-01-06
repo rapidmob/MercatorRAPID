@@ -1,0 +1,54 @@
+<div class="row section-margin responsive-sm content-head net-revenue">
+  <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">
+  TARGET VS ACTUAL - {{toggle.targetRevOrPax === 'revenue' ? 'NET REVENUE' : 'PAX Count'}}</div>
+  <div class="col col-50">
+    <div class="row btn-section">
+      <div class=" pull-right padding-horizontal download-btn">
+        <button class="button export"><img src="img/download.svg" /></i></button>
+      </div>
+      <div class=" button-bar button-small padding-horizontal ">
+        <a class="button button-custom-color button-modifier no-border button-inactive rev" ng-click="toggleTarget('revenue')" ng-class="{'button-custom-color': toggle.targetRevOrPax=='revenue'}">Revenue</a>
+        <a class="button button-modifier no-border button-inactive pax" ng-click="toggleTarget('paxcount')" ng-class="{'button-custom-color': toggle.targetRevOrPax=='paxcount'}">PAX Count</a>
+      </div>
+      <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+        <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars" ></i></a>
+        <a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view" ></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row section-margin responsive-sm metric">
+  <div class="col col-50 padding-horizontal" ng-repeat="netRevenue in targetActualData.horBarChart | filter: targetActualFilter">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-80 no-padding pull-left graph-title">
+          {{netRevenue.heading1}} {{netRevenue.heading2}}
+        </div>
+        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont rev-modifier">
+            <nvd3 data="[{ values: netRevenue.values}]" options="options.targetBarChart"></nvd3>
+        </div>
+      </div>      
+    </div>
+  </div>
+  <div class="col col-50 col-offset-5 padding-horizontal" ng-repeat="monthAnalysis in targetActualData.lineChart | filter: targetActualFilter">
+    <div class="col-demo">
+      <div class="row">
+        <!-- <div class="col col-80 no-padding pull-left graph-title">
+          {{targetLineChart.data.chartName}}
+        </div> -->
+        <div class="col col-80 no-padding pull-left graph-title">
+          {{monthAnalysis.heading1}} {{monthAnalysis.heading2}}
+        </div>
+        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont" style='padding: 0%'>
+          <nvd3 data="monthAnalysis.lineChartItems" options="options.targetLineChart" class="with-3d-shadow with-transitions"></nvd3>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
