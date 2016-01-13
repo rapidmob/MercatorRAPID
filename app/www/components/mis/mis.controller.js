@@ -165,6 +165,12 @@
                     n.values[0].color = '#4A90E2';
                     n.values[1].color = '#50E3C2';
                 });
+                var lineColors = [{"color": "#4A90E2", "classed": "dashed","strokeWidth": 2},
+                {"color": "#50E3C2"},{"color": "#B8E986", "area" : true, "disabled": true}];
+                _.forEach(data.response.data.lineCharts, function (n, value) {
+                     _.merge(n.lineChartItems, lineColors);
+                });
+                // console.log(data.response.data.lineCharts);
                 $scope.targetActualData = {
                     horBarChart: data.response.data.verBarCharts,
                     lineChart: data.response.data.lineCharts
@@ -224,23 +230,30 @@
                     n.label = n.xval;
                     n.value = n.yval;
                 });
-                _.merge(jsonObj.pieCharts[0].data, pieColors);                
+                _.merge(jsonObj.pieCharts[0].data, pieColors);               
                 $scope.revenueData = {
-                    revenuePieChart : jsonObj.pieCharts[0].data,
+                    revenuePieChart : jsonObj.pieCharts[0],
                     revenueBarChart : jsonObj.multibarCharts[1].multibarChartItems,
                     revenueHorBarChart : jsonObj.multibarCharts[2].multibarChartItems
                 }
+
                 $scope.ionicLoadingHide();               
             }, function(error) {
                 $scope.ionicLoadingHide();
                 console.log('Error ');
             });
         }
-        $scope.openDrillDown = function(regionData,selFindLevel) {  
+        $scope.openDrillDown = function(regionData,selFindLevel) {
+            $scope.selectedDrill[selFindLevel] = regionData;
+            $scope.selectedDrill[selFindLevel + 1] = '';
+            // console.log($scope.selectedDrill);
             if(selFindLevel != '3') {
-                $scope.regionName = (regionData.regionName) ? regionData.regionName : regionData.heading1;
-                var countryFromTo = (regionData.countryFrom && regionData.countryTo) ? regionData.countryFrom + '-' + regionData.countryTo : "Canada-Indonesia";
                 var drillLevel = (selFindLevel + 2);
+                $scope.regionName = (regionData.regionName) ? regionData.regionName : regionData.heading1;
+                var countryFromTo = (regionData.countryFrom && regionData.countryTo) ? regionData.countryFrom + '-' + regionData.countryTo : "";
+                var sectorFromTo = (regionData.flownSector && drillLevel >= 3) ? regionData.flownSector : "";
+                var flightNumber = (regionData.flightNumber && drillLevel == 4) ? regionData.flightNumber : "";
+                $scope.ionicLoadingShow();
                 var reqdata = {
                     "flownMonth": $scope.header.flownMonth,
                     "includeSurcharge": ($scope.header.surcharge) ? 'Y':'N',
@@ -250,24 +263,74 @@
                     "pageNumber": 0,
                     "regionName": ($scope.regionName)? $scope.regionName : "North America",
                     "countryFromTo": countryFromTo,
-                    "sectorFromTo": "YYC-CGK",
-                    "flightNumber": "511",
+                    "sectorFromTo": sectorFromTo,
+                    "flightNumber": flightNumber,
                     "flightDate": 0
                 };
-                
+                var selectedRow = [{"selectedRow": countryFromTo},{"selectedRow": sectorFromTo},
+                {"selectedRow": flightNumber},{"selectedRow": ""}];
+                _.merge($scope.groups, selectedRow);
+                console.log($scope.groups);
+
                 MisService.getRouteRevenueDrillDown(reqdata)
                  .then(function(data) {
+                    $scope.ionicLoadingHide();
                     var data = data.response;
-                    console.log(data);
-                    var findLevel = data.data.drillLevel - 1;
-                    $scope.groups[findLevel].items.push(data.data.rows);
-                    $scope.groups[findLevel].orgItems.push(data.data.rows);
-                    $scope.shownGroup = findLevel;
-                    $scope.sort('paxCount',findLevel,false);
+                    // console.log(data);
+                    var findLevel = drillLevel - 1;
+                    // console.log(data.status);
+                    if(data.status == 'success'){
+                        $scope.groups[findLevel].items[0] = data.data.rows;
+                        $scope.groups[findLevel].orgItems[0] = data.data.rows;
+                        $scope.shownGroup = findLevel;
+                        $scope.sort('paxCount',findLevel,false);
+                        $scope.clearDrill(drillLevel);
+                    }else{
+                         $scope.shownGroup = findLevel;
+                         $scope.clearDrill(findLevel);
+                    }
+                    
                 },function(error){
-                    console.log("drillLevel",error);
+                    $scope.ionicLoadingHide();
+                    $scope.closesPopover();
+                    
+                    console.log(error);
+                    alert('Server Error');
                 }); 
             } 
+        }
+        $scope.clearDrill = function(level){
+            for(i=level;i<=3;i++){
+                $scope.groups[i].items.splice(0, 1);
+                $scope.groups[i].orgItems.splice(0, 1);
+                $scope.sort('paxCount',i,false);
+                
+            }
+            // console.log($scope.groups);
+        }
+         $scope.openPopover = function($event,index,charttype) {
+            $event.preventDefault();
+             $scope.charttype = charttype;
+             $scope.graphindex = index;
+             $ionicPopover.fromTemplateUrl('components/mis/graph-popover.html', {
+                  scope: $scope
+              }).then(function(popover) {
+                 $scope.popovershown = true;
+                  $scope.graphpopover = popover;
+                  $scope.graphpopover.show($event);
+              });
+        }
+
+        $scope.openSectorPopover = function($event,index,charttype) {
+            $scope.charttype = charttype;
+             $scope.graphindex = index;
+             $ionicPopover.fromTemplateUrl('components/mis/sector-graph-popover.html', {
+                  scope: $scope
+              }).then(function(popover) {
+                 $scope.popovershown = true;
+                  $scope.graphpopover = popover;
+                  $scope.graphpopover.show($event);
+              });
         }
         $scope.callSectorCarrierAnalysis = function() {
             var reqdata = {
@@ -301,6 +364,7 @@
         }
         $scope.targetActualFilter = function(item) {
             if( item.toggle1 == $scope.toggle.targetRevOrPax ) {
+                //$scope.$index = 1;
                 return true; 
             }
             return false;
@@ -310,6 +374,14 @@
             if( item.toggle1 == $scope.toggle.sectorOrder && 
                 item.toggle2 == $scope.toggle.sectorRevOrPax
                 ) {
+                return true; 
+            }
+            return false;
+        }
+        $scope.revenueAnalysisFilter = function(item) {
+            var surchargeFlag = ($scope.header.surcharge) ? "Y" : "N";
+            // console.log(surchargeFlag+' : '+item);
+            if( item.surchargeFlag == surchargeFlag) {
                 return true; 
             }
             return false;
@@ -328,9 +400,40 @@
             $ionicLoading.hide();
         };
         //refresh charts
-        angular.element(window).on('resize', function(e, scope) {
+
+       /* angular.element(window).on('resize', function(e, scope) {
+            $event.preventDefault();            
+            $scope.onSlideMove({index: $scope.header.tabIndex});
+        });*/
+
+        angular.element(window).bind('orientationchange', function(e, scope) {
             $scope.onSlideMove({index: $scope.header.tabIndex});
         });
+        /* -------- Info popover ----*/
+        
+         $ionicPopover.fromTemplateUrl('components/mis/infotooltip.html', {
+            scope: $scope
+          }).then(function(infopopover) {
+            $scope.infopopover = infopopover;
+          });
+            $scope.openinfoPopover = function($event,index) {
+                
+          if (typeof index=="undefined" || index=="") {
+              $scope.infodata='No info available';
+              }
+          else{
+            $scope.infodata=index;
+          } 
+            console.log(index);
+            $scope.infopopover.show($event);
+          };
+        $scope.closePopover = function() {
+            $scope.graphpopover.hide();
+        };
+        $scope.closeInfoPopover = function() {
+            $scope.infopopover.hide();
+        };
+    
         /* drilldown */
         $ionicPopover.fromTemplateUrl('components/mis/drildown.html', {
             scope: $scope
@@ -342,10 +445,12 @@
             $scope.drillpopover.show($event);
             $scope.openDrillDown(regionData,selFindLevel); 
         };
-        $scope.closesDrillDownPopover = function() {
+        $scope.closesPopover = function() {
             $scope.drillpopover.hide();
         };
         $scope.pageSize = 4;
+        $scope.currentPage = [];
+        $scope.selectedDrill = [];
         $scope.groups = [];
         for (var i=0; i<=3; i++) {
             $scope.groups[i] = {
@@ -356,29 +461,32 @@
                 ItemsByPage: []
             };
         }
+        $scope.isDrillRowSelected = function(level,obj){
+            return $scope.selectedDrill[level] == obj;
+        }
         $scope.searchResults = function (level,obj) {
-            $scope.groups[level].items[0] = FilteredListService.searched($scope.groups[level].orgItems[0], obj.searchText);
+            $scope.groups[level].items[0] = FilteredListService.searched($scope.groups[level].orgItems[0], obj.searchText, level);
             if (obj.searchText == '') {
                 $scope.resetAll(level); 
                 $scope.groups[level].items[0] = $scope.groups[level].orgItems[0];
             }
-            $scope.currentPage = 0;
+            $scope.currentPage[level] = 0;
             $scope.pagination(level); 
         }
         $scope.pagination = function (level) {
             $scope.groups[level].ItemsByPage = FilteredListService.paged($scope.groups[level].items[0], $scope.pageSize );
         };
-        $scope.setPage = function () {
-            $scope.currentPage = this.n;
+        $scope.setPage = function (level) {
+            $scope.currentPage[level] = this.n;
         };
         $scope.firstPage = function () {
             $scope.currentPage = 0;
         };
         $scope.lastPage = function (level) {
-            $scope.currentPage = $scope.groups[level].ItemsByPage.length - 1;
+            $scope.currentPage[level] = $scope.groups[level].ItemsByPage.length - 1;
         };
         $scope.resetAll = function (level) {
-            $scope.currentPage = 0;
+            $scope.currentPage[level] = 0;
         }
         $scope.sort = function(sortBy,level,order){
             $scope.resetAll(level);

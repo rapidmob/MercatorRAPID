@@ -1,5 +1,5 @@
 (function () {
-  angular.module('rapidMobile.services').factory('MisService', function (DataProviderService, $q) {
+  angular.module('rapidMobile').factory('MisService', function (DataProviderService, $q) {
      return {
         getMetricSnapshot: function(reqdata) {
           // the $http API is based on the deferred/promise APIs exposed by the $q service

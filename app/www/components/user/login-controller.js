@@ -1,13 +1,18 @@
 (function(){
-  angular.module('rapidMobile.controllers')
+  angular.module('rapidMobile')
 
-  .controller('LoginController', function($scope, $state, LoginService) {
+  .controller('LoginController', function($scope, $state, LoginService, $timeout, $ionicLoading) {
     // Form data for the login modal
     $scope.loginData = {};
     $scope.invalidMessage = false;
     $scope.logout = function() {
+      $scope.ionicLoadingShow();
       LoginService.logout();
+      location.reload();
+      $timeout(function() {  
       $state.go("login");
+      $scope.ionicLoadingHide(); 
+      },100,false); 
     };
      
     $scope.clearError = function() {
@@ -24,6 +29,8 @@
           userId : $scope.loginData.username,
           password : $scope.loginData.password
       }
+      SERVER_URL = 'http://'+$scope.loginData.ipaddress+'/v1/api';
+      console.log(SERVER_URL);
       LoginService.getLoginUser(reqdata)
         .then(function(data) {
              if(data.response.status == "success") {
@@ -35,6 +42,7 @@
                   LoginService.setUser({
                      username: data.response.data.userInfo.userName
                   });
+
                   $state.go("app.mis-flown");
                 } ,function(error){
                     console.log(error);
@@ -54,6 +62,15 @@
         $scope.invalidMessage= true;
         $scope.eroormessage = "Please check your credentials";
       }      
-    }  
+    }
+
+    $scope.ionicLoadingShow = function() {
+            $ionicLoading.show({
+                template: '<ion-spinner class="spinner-calm"></ion-spinner>'
+            });
+    };
+    $scope.ionicLoadingHide = function() {
+            $ionicLoading.hide();
+    };   
   })
 })();

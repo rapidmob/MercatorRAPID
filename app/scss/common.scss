@@ -37,12 +37,6 @@ $item-bg : #ffffff;
 	background-color: $header-bg;
 	border-bottom: $header-bg;
 }
-.ion-android-star {
-	color: $icon-selected-color;
-}
-.ion-android-star-outline {
-	color: $icon-unselected-color;
-}
 .no-border{
 	border: none !important;
 
@@ -127,3 +121,6 @@ $item-bg : #ffffff;
 
 $primary-button-color-tr: rgba(245, 166,35, 0.7);
 
+.curs{
+ cursor:pointer;
+ }

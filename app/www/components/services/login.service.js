@@ -1,5 +1,5 @@
 (function () {
-  angular.module('rapidMobile.services',[]).factory('LoginService', function (DataProviderService, $q,$window) {
+  angular.module('rapidMobile').factory('LoginService', function (DataProviderService, $q,$window) {
     var _user = JSON.parse($window.localStorage.getItem('rapidMobile.user'));
     var setUser = function (user) {
       _user = user;

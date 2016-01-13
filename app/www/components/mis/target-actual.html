@@ -7,8 +7,8 @@
         <button class="button export"><img src="img/download.svg" /></i></button>
       </div>
       <div class=" button-bar button-small padding-horizontal ">
-        <a class="button button-custom-color button-modifier no-border button-inactive rev" ng-click="toggleTarget('revenue')" ng-class="{'button-custom-color': toggle.targetRevOrPax=='revenue'}">Revenue</a>
-        <a class="button button-modifier no-border button-inactive pax" ng-click="toggleTarget('paxcount')" ng-class="{'button-custom-color': toggle.targetRevOrPax=='paxcount'}">PAX Count</a>
+        <a class="button button-custom-color button-modifier no-border button-inactive rev btn-padding-top" ng-click="toggleTarget('revenue')" ng-class="{'button-custom-color': toggle.targetRevOrPax=='revenue'}">Revenue</a>
+        <a class="button button-modifier no-border button-inactive pax btn-padding-top" ng-click="toggleTarget('paxcount')" ng-class="{'button-custom-color': toggle.targetRevOrPax=='paxcount'}">PAX Count</a>
       </div>
       <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
         <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars" ></i></a>
@@ -21,10 +21,12 @@
   <div class="col col-50 padding-horizontal" ng-repeat="netRevenue in targetActualData.horBarChart | filter: targetActualFilter">
     <div class="col-demo">
       <div class="row">
-        <div class="col col-80 no-padding pull-left graph-title">
+        <div class="col col-90 no-padding pull-left graph-title">
           {{netRevenue.heading1}} {{netRevenue.heading2}}
+          <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "openinfoPopover($event, netRevenue.chartInfo)"></i>
         </div>
-        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+        <div class="col col-10 no-padding pull-right"><i ng-click="openPopover($event,null,'netRevenue-target')" class="icon icon-larger font-normal ion-android-open curs"></i>
+        </div>
       </div>
       <div class="row">
         <div class="col box-cont rev-modifier">
@@ -39,10 +41,11 @@
         <!-- <div class="col col-80 no-padding pull-left graph-title">
           {{targetLineChart.data.chartName}}
         </div> -->
-        <div class="col col-80 no-padding pull-left graph-title">
+        <div class="col col-90 no-padding pull-left graph-title">
           {{monthAnalysis.heading1}} {{monthAnalysis.heading2}}
+          <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "openinfoPopover($event, monthAnalysis.chartInfo)"></i>
         </div>
-        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
+        <div class="col col-10 no-padding pull-right"><i ng-click="openPopover($event,null,'monthAnalysis-target')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
       </div>
       <div class="row">
         <div class="col box-cont" style='padding: 0%'>

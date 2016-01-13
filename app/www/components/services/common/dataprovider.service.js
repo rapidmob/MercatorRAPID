@@ -1,5 +1,5 @@
 (function (){
-   angular.module('rapidMobile.services').factory('DataProviderService', function ($http, $q, $rootScope, NetService) {
+   angular.module('rapidMobile').factory('DataProviderService', function ($http, $q, $rootScope, NetService) {
       return {
          netService: NetService,
          $q: $q,

@@ -45,10 +45,18 @@
 		margin: 0 auto;
 		right: 0;
 		left: 0;
-		top: 35% !important;
+		top: 23% !important;
 	}
 }
 .login-subtitle{
-	color: #ffc900;
-	font-weight: 500;
+	color: $select-month-color;
+	font-weight: bold;
+    font-size: 1em;
+    padding-bottom: 2em;
+}
+.login-padding{
+	padding-top: 3em !important;
+}
+.username-bottom{
+	margin-bottom: 1em !important;
 }

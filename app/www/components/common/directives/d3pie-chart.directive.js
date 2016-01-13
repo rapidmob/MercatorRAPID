@@ -19,25 +19,25 @@
 							"labels": {
 								"outer": {
 									"format": "label-value2",
-									"pieDistance": 11
+									"pieDistance": 20
 								},
 								"inner": {
 									"format": "percentage"
 								},
 								"mainLabel": {
 									"font": "verdana",
-									"fontSize": 11
+									"fontSize": 16
 								},
 								"percentage": {
 									"color": "#000",
 									"font": "verdana",
 									"decimalPlaces": 0,
-									"fontSize": 11
+									"fontSize": 14
 								},
 								"value": {
 									"color": "#000",
 									"font": "verdana",
-									"fontSize": 11
+									"fontSize": 14
 								},
 								"lines": {
 									"enabled": true,

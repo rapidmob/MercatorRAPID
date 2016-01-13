@@ -1,7 +1,6 @@
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
-$big-bg:      '../img/background.png';
 $button-large-icon-size:          152px !default;
 $big-bg-color:                    #0A1356;
 $header-bar-bg-color:             #0A1356;
@@ -23,8 +22,11 @@ body{
     color:#FFF;
 }
 .login-bg{
-        background: url($big-bg) no-repeat center center fixed;
+        background: url($main-bg_image) no-repeat center center fixed;
         background-size: cover;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
         background-color: $big-bg-color;
         height: auto !important;
         overflow: hidden !important;
@@ -32,20 +34,24 @@ body{
 .white-icon{
     color: $light;
 }
-#uname::-webkit-input-placeholder, #upass::-webkit-input-placeholder {
+.login-input::-webkit-input-placeholder, #upass::-webkit-input-placeholder {
    color: $light;
+   font-size: 18px;
 }
 
-#uname:-moz-placeholder, #upass:-moz-placeholder { /* Firefox 18- */
-   color: $light;  
+.login-input:-moz-placeholder, #upass:-moz-placeholder { /* Firefox 18- */
+   color: $light; 
+   font-size: 18px; 
 }
 
-#uname::-moz-placeholder, #upass::-moz-placeholder {  /* Firefox 19+ */
-   color: $light;  
+.login-input::-moz-placeholder, #upass::-moz-placeholder {  /* Firefox 19+ */
+   color: $light; 
+   font-size: 18px; 
 }
 
-#uname:-ms-input-placeholder, #upass:-ms-input-placeholder {  
+.login-input:-ms-input-placeholder, #upass:-ms-input-placeholder {  
    color: $light;  
+   font-size: 18px;
 }
 .bar-modifier{
     background-color: $header-bar-bg-color;
@@ -93,7 +99,7 @@ body{
 }
 #tab-id .scroll{
     height:100%;
-    border-bottom: 3px solid #F0F0F0;
+    border-bottom: 3px solid $light-border-color;
 }
 
 .tabbed-slidebox .tsb-icons:after{
@@ -130,6 +136,7 @@ body{
 }
 .login-btn-width{
     width: 200px;
+    font-weight: 700;
 }
 #mydiv {
     position:fixed;
@@ -144,7 +151,7 @@ body{
 .metric-modifier{
     font-size: 16px;
     font-weight: bold;
-    color: #625D62;
+    color: $section-heading-color;
     font-family: $roboto_regular;
 }
 .scroll-content{
@@ -152,7 +159,7 @@ body{
     /*background-color: #f8f8f8 !important;*/
 }
 .button-modifier{
-        
+        font-size: 14px;
         height: 35px !important;
         min-height: 20px !important;
         line-height: 31px !important;
@@ -163,7 +170,7 @@ body{
 .box{
     height: 300px;
     border-radius: 2px 2px 2px 2px;
-    border: 2px solid #cdcdcd;
+    border: 2px solid $box-border-color;
     
 }
 .nav-height{
@@ -176,6 +183,7 @@ body{
 .cust{
     width: 50px;
     height: 50px;
+    color: $light;
 }
 .bar-modifier{
         .cust:before{
@@ -195,19 +203,17 @@ body{
 .pas-head-title{
     text-transform: uppercase;
     font-size: 18px;
-    color: #ffffff;
+    color: $light;
 }
 .pas-head-subtitle{
     font-size: 14px;
     font-weight: normal;
-    color: #ffffff;
+    color: $light;
 }
 .pas-head-subtitle select{
-
     padding:4px;
-    margin: 0;
-    
-    color:#ffc900;
+    margin: 0;    
+    color:$select-month-color;
     border:none;
     outline:none;
     display: inline-block;
@@ -219,6 +225,7 @@ body{
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
+    font-family: $roboto_regular;
 }
 .move-left{
     margin-left: -5px;
@@ -228,7 +235,7 @@ body{
 .selectmonth{
     background-color: transparent;
     border: none;
-    color: #ffc900;
+    color: $select-month-color;
 }
 .img-circle{
     border-radius: 50%;
@@ -240,7 +247,7 @@ body{
 }
 .profile-name{
     float: right;
-    color: #ffffff;
+    color: $light;
 }
 .last-login{
     clear: both;
@@ -250,7 +257,7 @@ body{
     padding-top: 0px;
     margin-top: 0px;
     padding-bottom: 5px;
-    color: #ffffff;
+    color: $light;
     font-weight: bold;
 }
 .larger {
@@ -318,12 +325,12 @@ body{
 .col-demo {
     padding: 5px;
     width: 100%;
-    border: 1px solid #C8C7C7;
-    border-radius: 2px;
+    border: 1px solid rgba(200, 199, 199, 0.4);
+    border-radius: 4px;
     background: #ffffff;
     text-align: center;
     min-height: 200px;
-    box-shadow: 0px 0px 3px #DAD9D9;
+    box-shadow: 0px 0px 11px #E4E4E4;
 }
 .cust-font{
     font-size: 13px;
@@ -334,9 +341,9 @@ body{
     color: #9B9B9B;
 }
 .graph-title{
-    font-size: 1.1em;
+    font-size: 1em;
     color: #5C5C5C;
-    font-weight: 500;
+    font-weight: bold;
     font-family: $roboto_regular;
 
 }
@@ -408,7 +415,7 @@ body{
     min-height: 500px;
 }
 .border-bottom{
-        border-bottom: 1px solid #cdcdcd;
+        border-bottom: 1px solid #f1f1f1;
 }
 .route-rev-min-height{
     min-height:145px !important;
@@ -447,6 +454,9 @@ body{
 
 .checkbox-custom-label, .radio-custom-label {
     position: relative;
+    top: -2px;
+    padding: 0px 10px;
+    margin: 0px -10px;
 }
 
 .checkbox-custom + .checkbox-custom-label:before, .radio-custom + .radio-custom-label:before {
@@ -565,7 +575,7 @@ body{
     .tabbed-slidebox .tsb-icons .scroll a{
         padding-left: 30px!important;
         padding-right: 30px!important;
-        margin: -4px 0px !important;
+        margin: -14px 0px !important;
     }
     .net-revenue{
                 .rev{
@@ -623,6 +633,30 @@ body{
     .footer{ 
         bottom:12% !important; 
     }
+    .route-rev-section{
+            .row{
+                flex: none !important;
+                display: inline-block;
+            }
+            .col{
+                flex: none !important;
+                float: left;
+            }
+            .col-33{                
+                max-width: 50%;
+            }
+            .net-rev-height{
+                min-height: 317px;
+            }
+    }
+    .sector-head {
+       .cust-sel-width{
+                width: 6em;
+       }
+    }
+    .rev-footer{
+        position: inherit !important;
+    }
  }
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
     .net-revenue{
@@ -635,7 +669,7 @@ body{
     }
     .sector-head {
        .cust-sel-width{
-                width: 8em;
+                width: 7em;
        }
     }
     .metric{
@@ -659,7 +693,11 @@ body{
         padding: 5px;
         width: 100%;
     }
-
+    .sector-head {
+       .cust-sel-width{
+                width: 6em;
+       }
+    }
     .content-head, .sector-head {
         .button {
             max-width: 150px;
@@ -676,6 +714,12 @@ body{
         }
         .extra-small{
             max-width: 140px !important;
+        }
+        .ion-chevron-down{
+            &:before{
+                font-size: 16px;
+                line-height: 30px !important;
+            }
         }
     }
     .has-header {
@@ -716,13 +760,114 @@ body{
 /*svg{
     height: 30% !important;
 }*/
-.drillpopover {
-    background-color: #fff !important;
+.infopopover
+{
+    background-color: #FBF3AC !important;
+     padding: 0.5em;
+    width: 23% !important;
+     margin-top:10px;
+    max-height: 242px;
+    overflow:visible;
+}
+.Info-page-title
+{
+    font-size: 18px;
+    padding-bottom: 5px;
+    margin-left: -5px;
+    margin-right: 5px;
+}
+
+.drillpopover,.graphpopover, .sector-graph-popover {
     padding: 0.5em;
     width: 96% !important;
-    top: 30% !important;
+    top: 25% !important;
     left:2% !important; 
-    min-height: 430px;
+    min-height: 460px;
+    border: 1px solid rgba(115, 114, 114, 0.4);
+    box-shadow: 0px 0px 11px #BDBCBC !important;
+    border-radius: 1px !important;
+}
+.graphpopover
+{
+    min-height: 380px !important;
+}
+.sector-graph-popover
+{
+    min-height: 380px !important;
+}
+.sector-graph-popover .padding-horizontal .row
+{
+    padding: 0px 0px 20px 0px;
+}
+.drillpopover .scroll, .graphpopover .scroll, .sector-graph-popover .scroll
+{
+    background: #FFF;
+    min-height: 230px;
+    padding: 10px;
+    height: auto;
+    }
+.drillpopover .ion-close
+{
+    padding: 0px 17px 0px 0px;
+    margin: 0px 0px 0px 15px;
+}
+
+.popover-wrapper .infopopover .popover-arrow {
+  position: absolute;
+  display: block;
+  top: -21px;
+  width: 30px;
+  height: 21px;
+  overflow: hidden; }
+.popover-wrapper .infopopover .popover-arrow:after {
+    position: absolute;
+    top: 12px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: #FBF3AC;
+    border-radius: 3px;
+    content: '';
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
+.popover-wrapper .drillpopover .popover-arrow, .popover-wrapper .drillpopover .popover-arrow:after {
+display:none;
+}
+.infopopover .ion-close
+{
+    padding: 0px 15px;
+    margin: 0px -10px;
+}
+.ion-close:before
+{
+    position:relative;
+}
+.graphpopover, .sector-graph-popover {
+    background-color: #fff !important;
+    padding: 0.5em;
+    top: 30% !important;
+    left:15% !important;
+    border: 1px solid rgba(115, 114, 114, 0.4);
+    width:70% !important;
+    box-shadow: 0px 0px 11px #BDBCBC !important;
+    border-radius: 1px !important;
+}
+.popover-arrow
+{
+        display:none;
+}
+
+.pop-title {
+    font-size: 1.3em;
+}
+.pop-text {
+    font-size: 1.1em;
+}
+.percentpadding{
+    padding: 0 20%;
+}
+.percentpadding-revenuechart {
+    padding: 0 26%;
 }
 .popup-close{
     text-align: right;
@@ -790,6 +935,10 @@ body{
 .search-close{
     float: right;
     margin-top: -35px;
+}
+.activedrill{
+    background: #DD9620 !important;
+    color: #fff !important;
 }
 .margin-top-10{
     margin-top: 10px !important;
@@ -887,13 +1036,19 @@ body{
 @media (min-device-width: 800px) and (max-device-width: 1280px) {
     .net-revenue{
                 .rev{
-                    min-width: 54px;
+                    min-width: 64px;
+                    font-size: 14px;
                     
                 }
                 .pax{
-                    min-width: 64px;
+                    min-width: 72px;
+                    font-size: 14px;
                     
                 }
+    }
+    .content-head .btn-section, .sector-head .btn-section {
+        width: 85% !important;
+        float: right !important;
     }
 
 }
@@ -903,20 +1058,23 @@ body{
   position: relative;
 }
 
-.horizontal-bar-graph-segment, .net-rev-bar-graph-segment {
+.horizontal-bar-graph-segment {
     display: table-row;
-    
+    height: 4em;
 }
-
+.net-rev-bar-graph-segment {
+    display: table-row;
+    height: 3em;
+}
 .horizontal-bar-graph-label {
     display: table-cell;
     /*border-right: 1px solid silver; */
     text-align: right;
     padding: 0px 9px 3px 0px;
-    vertical-align: baseline;
+    vertical-align: top;
     white-space: nowrap;
-    vertical-align: middle;
-    display: table-cell;
+    /*vertical-align: middle;
+    display: table-cell;*/
     
 }
 .net-rev-bar-graph-label{
@@ -931,9 +1089,10 @@ body{
 
 .horizontal-bar-graph-value {
   display: table-cell;
-  padding: 1.4em 0;
-  vertical-align: baseline;
+  /*padding: 1.4em 0;
+  vertical-align: baseline;*/
   width: 100%;
+  /*padding-top: 1.4em;*/
 }
 .net-rev-bar-graph-value {
   display: table-cell;
@@ -1021,11 +1180,12 @@ body{
     }
     button{
         height: 28px;
-        margin-top: 1em;
+        margin-top: -0.4em;
         background-color: #F5A623;
         color: #fff;
         border-radius: 2px;
-        width: 28px;
+        width: 35px;
+        vertical-align: text-bottom;
     }
 }
 .horizontal-bar-graph-segment:first-child {
@@ -1083,3 +1243,49 @@ body{
 .net-rev-height{
     min-height: 316px;
 }
+
+.button-bg{
+    background-color: $default-button-color;
+    min-height: 30px !important;
+    border: none;
+    border-radius: 2px;
+    height: 35px;
+    margin-top: 2px;
+}
+.button-bg option{
+    background-color: #fff;
+    min-height: 30px !important;
+    color: #000000;
+}
+.button-bg option:hover{
+    background-color: #cdcdcd!important;
+    
+}
+.select-bg{
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    -o-appearance:none;
+    appearance:none;
+    background: #fff url("../img/arrow-down.png") no-repeat;
+    background-size: 25% 76%;
+    background-position: right center;   
+}
+.custom-footer{
+    color: $light;
+    position: fixed;
+    bottom: 1.2em;
+}
+.flown-footer{
+    color: $dark;
+    position: absolute;
+    bottom: 122px;
+}
+.btn-section{
+    .btn-padding-top{
+        padding-top:2px;    
+    }
+}
+.font-normal:before{
+    font-weight: normal !important;
+ }

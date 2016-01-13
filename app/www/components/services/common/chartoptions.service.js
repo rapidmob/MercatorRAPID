@@ -1,5 +1,5 @@
 (function(){
-	angular.module('rapidMobile.services').factory('ChartOptions', function() {
+	angular.module('rapidMobile').factory('ChartOptions', function() {
   		return {
 		    lineChart: {
 		    	options: lineChartOptions
@@ -54,6 +54,7 @@
 	            chart: {
                     type: 'multiBarChart',
                     height: 250,
+                    width: 300,
                     margin : {
                         top: 10,
                         right: 25,
@@ -70,12 +71,11 @@
                         return d3.format(',.4f')(d);
                     },
                     xAxis: {
-                      axisLabel: 'X Axis',
                       axisLabelDistance: 30
                     },
                     showYAxis: false,
                     showXAxis: true,
-                    duration: 200
+                    duration: 700
                 }
 	        };  
 		}
@@ -102,7 +102,7 @@
                     },
                     showYAxis: false,
                     showXAxis: false,
-                    duration: 200
+                    duration: 700
                 }
 	        };  
 		}
@@ -125,7 +125,7 @@
                 valueFormat: function(d){
                     return d3.format(',.2f')(d);
                 },
-                duration: 200
+                duration: 700
             }
         };  
 		}

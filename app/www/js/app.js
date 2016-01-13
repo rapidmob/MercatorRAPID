@@ -6,8 +6,9 @@
 // 'rapidMobile.controllers' is found in controllers.js
 
 var SERVER_URL = 'http://10.91.152.99:8082/v1/api';
+// var SERVER_URL = 'http://10.64.229.111:8184/v1/api';
 
-angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.services', 'tabSlideBox', 'nvd3'])
+angular.module('rapidMobile', ['ionic', 'tabSlideBox', 'nvd3'])
 
 .run(function($ionicPlatform, $http) {
   $http.defaults.headers.common.token = 'token';
@@ -22,7 +23,9 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+      StatusBar.hide();
+      ionic.Platform.fullScreen();
+      // StatusBar.styleDefault();
     }
   });
 })
@@ -63,6 +66,15 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.controllers', 'rapidMobile.
       'menuContent': {
         templateUrl: 'components/mis/sales.html',
         controller: 'MisController'
+      }
+    }
+  })
+  .state('app.operational-flown', {
+    url: '/operational/flown',
+    views: {
+      'menuContent': {
+        templateUrl: 'components/operational/flown/flown.html',
+        controller: 'OperationalFlownController'
       }
     }
   });

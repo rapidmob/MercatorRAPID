@@ -10,51 +10,59 @@
     </div>
   </div>
 </div>
-<div class="row section-margin responsive-sm">
-  <div class="col col-33 padding-horizontal">
-    <div class="col-demo">
-      <div class="row">
-        <div class="col col-80 no-padding pull-left graph-title">Net Revenue by OWN OAL</div>
-        <div class="col col-20 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
-      </div>
-      <div class="row">
-        <div class="col box-cont net-rev-height">
-          <!-- <nvd3 data="revenueHorBarChart" options="options.revenueHorBarChart"></nvd3> -->
-          <div class="net-rev-title">OWN</div>
-          <he-revenue-progress-bar chart-data="revenueData.revenueHorBarChart[0].values"></he-revenue-progress-bar>
-          <div class="net-rev-title">OAL</div>
-          <he-revenue-progress-bar chart-data="revenueData.revenueHorBarChart[1].values"></he-revenue-progress-bar>
-          <div class="chart-legend-rev from">Passenger</div><div class="chart-legend-rev to">Ancillarry</div>
-        </div>
-      </div>                  
-    </div>
-  </div>
-  <div class="col col-33 col-offset-5 padding-horizontal">
-    <div class="col-demo">
-      <div class="row">
-        <div class="col col-90 no-padding pull-left graph-title">Passenger Revenue by class of Travel</div>
-        <div class="col col-10 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
-      </div>
-      <div class="row">
-        <div class="col box-cont net-rev-height">
-        	<!-- <nvd3 data="revenuePieChart" options="options.revenuePieChart"></nvd3> -->
-          <he-custom-pie-chart chart-data="revenueData.revenuePieChart"></he-custom-pie-chart>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col col-33 col-offset-5 padding-horizontal">
-    <div class="col-demo">
-      <div class="row">
-        <div class="col col-90 no-padding pull-left graph-title">Passenger Count by class of Travel</div>
-        <div class="col col-10 no-padding pull-right"><i class="icon ion-ios-information-outline icon-larger"></i></div>
-      </div>
-      <div class="row">
-        <div class="col box-cont net-rev-height">
-          <nvd3 data="revenueData.revenueBarChart" options="options.passengerChart"></nvd3>
-          <div class="chart-legend-rev from">OWN</div><div class="chart-legend-rev to">OAL</div>
-        </div>
-      </div>                  
-    </div>
-  </div>
-</div>  
+<div class="route-rev-section">
+  <div class="row section-margin responsive-sm">
+              <div class="col col-33 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col col-90 no-padding pull-left graph-title">Net Revenue by OWN OAL <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "openinfoPopover($event, revenueData.revenueHorBarChart.chartInfo)"></i></div>
+                    <div class="col col-10 no-padding pull-right"><i ng-click="openPopover($event,0,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont net-rev-height">
+                      <!-- <nvd3 data="revenueHorBarChart" options="options.revenueHorBarChart"></nvd3> -->
+                      <div ng-repeat="revenueData in revenueData.revenueHorBarChart">
+                        <div class="net-rev-title">{{revenueData.label}}</div>
+                        <he-revenue-progress-bar chart-data="revenueData.values"></he-revenue-progress-bar>           
+                      </div>
+                      <div class="chart-legend-rev from">Passenger</div><div class="chart-legend-rev to">Ancillary</div>
+                    </div>
+                  </div>                  
+                </div>
+              </div>
+              <div class="col col-33 col-offset-5 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col col-90 no-padding pull-left graph-title">
+                    {{revenueData.revenuePieChart.chartName | limitTo : 27}}
+                    {{revenueData.revenuePieChart.chartName.length > 27 ? '...' : ''}}
+                    <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "openinfoPopover($event, revenueData.revenueHorBarChart.chartInfo)"></i>
+                    </div>
+                    <div class="col col-10 no-padding pull-right"><i ng-click="openPopover($event,1,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont net-rev-height">
+                      <!-- <nvd3 data="revenuePieChart" options="options.revenuePieChart"></nvd3> -->
+                      <he-custom-pie-chart chart-data="revenueData.revenuePieChart.data"></he-custom-pie-chart>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-33 col-offset-5 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col col-90 no-padding pull-left graph-title">Passenger Count by class of Travel
+                      <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "openinfoPopover($event, revenueData.revenueHorBarChart.chartInfo)"></i>
+                    </div>
+                    <div class="col col-10 no-padding pull-right"><i ng-click="openPopover($event,2,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont net-rev-height">
+                      <nvd3 data="revenueData.revenueBarChart" options="options.passengerChart"></nvd3>
+                      <div class="chart-legend-rev from">OWN</div><div class="chart-legend-rev to">OAL</div>
+                    </div>
+                  </div>                  
+                </div>
+              </div>
+  </div>  
+</div>

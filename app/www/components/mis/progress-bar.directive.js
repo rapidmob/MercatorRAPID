@@ -16,18 +16,16 @@
                      .data(scope.data)
                      .enter()
                      .append("div")
-                     .classed("horizontal-bar-graph-segment", true)
-                     .classed('hide', function(d){ if(d) return d.name == 'Others'});
+                     .classed("horizontal-bar-graph-segment", true);
 
         segment.append("div").classed("horizontal-bar-graph-label", true)
-               .text(function(d) { return d.name })
-               .classed('hide', function(d){ if(d) return d.name == 'Others'});
+               .text(function(d) { return d.name });
 
         var barSegment = segment.append("div").classed("horizontal-bar-graph-value", true)
                                 .append("div").classed("horizontal-bar-graph-value-scale", true)
                                 .append("div").classed("horizontal-bar-graph-value-bar", true);
 
-        barSegment                   
+        barSegment
                .style("background-color", function(d) { return d.color })              
                .transition()
                .duration(1000)
@@ -63,7 +61,7 @@
                   .text(function(d) { return d.revenue });
 
         btnSegment.on('click', function(){              
-          // console.log($(this).next());
+          // console.log(tooltipSegment);
           if(angular.element(this).next().hasClass('show')) {
             angular.element(this).removeClass('ion-chevron-up');
             angular.element(this).addClass('ion-chevron-down');

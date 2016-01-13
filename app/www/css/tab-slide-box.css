@@ -11,7 +11,7 @@
 .tabbed-slidebox .slider-slide {
     padding-top: 0px;
     color: #000;
-    background-color: #FAFAFA;
+    background-color: #fafafa;
     text-align: center;
     font-weight: 300;
     /*background-color: #0398dc;*/
@@ -40,10 +40,10 @@
 }
 
 .tabbed-slidebox .tsb-icons a.active {
-    color: #0A1356 !important;
+    color: #0a1356 !important;
     /*font-size: 3.5em;*/
     font-weight: bold;
-    -webkit-transform:translate3d(0,0,0);
+   /* -webkit-transform:translate3d(0,0,0);*/
 }
 
 .tabbed-slidebox .tabbed-slidebox {
@@ -84,15 +84,16 @@
     font-size: 1.1em;
     line-height: 32px;
     text-decoration: none;
-    margin: -4px 12px;
-    border-bottom: 3px solid #F0F0F0;
+    margin: -14px 0px;
+    border-bottom: 3px solid #f0f0f0;
     padding-bottom: 7px;
-    padding-left: 15px;
-    padding-right: 15px;
-    color: #ABACBF;
+    padding-left: 4.5em;
+    padding-right: 4.5em;
+    color: #abacbf;
     padding-top: 9px;
+        height: 48px;
 }
 .tabbed-slidebox .tsb-icons .scroll a.active {
     font-size: 1.1em;
-    border-bottom: 3px solid #F5A623;
+    border-bottom: 3px solid #f5a623;
 } 

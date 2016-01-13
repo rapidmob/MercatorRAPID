@@ -1,5 +1,5 @@
 (function(){
-    angular.module('rapidMobile.services').factory('NetService', function ($http, $q, $rootScope) {
+    angular.module('rapidMobile').factory('NetService', function ($http, $q, $rootScope) {
        return {
         getData: function (fromUrl) {
             var url = SERVER_URL + fromUrl;

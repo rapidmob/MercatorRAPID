@@ -1,0 +1,124 @@
+ <ion-popover-view class="graphpopover">
+    <ion-content>
+      <div id="popover-content">
+        <div ng-if="charttype == 'metric'">
+          <div class="row">
+            <div class="col-90">
+              <h2 class="graph-title pop-title padding-left">{{metricResult[graphindex].chartName}}
+              </h2>   
+            </div>
+            <div class="col-10 popup-close padding-right" ng-click="closePopover()"><i class="icon ion-close icon-larger"></i></div>
+           </div>
+           <div class="row no-padding">
+             <div class="col pull-right">
+              <div id="chart_legend" ng-show="toggle.monthOrYear=='month'">
+                <div class="chart_legend middle" style="display: block;">{{metricLegends.month[2]}}</div>
+                <div class="chart_legend to">{{metricLegends.month[1]}}</div>
+                <div class="chart_legend from">{{metricLegends.month[0]}}</div>
+              </div>
+              <div id="chart_legend" ng-show="toggle.monthOrYear=='year'">
+                <div class="chart_legend to">{{metricLegends.year[1]}}</div>
+                <div class="chart_legend from">{{metricLegends.year[0]}}</div>
+              </div>
+             </div>
+           </div>
+          <div class="row">
+            <div class="col box-cont percentpadding">
+             <nvd3 width="100" height="200" data="[{values: metricResult[graphindex].values}]" options="options.metric" events="events"></nvd3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-50 pull-left padding-left graph-title">
+              <div class="pop-text" ng-class="{'graph-percent-red': metricResult[graphindex].trends[0].trend == 'down',
+                        'graph-percent-blue' : metricResult[graphindex].trends[0].trend == 'up'}"> {{metricResult[graphindex].trends[0].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[graphindex].trends[0].trend}} icon-larger {'icon-larger-red': metricResult[graphindex].trends[0].trend == 'down',
+                        'icon-larger-blue' : metricResult[graphindex].trends[0].trend == 'up'}"></i> 
+                        </div>
+              <div class="graph-percent-title pop-text">{{metricResult[graphindex].trends[0].label}}</div>
+            </div>
+        <div ng-show="metricResult[graphindex].trends[1]" class="col col-50 padding-right pull-right graph-title">
+              <div class="pop-text" ng-class="{'graph-percent-red': metricResult[graphindex].trends[1].trend == 'down',
+                        'graph-percent-blue' : metricResult[graphindex].trends[1].trend == 'up'}"> {{metricResult[graphindex].trends[1].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{metricResult[graphindex].trends[1].trend}} icon-larger {'icon-larger-red': metricResult[graphindex].trends[0].trend == 'down',
+                        'icon-larger-blue' : metricResult[graphindex].trends[0].trend == 'up'}"></i> 
+                        </div>
+              <div class="graph-percent-title pop-text">{{metricResult[graphindex].trends[1].label}}</div>
+            </div>
+          </div>
+       </div>
+      <div ng-if="charttype == 'revenue' && graphindex == 0">
+        <div class="row no-padding">
+          <div class="col-90">
+              <h2 class="padding-left graph-title pop-title">Net Revenue by OWN OAL</h2>
+          </div>
+          <div class="col-10 popup-close padding-right" ng-click="closePopover()"><i class="icon ion-close icon-larger"></i></div>
+        </div>
+        <div class="row">
+           <div class="col box-cont net-rev-height">
+              <div class="net-rev-title pop-text">OWN</div>
+              <he-revenue-progress-bar chart-data="revenueData.revenueHorBarChart[0].values"></he-revenue-progress-bar>
+              <div class="net-rev-title pop-text">OAL</div>
+              <he-revenue-progress-bar chart-data="revenueData.revenueHorBarChart[1].values"></he-revenue-progress-bar>
+              <div class="chart-legend-rev from pop-text">Passenger</div><div class="chart-legend-rev to pop-text">Ancillary</div>
+            </div>
+        </div>         
+      </div>
+
+      <div ng-if="charttype == 'revenue' && graphindex == 1">
+        <div class="row no-padding">
+          <div class="col-90">
+            <h2 class="padding-left graph-title pop-title">Passenger Revenue by class of Travel</h2>
+          </div>
+        <div class="col-10 popup-close padding-right" ng-click="closePopover()"><i class="icon ion-close icon-larger"></i></div>
+        </div>
+        <div class="row">
+            <div class="col box-cont net-rev-height percentpadding-revenuechart">
+                <he-custom-pie-chart chart-data="revenueData.revenuePieChart.data"></he-custom-pie-chart>
+            </div>
+        </div>
+      </div> 
+      <div  ng-if="charttype == 'revenue' && graphindex == 2">
+            <div class="row">
+              <div class="col-90">
+              <h2 class="padding-left graph-title pop-title">Passenger Count by class of Travel</h2>
+              </div>
+              <div class="col-10 popup-close padding-right" ng-click="closePopover()"><i class="icon ion-close icon-larger"></i></div>
+            </div>
+            <div class="row">
+               <div class="col box-cont percentpadding-revenuechart net-rev-height">
+                  <nvd3 data="revenueData.revenueBarChart" options="options.passengerChart"></nvd3>
+                  <div class="chart-legend-rev from pop-text">OWN</div><div class="chart-legend-rev to pop-text">OAL</div>
+                </div>
+             </div>
+      </div>
+      <div ng-if="charttype == 'netRevenue-target'">
+       <div class="padding-horizontal" ng-repeat="netRevenue in targetActualData.horBarChart | filter: targetActualFilter">
+           <div class="row">
+               <div class="col-90">
+                <h2 class="padding-left graph-title pop-title">{{netRevenue.heading1}} {{netRevenue.heading2}}</h2>
+              </div> 
+              <div class="col-10 popup-close padding-right" ng-click="closePopover()"><i class="icon ion-close icon-larger"></i></div>
+           </div>   
+          <div class="row">
+            <div class="col box-cont percentpadding rev-modifier">
+              <nvd3 data="[{ values: netRevenue.values}]" options="options.targetBarChart"></nvd3>
+            </div>
+          </div>                    
+     </div>
+     </div>
+    <div ng-if="charttype == 'monthAnalysis-target'">
+      <div class="col col-offset-5 padding-horizontal" ng-repeat="monthAnalysis in targetActualData.lineChart | filter: targetActualFilter"> 
+          <div class="row">
+             <div class="col-90">
+                <h2 class="padding-left graph-title pop-title"> {{monthAnalysis.heading1}} {{monthAnalysis.heading2}}</h2>
+            </div> 
+            <div class="col-10 popup-close" ng-click="closePopover()"><i class="icon ion-close icon-larger"></i></div>
+          </div>
+          <div class="row">
+            <div class="col box-cont">
+              <nvd3 data="monthAnalysis.lineChartItems" options="options.targetLineChart" class="with-3d-shadow with-transitions"></nvd3>
+            </div>
+          </div>
+      </div>                 
+    </div>
+  </div>
+ </ion-content>
+</ion-popover-view>

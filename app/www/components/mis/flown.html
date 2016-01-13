@@ -16,12 +16,7 @@
         <div class="last-login">{{subHeader.lastRefresh}}</div>
         <div class="profile-name">
           <!--Blaine Cooper &#9662;-->
-          <div class="dropdown"> <span onclick="myFunction()" class="dropbtn">{{header.username}}&nbsp;<i class="icon ion-chevron-down" ></i></span>
-            <div id="myDropdown" class="dropdown-content"> 
-              <a href="#home">Home</a> 
-              <a href="#about">About</a> 
-              <a href="#contact">Contact</a> 
-            </div>
+          <div class="dropdown"> <span class="dropbtn">{{header.username}}&nbsp;<i class="icon ion-chevron-down" ></i></span>
           </div>
         </div>
         <div class="profile-img"><img ng-src="img/profile.jpg" class="img-circle" alt="" ></div>
@@ -50,10 +45,8 @@
       <div class="tsb-icons no-margin">
           <div class="tsb-ic-wrp">
           <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
-          	<div class="row no-padding">
-	          	<div class="tab-section-tabs text-center no-padding"  ng-repeat="tab in tabs">
-	            	<a href="" class="tab text-center" on-finish-render=""><span>{{tab.title}}</span></a>
-	            </div>
+          <div class="no-padding">
+              <a href="" class="tab text-center text-center"  ng-repeat="tab in tabs" on-finish-render=""><span>{{tab.title}}</span></a>
             </div>
           </ion-scroll>
         </div>
@@ -63,7 +56,8 @@
           <ion-scroll style="height:100%">
 			<div ng-if="favMetricResult" ng-include="'components/mis/metric.html'"></div>
 			<div ng-include="'components/mis/target-actual.html'"></div>
-			<div ng-include="'components/mis/revenue-analysis.html'"></div>        
+			<div ng-include="'components/mis/revenue-analysis.html'"></div> 
+      <div class="row padding-horizontal"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>       
       		<div class="clear"></div>
         	<h1>&nbsp;</h1>    
         	<h1>&nbsp;</h1>  
@@ -73,6 +67,7 @@
 			<!-- Include metric.html-->
 			<ion-scroll class="scroll-height">
 				<div ng-include="'components/mis/metric.html'"></div>
+        <div class="row padding-horizontal"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
 				<div class="clear"></div>
 				<h1>&nbsp;</h1>
 				<h1>&nbsp;</h1>	
@@ -81,6 +76,7 @@
         <ion-slide>
 			<ion-scroll class="scroll-height">
 				<div ng-include="'components/mis/target-actual.html'"></div>
+        <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
 				<div class="clear"></div>
 				<h1>&nbsp;</h1>	
 			</ion-scroll>
@@ -88,6 +84,7 @@
         <ion-slide>
 			<ion-scroll class="scroll-height">			
 				<div ng-include="'components/mis/revenue-analysis.html'"></div>
+        <div class="row padding-horizontal flown-footer rev-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
 				<div class="clear"></div>
 				<h1>&nbsp;</h1>
 			</ion-scroll>
@@ -95,6 +92,7 @@
         <ion-slide>
           <ion-scroll class="scroll-height">
             <div ng-include="'components/mis/sector-carrier.html'"></div>
+            <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
 			<div class="clear"></div>
 			<h1>&nbsp;</h1>
           </ion-scroll>
@@ -102,6 +100,7 @@
         <ion-slide>
           <ion-scroll class="scroll-height">
           	<div ng-include="'components/mis/route-revenue.html'"></div>
+            <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div> 
 			<div class="clear"></div>
 			<h1>&nbsp;</h1>
           </ion-scroll>
