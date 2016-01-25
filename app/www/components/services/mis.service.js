@@ -5,7 +5,7 @@
           // the $http API is based on the deferred/promise APIs exposed by the $q service
           // so it returns a promise for us by default
 
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/MetricSnapshot',reqdata)
+          return DataProviderService.postData('/paxflnmis/metricsnapshot',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;
@@ -20,7 +20,7 @@
         },
 
         getTargetVsActual: function(reqdata) {
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/TargetVsActual',reqdata)
+          return DataProviderService.postData('/paxflnmis/targetvsactual',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;
@@ -35,7 +35,7 @@
         },
 
         getRevenueAnalysis: function(reqdata) {
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/RevenueAnalysis',reqdata)
+          return DataProviderService.postData('/paxflnmis/revenueanalysis',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;
@@ -50,7 +50,7 @@
         },
 
         getRouteRevenue: function(reqdata) {
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/RouteRevenue',reqdata)
+          return DataProviderService.postData('/paxflnmis/routerevenue',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;
@@ -65,7 +65,7 @@
         },
 
         getSectorCarrierAnalysis: function(reqdata) {
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/SectorCarrierAnalysis',reqdata)
+          return DataProviderService.postData('/paxflnmis/sectorcarrieranalysis',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;
@@ -80,7 +80,7 @@
         },
 
         getPaxFlownMisHeader: function(reqdata) {
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/PaxFlownMisHeader',reqdata)
+          return DataProviderService.postData('/paxflnmis/paxflownmisheader',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;
@@ -95,7 +95,7 @@
         },
 
         getRouteRevenueDrillDown: function(reqdata) {
-          return DataProviderService.postData('/rest/radar-dashboard/paxflnmis/RouteRevenueDrill',reqdata)
+          return DataProviderService.postData('/paxflnmis/routerevenuedrill',reqdata)
           .then(function(response) {
             if (typeof response.data === 'object') {
               return response.data;

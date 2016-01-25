@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'rapidMobile.controllers' is found in controllers.js
 
-var SERVER_URL = 'http://10.91.152.99:8082/v1/api';
+var SERVER_URL = 'http://10.91.152.99:8082/rapid-ws/services/rest';
 // var SERVER_URL = 'http://10.64.229.111:8184/v1/api';
 
 angular.module('rapidMobile', ['ionic', 'tabSlideBox', 'nvd3'])

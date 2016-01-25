@@ -35,22 +35,22 @@ body{
     color: $light;
 }
 .login-input::-webkit-input-placeholder, #upass::-webkit-input-placeholder {
-   color: $light;
+   color: rgba(255, 255, 255, 0.4);
    font-size: 18px;
 }
 
 .login-input:-moz-placeholder, #upass:-moz-placeholder { /* Firefox 18- */
-   color: $light; 
+   color: rgba(255, 255, 255, 0.4); 
    font-size: 18px; 
 }
 
 .login-input::-moz-placeholder, #upass::-moz-placeholder {  /* Firefox 19+ */
-   color: $light; 
+   color: rgba(255, 255, 255, 0.4); 
    font-size: 18px; 
 }
 
 .login-input:-ms-input-placeholder, #upass:-ms-input-placeholder {  
-   color: $light;  
+   color: rgba(255, 255, 255, 0.4);  
    font-size: 18px;
 }
 .bar-modifier{
@@ -1289,3 +1289,6 @@ display:none;
 .font-normal:before{
     font-weight: normal !important;
  }
+
+
+ 

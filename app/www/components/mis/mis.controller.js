@@ -170,7 +170,7 @@
                 _.forEach(data.response.data.lineCharts, function (n, value) {
                      _.merge(n.lineChartItems, lineColors);
                 });
-                // console.log(data.response.data.lineCharts);
+                console.log(data.response.data.lineCharts);
                 $scope.targetActualData = {
                     horBarChart: data.response.data.verBarCharts,
                     lineChart: data.response.data.lineCharts
@@ -243,10 +243,9 @@
                 console.log('Error ');
             });
         }
-        $scope.openDrillDown = function(regionData,selFindLevel) {
+        $scope.openDrillDown = function(regionData,selFindLevel) {  
             $scope.selectedDrill[selFindLevel] = regionData;
             $scope.selectedDrill[selFindLevel + 1] = '';
-            // console.log($scope.selectedDrill);
             if(selFindLevel != '3') {
                 var drillLevel = (selFindLevel + 2);
                 $scope.regionName = (regionData.regionName) ? regionData.regionName : regionData.heading1;
@@ -270,15 +269,15 @@
                 var selectedRow = [{"selectedRow": countryFromTo},{"selectedRow": sectorFromTo},
                 {"selectedRow": flightNumber},{"selectedRow": ""}];
                 _.merge($scope.groups, selectedRow);
-                console.log($scope.groups);
-
+                console.log($scope.groups); 
+                
                 MisService.getRouteRevenueDrillDown(reqdata)
                  .then(function(data) {
                     $scope.ionicLoadingHide();
                     var data = data.response;
-                    // console.log(data);
+                    console.log(data);
                     var findLevel = drillLevel - 1;
-                    // console.log(data.status);
+                    console.log(data.status);
                     if(data.status == 'success'){
                         $scope.groups[findLevel].items[0] = data.data.rows;
                         $scope.groups[findLevel].orgItems[0] = data.data.rows;
@@ -306,7 +305,7 @@
                 $scope.sort('paxCount',i,false);
                 
             }
-            // console.log($scope.groups);
+            console.log($scope.groups);
         }
          $scope.openPopover = function($event,index,charttype) {
             $event.preventDefault();

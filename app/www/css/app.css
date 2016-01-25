@@ -9793,9 +9793,7 @@ body {
   .route-rev-section .net-rev-height {
     min-height: 317px; }
   .sector-head .cust-sel-width {
-    width: 6em; }
-  .rev-footer {
-    position: inherit !important; } }
+    width: 6em; } }
 
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
   .net-revenue .rev {
@@ -9877,14 +9875,13 @@ body {
   margin-right: 5px; }
 
 .drillpopover, .graphpopover, .sector-graph-popover {
+  background: none !important;
   padding: 0.5em;
   width: 96% !important;
   top: 25% !important;
   left: 2% !important;
   min-height: 460px;
-  border: 1px solid rgba(115, 114, 114, 0.4);
-  box-shadow: 0px 0px 11px #BDBCBC !important;
-  border-radius: 1px !important; }
+  box-shadow: none !important; }
 
 .graphpopover {
   min-height: 380px !important; }
@@ -9940,10 +9937,8 @@ body {
   padding: 0.5em;
   top: 30% !important;
   left: 15% !important;
-  border: 1px solid rgba(115, 114, 114, 0.4);
-  width: 70% !important;
-  box-shadow: 0px 0px 11px #BDBCBC !important;
-  border-radius: 1px !important; }
+  border: 1px solid grey;
+  width: 70% !important; }
 
 .popover-arrow {
   display: none; }
@@ -10309,13 +10304,5 @@ body {
   position: fixed;
   bottom: 1.2em; }
 
-.flown-footer {
-  color: #444;
-  position: absolute;
-  bottom: 122px; }
-
 .btn-section .btn-padding-top {
-  padding-top: 2px; }
-
-.font-normal:before {
-  font-weight: normal !important; }
+  padding-top: 3px; }

@@ -10,7 +10,7 @@
     }
      return {
         getLoginUser: function(reqdata) {
-            return DataProviderService.postData('/rest/radar-dashboard/user/Login',reqdata)
+            return DataProviderService.postData('/user/login',reqdata)
                 .then(function(response) {
                   if (typeof response.data === 'object') {
                         return response.data;
@@ -37,7 +37,7 @@
          _user = null;
         },
         getUserProfile: function(reqdata) {
-            return DataProviderService.postData('/rest/radar-dashboard/user/UserProfile',reqdata)
+            return DataProviderService.postData('/user/userprofile',reqdata)
                 .then(function(response) {
                   if (typeof response.data === 'object') {
                         return response.data;

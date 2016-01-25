@@ -1,5 +1,364 @@
-<ion-view view-title="Operational::Passenger Flown">
+<ion-view>
+<ion-nav-title >
+    <div class="row">
+      <div class="col pull-left header-logo"><img src="img/logo.png" alt="" ></div>
+      <div class="col no-padding line-height-10 text-center">
+        <div class="pas-head-title">Passenger Flown</div>
+        <div class="pas-head-subtitle">Month:
+          <label>
+          <select class="selectmonth">
+            <!-- <option ng-repeat="month in subHeader.paxFlownMisMonths" value="{{month.flowMonth}}">{{month.flowMonth}}</option> -->
+            <option value="{{month.flowMonth}}">Jan 2015</option>
+            <option value="{{month.flowMonth}}">Feb 2015</option>
+            <option value="{{month.flowMonth}}">Mar 2015</option>
+          </select>
+          <i class="icon ion-chevron-down move-left"></i></label>
+        </div>
+      </div>
+      <div class="col no-padding user-info">
+        <div class="last-login">Last refreshed: 18 July 2015, 18:34 hr</div>
+        <div class="profile-name">
+          <!--Blaine Cooper &#9662;-->
+          <div class="dropdown"> <span class="dropbtn">Victor&nbsp;<i class="icon ion-chevron-down" ></i></span>
+          </div>
+        </div>
+        <div class="profile-img"><img ng-src="img/profile.jpg" class="img-circle" alt="" ></div>
+      </div>
+    </div>
+  </ion-nav-title>
+  <div>
+    <div class="row border-bottom header-padding">
+      <div class="col no-padding padding-horizontal cust-font">June 2015: <span class="heade2-values">50</span></div>      
+      <div class="col no-padding text-center cust-font">May 2015: <span class="heade2-values">40</span></div>&nbsp;&nbsp;
+      <div class="col no-padding text-center cust-font">April 2015: <span class="heade2-values">35</span></div>
+      <div class="col no-padding text-center cust-font">March 2015: <span class="heade2-values">35</span></div>
+      <div class="col no-padding text-center cust-font">February 2015: <span class="heade2-values">0</span></div>
+      <div class="col no-padding text-right cust-font">January 2015: <span class="heade2-values">0</span></div>
+    </div>
+  </div>
   <ion-content>
-    <h1>Passenger Flown</h1>
+    
+<tab-slide-box tab="0">
+      <div class="tsb-icons no-margin">
+          <div class="tsb-ic-wrp">
+          <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
+          <div class="no-padding">
+              <a href="" class="tab text-center tabbed-slidebox-padding"><span>My Dashboard</span></a>
+              <a href="" class="tab text-center tabbed-slidebox-padding"><span>Flight Processing Status</span></a>
+              <a href="" class="tab text-center tabbed-slidebox-padding"><span>Open Flight Count by Reason</span></a>
+              <a href="" class="tab text-center tabbed-slidebox-padding"><span>Coupon Count by Exception Category</span></a>
+            </div>
+          </ion-scroll>
+        </div>
+        </div>      
+      <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
+        <ion-slide >
+          <ion-scroll style="height:100%">
+      			<div class="row section-margin responsive-sm content-head">
+      				<div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">FLIGHT PROCESSING STATUS <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ></i></div>
+      				<div class="col col-33">
+      					<div class="row btn-section responsive-sm">
+      					<div class=" pull-right padding-horizontal download-btn"><button class="button export"><img src="img/download.svg"></button></div>
+      					<div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+      					<a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars"></i></a>
+      					<a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view"></i></a>
+      					</div>
+      					</div>
+      				</div>
+      			</div>
+            <div class="row no-padding">
+              <div class="col pull-right">
+                <div id="chart-legend-operation">
+                  <div class="chart_legend middle">Closed</div>
+                  <div class="chart_legend second-middle">Open</div>
+                  <div class="chart_legend to">Not Received</div>
+                  <div class="chart_legend from">Expected</div>
+                </div>
+              </div>
+            </div>
+            <div class="row section-margin responsive-sm metric">
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Month Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col col-80 no-padding text-center">
+                      <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">5232 (100%)</span>
+                    </div> 
+                    <div class="col col-20 no-padding pull-right">
+                      <span class="graph-title-bottom-value">8.67%</span><br /><span class="graph-title-bottom-close">Closed</span>
+                    </div>        
+                  </div>   
+                </div>
+              </div>
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Week Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col col-80 no-padding text-center">
+                      <span class="graph-title-bottom-value">Week</span>
+                    </div> 
+                    <div class="col col-20 no-padding pull-right">
+                      <span class="graph-title-bottom-value">28.68%</span><br /><span class="graph-title-bottom-close">Closed</span>
+                    </div>        
+                  </div>    
+                </div>
+              </div>
+            </div>
+            
+      <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
+      		<div class="clear"></div>
+        	<h1>&nbsp;</h1>    
+        	<h1>&nbsp;</h1>  
+          </ion-scroll>
+        </ion-slide>
+        <ion-slide>
+          <ion-scroll class="scroll-height">
+          <div class="row section-margin responsive-sm content-head">
+              <div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">FLIGHT PROCESSING STATUS <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ></i></div>
+              <div class="col col-33">
+                <div class="row btn-section responsive-sm">
+                <div class=" pull-right padding-horizontal download-btn"><button class="button export"><img src="img/download.svg"></button></div>
+                <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+                <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars"></i></a>
+                <a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view"></i></a>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="row no-padding">
+              <div class="col pull-right">
+                <div id="chart-legend-operation">
+                  <div class="chart_legend middle">Closed</div>
+                  <div class="chart_legend second-middle">Open</div>
+                  <div class="chart_legend to">Not Received</div>
+                  <div class="chart_legend from">Expected</div>
+                </div>
+              </div>
+            </div>
+            <div class="row section-margin responsive-sm metric">
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Month Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col col-80 no-padding text-center">
+                      <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">5232 (100%)</span>
+                    </div> 
+                    <div class="col col-20 no-padding pull-right">
+                      <span class="graph-title-bottom-value">8.67%</span><br /><span class="graph-title-bottom-close">Closed</span>
+                    </div>        
+                  </div>   
+                </div>
+              </div>
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Week Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>   
+                  <div class="row">
+                    <div class="col col-80 no-padding text-center">
+                      <span class="graph-title-bottom-value">Week</span>
+                    </div> 
+                    <div class="col col-20 no-padding pull-right">
+                      <span class="graph-title-bottom-value">28.68%</span><br /><span class="graph-title-bottom-close">Closed</span>
+                    </div>         
+                  </div>    
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col padding-horizontal">
+                  <div class="col-demo">
+                      <div class="row">
+                        <div class="col no-padding pull-left graph-title">
+                          Day Data
+                        </div>        
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div> 
+			<div class="clear"></div>
+			<h1>&nbsp;</h1>
+          </ion-scroll>
+        </ion-slide> 
+        <ion-slide>
+          <ion-scroll class="scroll-height">
+          	<div class="row section-margin responsive-sm content-head">
+              <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">OPEN FLIGHT COUNT BY REASON <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ></i></div>
+              <div class="col col-50">
+                <div class="row btn-section responsive-sm">
+                <div class=" pull-right padding-horizontal download-btn"><button class="button export"><img src="img/download.svg"></button></div>
+                <div class=" button-bar button-small padding-horizontal ">
+                  <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top">Open</a>
+                  <a class="button button-modifier no-border button-inactive btn-padding-top">Closed</a>
+                </div>
+                <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+                  <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars"></i></a>
+                  <a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view"></i></a>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="row no-padding">
+              <div class="col pull-right">
+                <div id="chart-legend-operation">
+                  <div class="chart_legend second-middle">Processed with Exception</div>
+                  <div class="chart_legend to">Live not Processed</div>
+                  <div class="chart_legend from">Interface</div>
+                </div>
+              </div>
+            </div>
+            <div class="row section-margin responsive-sm metric">
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Month Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div> 
+                </div>
+              </div>
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Week Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>   
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col padding-horizontal">
+                  <div class="col-demo">
+                      <div class="row">
+                        <div class="col no-padding pull-left graph-title">
+                          Day Data
+                        </div>        
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div> 
+			<div class="clear"></div>
+			<h1>&nbsp;</h1>
+          </ion-scroll>
+        </ion-slide> 
+        <ion-slide>
+          <ion-scroll class="scroll-height">
+          	<div class="row section-margin responsive-sm content-head">
+              <div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">COUPON COUNT BY EXCEPTION CATEGORY <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ></i></div>
+              <div class="col col-33">
+                <div class="row btn-section responsive-sm">
+                <div class=" pull-right padding-horizontal download-btn"><button class="button export"><img src="img/download.svg"></button></div>
+                <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+                <a class="button button-custom-color button-modifier no-border"><i class="icon ion-stats-bars"></i></a>
+                <a class="button button-modifier no-border button-inactive"><i class="icon ion-ios-grid-view"></i></a>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="row no-padding">
+              <div class="col pull-right">
+                <div id="chart-legend-operation">
+                  <div class="chart_legend second-middle">Transactional Exceptions</div>
+                  <div class="chart_legend to">Proration Exception</div>
+                  <div class="chart_legend from">Interface Exceptions</div>
+                </div>
+              </div>
+            </div>
+            <div class="row section-margin responsive-sm metric">
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Month Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>  
+                </div>
+              </div>
+              <div class="col col-50 padding-horizontal">
+                <div class="col-demo">
+                  <div class="row">
+                    <div class="col no-padding pull-left graph-title">
+                      Week Data
+                    </div>        
+                  </div>
+                  <div class="row">
+                    <div class="col box-cont rev-modifier">
+                        
+                    </div>
+                  </div>    
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col padding-horizontal">
+                  <div class="col-demo">
+                      <div class="row">
+                        <div class="col no-padding pull-left graph-title">
+                          Day Data
+                        </div>        
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div> 
+			<div class="clear"></div>
+			<h1>&nbsp;</h1>
+          </ion-scroll>
+        </ion-slide> 
+        </ion-slide-box>
+    </tab-slide-box>
+
   </ion-content>
 </ion-view>
