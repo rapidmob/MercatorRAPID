@@ -26,7 +26,7 @@ class LoginController {
 			if (!angular.isDefined(this.username) || !angular.isDefined(this.password) || !angular.isDefined(this.ipaddress) ||this.username.trim() == "" || this.password.trim() == "" || this.ipaddress.trim() == "") {
 				this.invalidMessage = true;
 			}
-			//SERVER_URL = 'http://' + this.ipaddress + '/' + 'rapid-ws/services/rest';
+			SERVER_URL = 'http://' + this.ipaddress + '/' + 'rapid-ws/services/rest';
 			this.userService.login(this.username,this.password).then(
 				(result) => {
 					if (result.response.status == "success") {
