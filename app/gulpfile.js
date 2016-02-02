@@ -1,62 +1,178 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
-var bower = require('bower');
+var ts = require('gulp-typescript');
+var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var sass = require('gulp-sass');
-var minifyCss = require('gulp-minify-css');
+var bowerFiles = require('main-bower-files');
 var rename = require('gulp-rename');
-var sh = require('shelljs');
+var install = require("gulp-install");
+var tsd = require('gulp-tsd');
+var tslint = require('gulp-tslint');
+var ngConfig = require('gulp-ng-config');
+var runSequence = require('run-sequence');
+var KarmaServer = require('karma').Server;
 
-var paths = {
-  sass: ['./scss/**/*.scss']
-};
+var exec = require('child_process').exec;
+var del = require('del');
 
-gulp.task('default', ['sass', 'customSass']);
+var path = require('path');
 
-gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
-    .pipe(sass())
-    .on('error', sass.logError)
-    .pipe(gulp.dest('./www/css/'))
-    .pipe(minifyCss({
-      keepSpecialComments: 0
-    }))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
-    .on('end', done);
+var srcDir = './src';
+var targetDir = './www';
+
+function srcFiles(subpath) {
+  return path.join(srcDir, subpath);
+}
+
+var files = {
+  www: [
+    srcFiles('**/*'),
+    '!' + srcFiles('**/*.ts'),
+    '!' + srcFiles('**/*.scss'),
+    '!' + srcFiles('typings/')
+  ],
+  ts: srcFiles('**/*.ts'),
+  sass: srcFiles('app.scss'),
+  sass_all: srcFiles('**/*.scss'),
+  ts_test: './test/**/*.ts'
+}
+
+gulp.task('copy:www', function() {
+  return gulp.src(files.www)
+    .pipe(gulp.dest(targetDir))
 });
-gulp.task('customSass', function(done) {
-  gulp.src('./scss/app.scss')
-    .pipe(sass())
-    .on('error', sass.logError)
-    .pipe(gulp.dest('./www/css/'))
-    .pipe(minifyCss({
-      keepSpecialComments: 0
-    }))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
-    .on('end', done);
+
+gulp.task('ts', function() {
+  var tsResult = gulp.src(files.ts)
+    .pipe(sourcemaps.init())
+    .pipe(ts({
+      noImplicitAny: true,
+      target: 'ES5'
+    }));
+
+  return tsResult.js
+    .pipe(concat('app.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(targetDir));
 });
+
+gulp.task('sass', function() {
+  return gulp.src(files.sass)
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      errLogToConsole: true
+    }))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(targetDir));
+});
+
+
+gulp.task('config', function () {
+  gulp.src('configuration.json')
+  .pipe(ngConfig('skychain.app.config'))
+  .pipe(gulp.dest(targetDir))
+});
+
+gulp.task('copy:libs', function() {
+  return gulp.src(bowerFiles(), {
+      base: './bower_components'
+    })
+    .pipe(rename(function(p) {
+      p.dirname = p.dirname.split(path.sep)[0];
+    }))
+    .pipe(gulp.dest(path.join(targetDir, '/lib')));
+});
+
+gulp.task('install:libs', function() {
+  return gulp.src(['./bower.json'])
+    .pipe(install());
+});
+
+gulp.task('clean:tsd', function(cb) {
+  del('./typings', cb);
+});
+
+gulp.task('install:tsd', ['clean:tsd'], function(cb) {
+  tsd({
+    command: 'reinstall',
+    config: './tsd.json'
+  }, cb);
+});
+
 gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass', 'customSass']);
+  gulp.watch(files.www, ['copy:www']);
+  gulp.watch(files.ts, ['ts+lint']);
+  gulp.watch(files.sass_all, ['sass']);
 });
 
-gulp.task('install', ['git-check'], function() {
-  return bower.commands.install()
-    .on('log', function(data) {
-      gutil.log('bower', gutil.colors.cyan(data.id), data.message);
-    });
+gulp.task('clean:www', function(cb) {
+  del(targetDir, cb);
 });
 
-gulp.task('git-check', function(done) {
-  if (!sh.which('git')) {
-    console.log(
-      '  ' + gutil.colors.red('Git is not installed.'),
-      '\n  Git, the version control system, is required to download Ionic.',
-      '\n  Download git here:', gutil.colors.cyan('http://git-scm.com/downloads') + '.',
-      '\n  Once git is installed, run \'' + gutil.colors.cyan('gulp install') + '\' again.'
-    );
-    process.exit(1);
-  }
-  done();
+gulp.task('api_gen', function(cb) {
+  exec('node scripts/api_gen.js', function(err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+})
+
+gulp.task('clean:src_gen', function(cb) {
+  del(srcFiles('gen'), cb)
+});
+
+gulp.task('ts:test', function() {
+  var tsResult = gulp.src(files.ts_test)
+  .pipe(ts({
+        noImplicitAny: true,
+        out: 'specs.js'
+      }));
+
+  return tsResult.js.pipe(gulp.dest('test'));
+});
+
+gulp.task('karma:start', function(cb) {
+  new KarmaServer({
+    configFile: path.join(__dirname, 'test/karma.conf.js')
+  }, cb).start()
+});
+
+gulp.task('karma:run', function(cb) {
+  new KarmaServer({
+    configFile: path.join(__dirname, 'test/karma.conf.js'),
+    singleRun: true
+  }).start()
+});
+
+gulp.task('watch:test', function() {
+  gulp.watch(['./test/**/*.ts'], ['ts:test']);
+});
+
+gulp.task('lint', function() {
+  return gulp.src([files.ts, '!' + srcFiles('**/*.d.ts'), '!' + srcFiles('gen/**/*')])
+        .pipe(tslint())
+        .pipe(tslint.report('verbose', {
+          emitError: false
+        }));
+});
+
+gulp.task('ts+lint', function(cb) {
+  runSequence('lint', 'ts', cb);
+})
+
+gulp.task('update', ['install:libs', 'install:tsd']);
+gulp.task('clean', ['clean:www', 'clean:tsd', 'clean:src_gen']);
+gulp.task('gen', ['api_gen']);
+gulp.task('refresh:www', ['copy:www', 'copy:libs', 'ts+lint', 'sass', 'config']);
+gulp.task('www', function(cb) {
+  runSequence('clean:www', 'refresh:www', cb);
+});
+
+gulp.task('test', ['watch:test', 'karma:start']);
+gulp.task('test:run', function(cb) {
+  runSequence('ts:test', 'karma:run', cb)
+});
+
+gulp.task('default', function(cb) {
+  runSequence('clean', 'update', 'gen', 'www', cb);
 });

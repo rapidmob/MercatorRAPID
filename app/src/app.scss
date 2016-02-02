@@ -1,0 +1,11 @@
+$ionicons-font-path: "lib/ionic";
+// $ionicons-font-path: "../lib/ionic/fonts" !default;
+@import "res/styles/custom-styles.scss";
+@import "res/styles/ionic/ionic.scss";
+@import "res/styles/fonts/font.scss";
+@import "res/styles/sliding-tabs.scss";
+@import "res/styles/common.scss";
+@import "components/user/login.scss";
+@import "components/operational/flown/flown.scss";
+@import "res/styles/flown.scss";
+@import "res/styles/nv.d3.css";

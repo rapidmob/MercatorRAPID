@@ -1,4 +1,5 @@
 {
   "name": "app",
+  "gulpStartupTasks": ["refresh:www", "watch"],
   "app_id": ""
 }
