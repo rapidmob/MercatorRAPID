@@ -1,0 +1,200 @@
+.tabbed-slidebox-padding{
+	@include padding-horizontal(7em, 7em);
+}
+.content-head{
+	.metric-modifier{
+			.icon-align:before{
+				font-size: 24px;
+				vertical-align: middle;
+			}
+		}
+}
+.chart_legend.expected:before {
+    border: 7px solid #7ED321;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.chart_legend.not-received:before {
+    border: 7px solid #4EB2F9;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.chart_legend.open:before {
+    border: 7px solid #FFC300;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.chart_legend.closed:before {
+    border: 7px solid #5C6BC0;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -2px;
+}
+
+@media only screen and (max-device-width: 1024px) and (min-device-width: 768px){
+    .closed-percentage{
+        margin-right: -2em;
+    }
+    .arrow-middle{
+        display: -webkit-box;
+        vertical-align: middle;
+        line-height: 230px;
+    }
+    .arrow-middle{
+        .ion-chevron-left:before{
+            font-size: 30px;        
+            opacity: 0.3 !important;
+        }
+        .ion-chevron-right:before{
+            font-size: 30px;
+            padding-left: 15px;
+            opacity: 0.3 !important;
+        }
+}
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) { 
+    .arrow-middle{
+        margin-top: 14%;
+            .ion-chevron-right:before{
+                padding-left: 0px;
+            }
+    }
+    .three-bar{
+        margin-left: -1.8em !important;
+        margin-top: 1.2em !important;
+    }
+    .four-bar {
+        width: 327px;
+        margin: -1em -3em 0 !important;
+    }    
+}
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) { 
+    .arrow-middle{
+        margin-top: 9%;
+    }
+    .four-bar {
+        width: 340px;
+        margin: -28px auto 0 !important;
+    }
+    .tab-cust{
+        padding-left: 45px !important;
+        padding-right: 45px !important;
+    }
+}
+.capitalize{
+    text-transform: capitalize;
+}
+.three-bar{
+    width:300px;
+    margin:0 auto;
+}
+.four-bar{
+    width:340px;
+    margin:0 auto;
+}
+.graph-title-bottom{
+    font-size: 18px;
+    text-transform: capitalize;
+}
+.graph-title-bottom-value{
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight:bold;
+    color: #5C5B5C;
+}
+.graph-title-2{
+    font-size: 1.3em;
+    color: #5C5C5C;
+    font-weight: bold;
+    font-family: helvetica;
+}
+.margin-top10{
+    margin-top: -3em;
+}
+.arrow-middle{
+    .ion-chevron-left:before{
+        font-size: 30px;        
+        opacity: 0.3 !important;
+    }
+    .ion-chevron-right:before{
+        font-size: 30px;
+        padding-left: 15px;
+        opacity: 0.3 !important;
+    }
+    .disable-icon{
+        opacity: 0.2;
+    }
+}
+.three-bar, .four-bar{ 
+        svg{
+            text{
+            font-size: 14px !important;
+            }
+        }
+}
+.bg-white{
+    .row{
+        background-color: #ffffff !important;
+    }
+}
+.no-margin-top{
+    margin-top:0 !important;
+}
+#tab-drill .scroll{
+    border: 0 !important;
+}
+.drill-tab{
+    padding-left: 2.5em !important;
+    padding-right: 2.5em !important;
+    padding-bottom: 3px !important;
+    line-height: 0!important;
+    font: 0.9em;  
+}
+#tab-drill a.active{
+    font: 0.9em !important;  
+}
+.tab-slide{
+    margin-top: 10px;
+}
+.tab-ion-slide{
+    text-align: left !important;
+}
+
+@media only screen  and (min-width: 1025px) {
+    .metric{
+        .monthdata-modifier{
+            padding: 0 22%;
+            min-height: 370px;
+            max-height: 370px;
+        }
+        .weekdata-modifier{
+            min-height: 370px;
+            max-height: 370px;
+        }
+    }
+    .arrow-middle{
+        display: -webkit-box;
+        vertical-align: middle;
+        line-height: 347px;
+        .ion-chevron-left:before{
+            font-size: 30px;
+            opacity: 0.3 !important;
+        }
+        .ion-chevron-right:before{
+            font-size: 30px;
+            padding-left: 43px;
+            opacity: 0.3 !important;
+        }
+    }
+    .tab-cust{
+        padding-left: 7.5em !important;
+        padding-right: 7.5em !important;        
+    }
+}
+
+
+

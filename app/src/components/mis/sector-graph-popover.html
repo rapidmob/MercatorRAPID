@@ -1,0 +1,22 @@
+<ion-popover-view class="sector-graph-popover">
+ <ion-content> 
+  <div ng-if="MisCtrl.charttype == 'sector'">
+    <div class="padding-horizontal" ng-repeat="sector in MisCtrl.SectorCarrierAnalysisCharts | filter: MisCtrl.sectorCarrierFilter(MisCrtl)">
+     <div ng-if="MisCtrl.graphindex == $index">
+          <div class="row">
+              <div class="col-90">
+                <h2 class="padding-left graph-title pop-title">{{sector.heading1}}</h2>
+              </div>
+              <div class="col-10 popup-close padding-right" ng-click="MisCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
+          </div>
+          <div class="row">
+             <div class="col box-cont no-padding sector-padding">
+          <he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items"></he-progress-bar>
+           <p class="float-right">Others {{sector.others[0].progress}}</p>
+            </div>
+          </div> 
+      </div>
+    </div>
+  </div> 
+</ion-content>
+</ion-popover-view> 

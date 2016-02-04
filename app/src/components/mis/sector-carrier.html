@@ -1,0 +1,60 @@
+<div class="row section-margin sector-head net-revenue">
+    <div class="col col-40 padding-horizontal padding-vertical metric-modifier pull-left">SECTOR & CARRIER ANALYSIS</div>
+    <div class="col col-60">
+      <div class="row btn-section responsive-sm">
+        <div class=" pull-right padding-horizontal download-btn">
+          <button class="button export"><img src="res/img/download.svg" /></button>
+        </div>
+        <select class="select-height select-bg button-custom-color button-bg cust-sel-width" ng-model="MisCtrl.toggle.sectorOrder">
+          <option value="top5">Top 5</option>
+          <!-- <option value="top10">Top 10</option> -->
+          <option value="bottom5">Bottom 5</option>
+          <!-- <option value="bottom15">Bottom 15</option> -->
+        </select>
+        <div class=" button-bar button-small padding-horizontal ">
+          <a class="button button-custom-color button-modifier no-border rev button-inactive btn-padding-top" 
+          ng-class="{'button-custom-color': MisCtrl.toggle.sectorRevOrPax=='revenue'}"
+          ng-click="MisCtrl.toggleSector('revenue')">Revenue</a>
+          <a class="button button-modifier no-border button-inactive pax btn-padding-top" 
+          ng-class="{'button-custom-color': MisCtrl.toggle.sectorRevOrPax=='paxcount'}"
+          ng-click="MisCtrl.toggleSector('paxcount')">PAX Count</a>
+        </div>
+        <div class=" button-bar button-small button-energized padding-horizontal padding-left-zero padding-right-zero">
+			<a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('chart')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='chart'}"><img src="res/img/graph.svg" /></a>
+			<a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('table')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='table'}"><img src="res/img/tabular.svg" /></a>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row section-margin">
+  <div class="col col-50 padding-horizontal" ng-repeat="sector in MisCtrl.SectorCarrierAnalysisCharts | filter: MisCtrl.sectorCarrierFilter(MisCtrl)">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-90 no-padding pull-left graph-title">{{sector.heading1}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, sector.chartInfo)"></i></div>
+        <div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openSectorPopover($event,$index,'sector')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont sector-padding">
+			<!-- <nvd3 data="topSectorsResult" options="options.sectorChart" class="with-3d-shadow with-transitions"></nvd3> -->
+			<div ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+				<he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items"></he-progress-bar>
+				<p class="float-right">Others {{sector.others[0].progress}}</p>
+			</div>
+			
+				<table class="resptbl" ng-show="MisCtrl.toggle.chartOrTable=='table'">
+				  <tr class="tblhder">    
+				  <th>{{sector.heading1}}</th>
+				  <th>Progress</th>
+				  </tr>
+				  <tr class="tblcol" ng-repeat="items in sector.items">         
+				  <td data-th="{{sector.heading1}}">{{items.name}}</td>
+				  <td data-th="Progress">{{items.progress}}</td>        
+				  </tr>
+				  <tr class="tblcol"><td>Others</td> <td data-th="Others">{{sector.others[0].progress}}</td></tr>
+				</table>
+			
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

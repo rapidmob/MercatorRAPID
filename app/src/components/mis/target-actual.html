@@ -1,0 +1,163 @@
+<div class="row section-margin responsive-sm content-head net-revenue">
+  <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">
+  TARGET VS ACTUAL - {{MisCtrl.toggle.targetRevOrPax === 'revenue' ? 'NET REVENUE' : 'PAX Count'}}</div>
+  <div class="col col-50">
+    <div class="row btn-section">
+      <div class=" pull-right padding-horizontal download-btn">
+        <button class="button export" ng-click="MisCtrl.runReport('targetActual',MisCtrl.toggle.targetRevOrPax,MisCtrl.header.flownMonth)"><img src="res/img/download.svg" /></i></button>
+      </div>
+      <div class=" button-bar button-small padding-horizontal ">
+        <a class="button button-custom-color button-modifier no-border button-inactive rev btn-padding-top" ng-click="MisCtrl.toggleTarget('revenue')" ng-class="{'button-custom-color': MisCtrl.toggle.targetRevOrPax=='revenue'}">Revenue</a>
+        <a class="button button-modifier no-border button-inactive pax btn-padding-top" ng-click="MisCtrl.toggleTarget('paxcount')" ng-class="{'button-custom-color': MisCtrl.toggle.targetRevOrPax=='paxcount'}">PAX Count</a>
+      </div>
+      <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+        <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('chart')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='chart'}"><img src="res/img/graph.svg" /></a>
+        <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('table')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='table'}"><img src="res/img/tabular.svg" /></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row section-margin responsive-sm metric">
+  <div class="col col-50 padding-horizontal" ng-repeat="netRevenue in MisCtrl.targetActualData.horBarChart | filter: MisCtrl.targetActualFilter(MisCtrl)">
+    <div class="col-demo">
+      <div class="row">
+        <div class="col col-90 no-padding pull-left graph-title">
+          {{netRevenue.heading1}} {{netRevenue.heading2}}
+          <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, netRevenue.chartInfo)"></i>
+        </div>
+        <div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,null,'netRevenue-target')" class="icon icon-larger font-normal ion-android-open curs"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col box-cont rev-modifier targetActual" data-item-title="{{netRevenue.heading1 +' '+ netRevenue.heading2}}" data-item-flag="2" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+            <nvd3 data="[{ values: netRevenue.values}]" options="MisCtrl.options.targetBarChart"></nvd3>
+        </div>
+		
+			<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
+			  <tr class="tblhder">				
+				<th>Actual</th>
+				<th>Target</th>
+			  </tr>
+			  <tr class="tblcol" ng-repeat="netRevenue in MisCtrl.targetActualData.horBarChart | filter: MisCtrl.targetActualFilter(MisCtrl)">
+				<td data-th="Actual">{{netRevenue.values[0].value}}</td>
+				<td data-th="Target">{{netRevenue.values[1].value}}</td>
+			  </tr>
+			</table>
+		
+	</div>      
+    </div>
+  </div>
+  <div class="col col-50 col-offset-5 padding-horizontal" ng-repeat="monthAnalysis in MisCtrl.targetActualData.lineChart | filter: MisCtrl.targetActualFilter(MisCtrl)">
+    <div class="col-demo">
+      <div class="row">
+        <!-- <div class="col col-80 no-padding pull-left graph-title">
+          {{targetLineChart.data.chartName}}
+        </div> -->
+        <div class="col col-90 no-padding pull-left graph-title">
+          {{monthAnalysis.heading1}} {{monthAnalysis.heading2}}
+          <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, monthAnalysis.chartInfo)"></i>
+        </div>
+        <div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,null,'monthAnalysis-target')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+      </div>
+      <div class="row">
+        <div class="col box-cont targetActual" style='padding: 0%' data-item-title="{{monthAnalysis.heading1 +' '+ monthAnalysis.heading2}}" data-item-pdfFlag="pdfFlag" data-item-flag="3" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+          <nvd3 data="monthAnalysis.lineChartItems" options="MisCtrl.options.targetLineChart" class="with-3d-shadow with-transitions"></nvd3>
+        </div>
+		
+			<table class="resptbl" style="margin: 20px 0px 0px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
+			  <tr class="tblhder">
+				<th>Month</th>
+				<th>{{monthAnalysis.lineChartItems[0].key}}</th>
+				<th>{{monthAnalysis.lineChartItems[1].key}}</th>
+				<th>{{monthAnalysis.lineChartItems[2].key}}</th>
+			  </tr>
+			  <tr ng-repeat="monthAnalysis in MisCtrl.targetActualData.lineChart | filter: MisCtrl.targetActualFilter(MisCtrl)">
+			   <tr class="tblcol"> 
+				<td data-th="Month">Jan</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[0].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[0].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[0].yval}}</td>
+			   </tr>
+			   <tr class="tblcol"> 
+				<td data-th="Month">Feb</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[1].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[1].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[1].yval}}</td>
+			   </tr>
+			   <tr class="tblcol"> 
+				<td data-th="Month">Mar</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[2].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[2].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[2].yval}}</td>
+			   </tr>
+			   <tr class="tblcol"> 
+				<td data-th="Month">Apr</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[3].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[3].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[3].yval}}</td>
+			   </tr>
+
+			  <tr class="tblcol"> 
+				<td data-th="Month">May</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[4].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[4].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[4].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Apr</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[5].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[5].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[5].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Jul</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[6].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[6].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[6].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Aug</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[7].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[7].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[7].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Sep</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[8].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[8].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[8].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Oct</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[9].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[9].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[9].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Nov</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[10].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[10].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[10].yval}}</td>
+			   </tr>
+			  
+			  <tr class="tblcol"> 
+				<td data-th="Month">Dec</td>
+				<td data-th="{{monthAnalysis.lineChartItems[0].key}}">{{monthAnalysis.lineChartItems[$index].values[11].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[1].key}}">{{monthAnalysis.lineChartItems[$index+1].values[11].yval}}</td>
+				<td data-th="{{monthAnalysis.lineChartItems[2].key}}">{{monthAnalysis.lineChartItems[$index+2].values[11].yval}}</td>
+			   </tr>
+			  </tr>
+
+			</table>
+			
+
+        </div>		
+      </div>
+    </div> 
+  </div>

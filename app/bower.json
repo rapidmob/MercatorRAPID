@@ -1,0 +1,29 @@
+{
+  "name": "Rapid",
+  "private": "true",
+  "dependencies": {
+    "ionic": "~1.2.3",
+    "lodash": "~3.10.0",
+    "d3": "3.3.13",
+    "nvd3": "~v1.1.15-beta",
+    "angular-nvd3": "~1.0.5",
+    "angularjs-nvd3-directives": "~0.0.7"
+  },
+  "overrides": {
+    "ionic": {
+      "main": [
+        "release/js/ionic.bundle.js",
+        "release/fonts/*"
+      ],
+      "dependencies": null
+    }
+  },
+  "resolutions": {
+   "angular": "~1.2.4",
+    "nvd3": "~v1.1.15-beta",
+    "d3": "~3.3.13"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.8"
+  }
+}

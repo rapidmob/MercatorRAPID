@@ -1,0 +1,22 @@
+<div class="drill-scroll-width-inner row drilldown-head drilldown-title active " ng-if="group.items[0]">
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10">Flight No</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 ">Sector</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 text-right">TOB</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 text-right">Coupon Count</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 text-right">Percentage</div>
+
+  <div ng-if="(OprCtrl.shownGroup == 1)"  class="col-10">Carrier Code</div>
+  <div ng-if="(OprCtrl.shownGroup == 1)"  class="col-15">Document No</div>
+  <div ng-if="(OprCtrl.shownGroup == 1)"  class="col-10">Coupon No</div>
+</div>
+<div ng-class="{activedrill: OprCtrl.isDrillRowSelected(OprCtrl.shownGroup,item)}" class="drill-scroll-width-inner row drilldown-list" ng-repeat="item in group.ItemsByPage[OprCtrl.currentPage[OprCtrl.shownGroup]]"  ng-click="OprCtrl.openDrillDown(item,OprCtrl.shownGroup)">
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10">{{item.flightNumber}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 ">{{item.flownSector}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 text-right">{{item.TOB}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 text-right">{{item.couponCount}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 0)"  class="col-10 text-right">{{item.percentage}}</div>
+
+  <div ng-if="(OprCtrl.shownGroup == 1)"  class="col-10">{{item.carrierCode}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 1)"  class="col-15">{{item['document#']}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 1)"  class="col-10">{{item['coupon#']}}</div>
+</div>
