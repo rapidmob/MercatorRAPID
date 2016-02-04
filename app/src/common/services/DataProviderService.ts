@@ -67,7 +67,7 @@ class DataProviderService {
 		if (this.hasNetworkConnection()) {
 			response.then(
 			(httpResponse) => {
-
+				def.resolve(httpResponse);
 			},
 			(error) => {
 				console.log('Server unavailable');

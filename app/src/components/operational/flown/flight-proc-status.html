@@ -32,8 +32,8 @@
                     <div class="col box-cont monthdata-modifier flightprocessStatus" data-item-title="Month Data" data-item-flag="1" ng-show="OprCtrl.toggle.chartOrTable=='chart'">
                         <he-custom-pie-chart chart-height="350" chart-width="330" chart-data="OprCtrl.flightProcStatus.pieChart.data"></he-custom-pie-chart>
                     </div>
-					<div class="reventbl" ng-show="OprCtrl.toggle.chartOrTable=='table'">
-					  <table class="resptbl">					  
+					
+					  <table class="resptbl" ng-show="OprCtrl.toggle.chartOrTable=='table'">					  
 						<tr class="tblhder">              
 						<th>Not Received</th>
 						<th>Open</th>
@@ -45,10 +45,10 @@
 						<td data-th="Economy">{{OprCtrl.flightProcStatus.pieChart.data[2].yval}}</td>
 						</tr>
 					  </table>
-					</div>
+					
                   </div>   
                   <div class="row">
-                    <div class="col margin-top10 text-center">
+                    <div class="col margin-top10 text-center" ng-show="OprCtrl.toggle.chartOrTable=='chart'">
                       <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">
                       {{OprCtrl.flightProcStatus.pieChart.pieChartFooter[0].value}} (100%)</span>
                     </div>        
@@ -63,11 +63,11 @@
 					  </div>        
 					</div>
 					<div class="row">
-						<div class="col box-cont bg-white" ng-show="OprCtrl.toggle.chartOrTable=='chart'">
-						  <ion-slide-box show-pager="false" direction="y" does-continue="true" delegate-handle="oprfWeekData">
+						<div class="col weekdata-modifier bg-white" ng-show="OprCtrl.toggle.chartOrTable=='chart'">
+						  <ion-slide-box show-pager="false" delegate-handle="oprfWeekData">
 								<ion-slide ng-repeat="weekData in OprCtrl.flightProcStatus.weekData">
 								<div class="row">
-								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataPrev()"><i class="ion-chevron-left"></i></div>
+								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataPrev()"><i ng-class="{'disable-icon': $first}" class="ion-chevron-left"></i></div>
 								  <div class="col col-80">
 									<div  class="flightprocessStatus four-bar" data-item-title="Month Data" data-item-flag="{{$index+2}}">
 									<nvd3-discrete-bar-chart
@@ -86,15 +86,15 @@
 									<p class="pull-right">{{weekData.closedPercent}}</p>
 								  </div>
 								  
-								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext()"><i class="ion-chevron-right"></i></div>
+								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext()"><i ng-class="{'disable-icon': $last}" class="ion-chevron-right"></i></div>
 								  </div>
 								</ion-slide>
 							  </ion-slide-box>
 						</div>
-						<div class="reventbl" ng-show="OprCtrl.toggle.chartOrTable=='table'">
-						<table class="resptbl">					  
+						
+						<table class="resptbl" ng-show="OprCtrl.toggle.chartOrTable=='table'">					  
 							<tr class="tblhder">  
-								<th></th>
+								<th>Week</th>
 								<th>Expected</th>
 								<th>Not Received</th>
 								<th>Open</th>
@@ -108,7 +108,7 @@
 								<td>{{weekData.values[3][1]}}</td>
 							</tr>
 						  </table>
-						</div>
+						
 					</div>   
 				  </div>
 				</div>
@@ -133,32 +133,22 @@
                           yAxisLabel="Open Flights Count"
                           <svg></svg></nvd3-multi-bar-chart>
                         </div>  
-						<div ng-show="OprCtrl.toggle.chartOrTable=='table'">
-						  <table class="resptbl">								
+						<table class="resptbl" ng-show="OprCtrl.toggle.chartOrTable=='table'">								
 							<tr class="tblhder">
 								<th>Day</th>
-								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values" ng-if="$index < 15">{{DayData[0]}}</th>
+								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{DayData.key}}</th>
 							</tr>
-							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">   
-								<td>{{DayData.key}}</td>
-								<td ng-repeat="day in DayData.values" ng-if="$index < 15">{{day[1]}}</td>								
+							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values">   
+								<td>{{DayData[0]}}</td>
+								<td>{{OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values[$index][1]}}</td>	
+								<td>{{OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[1].values[$index][1]}}</td>
+								<td>{{OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[2].values[$index][1]}}</td>
+								<td>{{OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[3].values[$index][1]}}</td>
 							</tr>
-						  </table>
-						  <table class="resptbl">								
-							<tr class="tblhder">
-								<th>Day</th>
-								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values" ng-if="$index >= 15">{{DayData[0]}}</th>
-							</tr>
-							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">   
-								<td>{{DayData.key}}</td>
-								<td ng-repeat="day in DayData.values" ng-if="$index >= 15">{{day[1]}}</td>								
-							</tr>
-						  </table>
-						</div>
+						</table>
                       </div>
                   </div>
               </div>
             </div>
             
       <div class="clear"></div>
-      <h1>&nbsp;</h1>

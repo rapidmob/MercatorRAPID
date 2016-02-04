@@ -2,6 +2,7 @@
 /// <reference path="../../components/mis/services/MisService.ts" />
 /// <reference path="../../components/mis/services/FilteredListService.ts" />
 /// <reference path="../../components/mis/services/ChartoptionService.ts" />
+/// <reference path="../../components/user/services/UserService.ts" />
 
 
 
@@ -29,7 +30,8 @@ interface headerObject {
 
 class MisController{
 
-    public static $inject = ['$scope', '$ionicLoading', '$timeout', '$window', '$ionicPopover', '$filter', 'MisService', 'ChartoptionService', 'FilteredListService', 'ReportSvc'];
+    public static $inject = ['$scope', '$ionicLoading', '$timeout', '$window', '$ionicPopover',
+        '$filter', 'MisService', 'ChartoptionService', 'FilteredListService', 'UserService', 'ReportSvc'];
 
     private tabs: [tabObject];
     private toggle: toggleObject;
@@ -70,12 +72,13 @@ class MisController{
     private popovershown: boolean;
     private drillType: string;
     private drillBarLabel: string;
+    private drillName: string[];
 
     private that: any;
 
     constructor(private $scope: ng.IScope, private $ionicLoading: Ionic.ILoading, private $timeout: ng.ITimeoutService, private $window: ng.IWindowService,
         private $ionicPopover: Ionic.IPopover, private $filter: ng.IFilterService, private misService: MisService, private chartoptionService: ChartoptionService,
-        private filteredListService: FilteredListService, private reportSvc: ReportSvc) {
+        private filteredListService: FilteredListService, private userService: UserService, private reportSvc: ReportSvc) {
 
         this.that = this;
 
@@ -110,12 +113,13 @@ class MisController{
             this.onSlideMove({index: this.header.tabIndex});
         }); */
         angular.element(window).bind('orientationchange', this.orientationChange); 
+        
+        //this.$scope.$watch('MisCtrl.header.surcharge', () => { this.onSlideMove({index:this.header.tabIndex}); }, true);
+        this.initData();
+
         this.$scope.$on('onSlideMove', (event: any, response: any) => {
             this.$scope.MisCtrl.onSlideMove(response);
         });
-
-        //this.$scope.$watch('MisCtrl.header.surcharge', () => { this.onSlideMove({index:this.header.tabIndex}); }, true);
-        this.initData();
         
     }
     initData() {
@@ -141,20 +145,29 @@ class MisController{
         this.options = {
             metric: this.chartoptionService.metricBarChartOptions(this),
             targetLineChart: this.chartoptionService.lineChartOptions(),
-            targetBarChart: this.chartoptionService.targetBarChartOptions(),
+            targetBarChart: this.chartoptionService.targetBarChartOptions(this),
             passengerChart: this.chartoptionService.multiBarChartOptions()
         };
-        
 
-        this.misService.getPaxFlownMisHeader({userId: 'Victor'}).then(
+        var req = {
+            userId: this.$window.localStorage.getItem('rapidMobile.user')
+        }
+
+        this.misService.getPaxFlownMisHeader(req).then(
                 (data) => {
                     that.subHeader = data.response.data;
                     that.header.flownMonth = that.subHeader.paxFlownMisMonths[0].flowMonth;
+                    
+                    that.onSlideMove({index: 0});  
                 },
                 (error) => {
                     console.log('an error occured');
-                });  
-        this.onSlideMove({index: 0});
+                });
+                //
+        
+    }
+    selectedFlownMonth(month: string){
+        return (month == this.header.flownMonth);
     }
     orientationChange = (): boolean => {
         this.onSlideMove({ index: this.header.tabIndex });
@@ -169,6 +182,13 @@ class MisController{
         console.log(index);
         this.infopopover.show($event);
     };
+
+    getProfileUserName(): string {
+        var obj = this.$window.localStorage.getItem('rapidMobile.user');
+        var profileUserName = JSON.parse(obj);
+        return profileUserName.username;
+    }
+
     closePopover() {
         this.graphpopover.hide();
     };
@@ -189,8 +209,8 @@ class MisController{
     }
 
     onSlideMove(data: any) {
-        console.log('hello');
-        this.header.tabIndex = data.index;           
+        this.header.tabIndex = data.index;
+		this.toggle.chartOrTable = "chart";
         switch(this.header.tabIndex){
             case 0:
             this.getFlownFavorites();
@@ -380,6 +400,7 @@ class MisController{
     }
 
     openDrillDown(regionData,selFindLevel) {
+        selFindLevel = Number(selFindLevel);
         var that = this;
         this.selectedDrill[selFindLevel] = regionData;
         this.selectedDrill[selFindLevel + 1] = '';
@@ -432,19 +453,15 @@ class MisController{
     }
     clearDrill(level: number) {
         var i: number;
-        for (var i = level; i <= 3; i++) {
+        for (var i = level; i < this.groups.length; i++) {
             this.groups[i].items.splice(0, 1);
             this.groups[i].orgItems.splice(0, 1);
             this.sort('paxCount',i,false);
         }
     }
-
-    openBarDrillDown(data, selFindLevel) {
-        selFindLevel = Number(selFindLevel);
-        var that = this;
-        this.selectedDrill[selFindLevel] = data;
-        this.selectedDrill[selFindLevel + 1] = '';
-        if (selFindLevel != '3') {
+    drillDownRequest (drillType, selFindLevel, data){
+        var reqdata;
+        if(drillType == 'bar') {
             var drillLevel = (selFindLevel + 2);
             if (data.label) {
                 this.drillBarLabel = data.label;
@@ -462,7 +479,7 @@ class MisController{
             }
             this.ionicLoadingShow();
 
-            var reqdata = {
+            reqdata = {
                 "flownMonth": this.header.flownMonth,
                 "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
                 "userId": this.header.username,
@@ -473,9 +490,57 @@ class MisController{
                 "routeCode": routeCode,
                 "sector": sector,
                 "flightNumber": flightNumber
-            };
+            };  
+        }
 
-            this.misService.getBarDrillDown(reqdata)
+
+        if(drillType == 'target') {
+            var drillLevel = (selFindLevel + 2);
+            if (data.label) {
+                this.drillBarLabel = data.label;
+            }
+
+            var routetype: string;
+            routetype = (data.routetype) ? data.routetype : "";
+
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "pageNumber": 0,
+                "routetype": routetype
+            };  
+        }
+        return reqdata;
+    }
+    getDrillDownURL (drilDownType) {
+        var url
+        switch(drilDownType){
+            case 'bar':
+                url = "/paxflnmis/mspaxnetrevdrill";
+            break;
+            case 'target':
+                url = "/paxflnmis/tgtvsactdrill";
+            break;
+            
+        }
+        return url;
+    }
+    openBarDrillDown(data, selFindLevel) {
+        selFindLevel = Number(selFindLevel);
+        var that = this;
+        this.selectedDrill[selFindLevel] = data;
+        this.selectedDrill[selFindLevel + 1] = '';
+        
+        if (selFindLevel != (this.groups.length - 1)) {
+            var drillLevel = (selFindLevel + 2);
+            var reqdata = this.drillDownRequest(this.drillType, selFindLevel, data);
+            var URL = this.getDrillDownURL(this.drillType);
+            this.misService.getDrillDown(reqdata, URL)
                 .then(function(data) {
                     that.ionicLoadingHide();
                     var data = data.response;
@@ -501,6 +566,7 @@ class MisController{
         }
     }
     initiateArray(drilltabs) {
+        this.groups = [];
         for (var i in drilltabs) {
             this.groups[i] = {
                 id: i,
@@ -512,13 +578,21 @@ class MisController{
         }
     }
     openBarDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'METRIC SNAPSHOT REPORT - ' + selData.point.label;
         this.drillType = 'bar';
         this.drillBarpopover.show($event);
         this.drilltabs = ['Route Level', 'Sector Level', 'Data Level', 'Flight Level'];
         this.initiateArray(this.drilltabs);
         this.openBarDrillDown(selData.point, selFindLevel);
     };
-
+    openTargetDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'Target Vs Actual';
+        this.drillType = 'target';
+        this.drillBarpopover.show($event);
+        this.drilltabs = ['Route Type', 'Route code'];
+        this.initiateArray(this.drilltabs);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    };
 
     openPopover ($event, index, charttype) {
         var that = this;
@@ -637,7 +711,7 @@ class MisController{
         return this.selectedDrill[level] == obj;
     }
     searchResults (level,obj) {
-        this.groups[level].items[0] = this.filteredListService.searched(this.groups[level].orgItems[0], obj.searchText, level);
+        this.groups[level].items[0] = this.filteredListService.searched(this.groups[level].orgItems[0], obj.searchText, level, this.drillType);
         if (obj.searchText == '') {
             this.resetAll(level); 
             this.groups[level].items[0] = this.groups[level].orgItems[0];
@@ -649,8 +723,8 @@ class MisController{
         this.groups[level].ItemsByPage = this.filteredListService.paged(this.groups[level].items[0], this.pageSize );
     };
 
-    setPage (level) {
-        this.currentPage[level] = this.n;
+    setPage (level, pageno) {
+        this.currentPage[level] = pageno;
     };
     lastPage(level) {
         this.currentPage[level] = this.groups[level].ItemsByPage.length - 1;
@@ -665,14 +739,20 @@ class MisController{
         this.groups[level].items[0] = this.$filter('orderBy')(this.groups[level].items[0], this.columnToOrder, order); 
         this.pagination(level);    
     };
-    range(input, total) {
+    range(total, level) {
         var ret = [];
-        if (!total) {
-            total = input;
-            input = 0;
+        var start: number;
+        start = Number(this.currentPage[level]) - 2;
+        if(start < 0) {
+          start = 0;
         }
-        for (var i = input; i < total; i++) {
-            ret.push(i);
+        var k = 1;
+        for (var i = start; i < total; i++) {
+          ret.push(i);
+          k++;
+          if (k > 6) {
+            break;
+          }
         }
         return ret;
     }
@@ -688,31 +768,57 @@ class MisController{
         return this.shownGroup == group;
     }
 	toggleChartOrTableView(val: string) {
-        this.toggle.chartOrTable = 'chart';
-    }
+        this.toggle.chartOrTable = val;
+    }	
 	runReport(chartTitle: string,monthOrYear: string,flownMonth: string){
+		var that = this;
 		//if no cordova, then running in browser and need to use dataURL and iframe
 		if (!window.cordova) {
+			that.ionicLoadingShow();
 			this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth)
 				.then(function(dataURL) {
+					that.ionicLoadingHide();
 					//set the iframe source to the dataURL created
 					//console.log(dataURL);
 					//document.getElementById('pdfImage').src = dataURL;
+				}, function(error) {
+					that.ionicLoadingHide();
+					console.log('Error ');
 				});
 			return true;
 		}
 		//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
 		else {
+			that.ionicLoadingShow();
 			this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth)
 				.then(function(filePath) {
+					that.ionicLoadingHide();
 					//log the file location for debugging and oopen with inappbrowser
 					console.log('report run on device using File plugin');
 					console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-					var fileName = "/mnt/sdcard/"+chartTitle+".pdf";
-					if(device.platform =="Android")
-					window.openPDF(fileName);
-					else
-					window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');
+					var lastPart = filePath.split("/").pop();
+					var fileName = "/mnt/sdcard/"+lastPart;					
+					if(device.platform !="Android")
+					fileName = filePath;
+					//window.openPDF(fileName);
+					//else
+					//window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
+										
+					cordova.plugins.fileOpener2.open(
+						fileName, 
+						'application/pdf', 
+						{ 
+							error : function(e) { 
+								console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
+							},
+							success : function () {
+								console.log('file opened successfully');                
+							}
+						}
+					);
+				}, function(error) {
+					that.ionicLoadingHide();
+					console.log('Error ');
 				});
 			return true;
 		}

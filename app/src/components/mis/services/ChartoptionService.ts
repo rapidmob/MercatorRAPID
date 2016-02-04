@@ -108,7 +108,7 @@ class ChartoptionService {
         };  
     }
 
-    targetBarChartOptions() {
+    targetBarChartOptions(misCtrl) {
         return {
             chart: {
                 type: 'discreteBarChart',
@@ -126,6 +126,13 @@ class ChartoptionService {
                 showYAxis: false,
                 valueFormat: function(d){
                     return d3.format(',.2f')(d);
+                },
+                discretebar: {
+                    dispatch: {
+                        elementDblClick: function(e) {
+                            misCtrl.openTargetDrillDownPopover(d3.event, e, -1);
+                        }
+                    }
                 },
                 duration: 700
             }

@@ -3,7 +3,7 @@
 /// <reference path="../../../common/services/LocalStorageService.ts" />
 
 class UserService {
-	public static $inject = ['DataProviderService', '$q', '$window', 'LocalStorageService'];
+	public static $inject = ['DataProviderService', '$q', 'LocalStorageService', '$window'];
 	private _user: boolean;
 	constructor(private dataProviderService: DataProviderService, private $q: ng.IQService, private localStorageService: LocalStorageService, private $window: ng.IWindowService) {
 

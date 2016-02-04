@@ -41,10 +41,7 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-file",
     "cordova-plugin-inappbrowser",
-    {
-      "locator": "https://github.com/cyberkatze/pdfViewer.git",
-      "id": "de.cyberkatze.phonegap.plugin"
-    }
+	  "cordova-plugin-file-opener2"
   ],
   "cordovaPlatforms": [
     "android",

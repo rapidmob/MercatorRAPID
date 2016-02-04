@@ -69,7 +69,7 @@ gulp.task('sass', function() {
 
 gulp.task('config', function () {
   gulp.src('configuration.json')
-  .pipe(ngConfig('skychain.app.config'))
+  .pipe(ngConfig('rapidMobile.config'))
   .pipe(gulp.dest(targetDir))
 });
 

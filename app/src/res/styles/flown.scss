@@ -577,8 +577,8 @@ body{
                 }
         }
     .tabbed-slidebox .tsb-icons .scroll a{
-        padding-left: 30px!important;
-        padding-right: 30px!important;
+        padding-left: 30px;
+        padding-right: 30px;
         margin: -14px 0px !important;
     }
     .net-revenue{
@@ -696,6 +696,9 @@ body{
     }
 }
 @media only screen  and (min-width: 1025px) {
+    .rev-pie-modifier{
+        padding: 0 17%;
+    }
     .tab-section-tabs {
         -webkit-box-flex: 1;
         -webkit-flex: 1;
@@ -1438,7 +1441,7 @@ display:none;
         .resptbl th:first-child {
           padding-left: 0; }
         .resptbl th:last-child, .resptbl td:last-child {
-          padding-right: 0; } 
+          /*padding-right: 0;*/ } 
 		  .resptbl td:first-child {
             text-align: left;
              }
@@ -1495,16 +1498,28 @@ display:none;
     width:100%;
 }
 .drill-scroll-width-inner{
-    min-width:1400px;
+    min-width:1500px;
     display: table !important;
 }
 .drill-scroll-width-inner .col-10{
-    min-width:120px;
+    min-width:110px;
+    float:left;
+}
+.drill-scroll-width-inner .col-15{
+    min-width:150px;
+    float:left;
+}
+.drill-scroll-width-inner .col-20{
+    min-width:220px;
+    float:left;
+}
+.drill-scroll-width-inner .col-30{
+    min-width:330px;
     float:left;
 }
 .drill-scroll-width-inner .col-40{
-    min-width:480px;
-     float:left;
+    min-width:440px;
+    float:left;
 }
 .text-center{
     text-align: center;
@@ -1522,19 +1537,4 @@ display:none;
         padding-top: 6px !important;
     }
 }  
-
-.arrow-middle{
-    display: -webkit-box;
-    vertical-align: middle;
-    line-height: 230px;
-    .ion-chevron-left:before{
-        font-size: 30px;
-        opacity: 0.3 !important;
-    }
-    .ion-chevron-right:before{
-        font-size: 30px;
-        padding-left: 15px;
-        opacity: 0.3 !important;
-    }
-}
 

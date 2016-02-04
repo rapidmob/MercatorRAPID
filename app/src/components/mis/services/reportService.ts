@@ -162,7 +162,7 @@
 
 		function saveFile(pdfBlob,title) {
 			var deferred = $q.defer();
-			var fileName = title+".pdf";
+			var fileName = uniqueFileName(title)+".pdf";
 			var filePath = "";
 			try {
 				console.log('SaveFile: requestFileSystem');
@@ -205,6 +205,17 @@
 			}
 			
 			return deferred.promise;
+		}
+		function uniqueFileName(fileName){
+			var now = new Date();
+			var timestamp = now.getFullYear().toString();
+			timestamp += (now.getMonth() < 9 ? '0' : '') + now.getMonth().toString(); 
+			timestamp += (now.getDate() < 10 ? '0' : '') + now.getDate().toString(); 
+			timestamp += (now.getHours() < 10 ? '0' : '') + now.getHours().toString(); 
+			timestamp += (now.getMinutes() < 10 ? '0' : '') + now.getMinutes().toString(); 
+			timestamp += (now.getSeconds() < 10 ? '0' : '') + now.getSeconds().toString();
+			return fileName.toUpperCase()+"_"+timestamp;
+		
 		}
 	 }
     

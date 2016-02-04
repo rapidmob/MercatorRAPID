@@ -6,8 +6,8 @@
         <div class="pas-head-title">Passenger Flown</div>
         <div class="pas-head-subtitle">Month:
           <label>
-          <select class="selectmonth" ng-model="MisCtrl.header.flownMonth" ng-change="MisCtrl.updateHeader()">
-            <option ng-repeat="month in MisCtrl.subHeader.paxFlownMisMonths" value="{{month.flowMonth}}">{{month.flowMonth}}</option>
+          <select ng-init="MisCtrl.subHeader.paxFlownMisMonths[0].flowMonth !=''" class="selectmonth" ng-model="MisCtrl.header.flownMonth" ng-change="MisCtrl.updateHeader()">
+            <option ng-repeat="month in MisCtrl.subHeader.paxFlownMisMonths" ng-selected="MisCtrl.selectedFlownMonth(month.flowMonth)" value="{{month.flowMonth}}">{{month.flowMonth}}</option>
           </select>
           <i class="icon ion-chevron-down move-left"></i></label>
         </div>
@@ -16,7 +16,7 @@
         <div class="last-login">{{MisCtrl.subHeader.lastRefresh}}</div>
         <div class="profile-name">
           <!--Blaine Cooper &#9662;-->
-          <div class="dropdown"> <span class="dropbtn"> Victor &nbsp;<i class="icon ion-chevron-down" ></i> </span>
+          <div class="dropdown"> <span class="dropbtn"> {{ MisCtrl.getProfileUserName() }} &nbsp;<i class="icon ion-chevron-down" ></i> </span>
           </div>
         </div>
         <div class="profile-img"><img ng-src="res/img/profile.jpg" class="img-circle" alt="" ></div>

@@ -16,9 +16,9 @@
 /// <reference path="./components/user/LoginController.ts"/>
 
 var SERVER_URL = 'http://10.91.152.99:8082/rapid-ws/services/rest';
-angular.module('rapidMobile', ['ionic', 'tabSlideBox', 'nvd3ChartDirectives', 'nvd3'])
+angular.module('rapidMobile', ['ionic', 'rapidMobile.config', 'tabSlideBox', 'nvd3ChartDirectives', 'nvd3'])
 
-	.run(($ionicPlatform: Ionic.IPlatform, $http) => {
+	.run(($ionicPlatform: Ionic.IPlatform, $http: ng.IHttpService) => {
 		$http.defaults.headers.common.token = 'token';
   		$http.defaults.headers.post["Content-Type"] = "application/json";
 		$ionicPlatform.ready(() => {

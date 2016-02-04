@@ -29,7 +29,7 @@ class NetService implements INetService {
 	}
 
 	postData(toUrl: string, data: any, config?: ng.IRequestShortcutConfig): ng.IHttpPromise<any> {
-		return this.$http.post(this.URL_WS + toUrl, this.addMetaInfo(data), config);
+		return this.$http.post(this.URL_WS + toUrl, this.addMetaInfo(data));
 	}
 
 	deleteData(toUrl: string): ng.IHttpPromise<any> {
@@ -85,15 +85,25 @@ class NetService implements INetService {
 
 	addMetaInfo(requestData: any): any {
 		var device: Ionic.IDevice = ionic.Platform.device()
-		var model: string = '';
-		var osType: string = '';
-		var osVersion: string = '';
-		var deviceToken: string = '';
+		var model: string = 'device Info';
+		var osType: string = '8.4';
+		var osVersion: string = 'ios';
+		var deviceToken: string = 'string';
 		if (device) {
 			model = ionic.Platform.device().model;
 			osType = ionic.Platform.device().platform;
 			osVersion = ionic.Platform.device().version;
 		}
+		if (!model) {
+			model = 'device Info';	
+		}
+		if (!osType) {
+			osType = '8.4';	
+		}
+		if (!osVersion) {
+			osVersion = 'ios';	
+		}
+		
 		var metaInfo = {
 			'channelIdentifier': 'MOB',
 			'dateTimeStamp': new Date().getTime(),

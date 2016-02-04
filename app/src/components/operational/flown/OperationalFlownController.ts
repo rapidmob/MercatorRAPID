@@ -1,6 +1,6 @@
 /// <reference path="../../../_libs.ts" />
 /// <reference path="../services/OperationalService.ts" />
-
+/// <reference path="../../mis/services/FilteredListService.ts" />
 
 interface tabObject {
     title: string,
@@ -22,7 +22,7 @@ interface headerObject {
 
 class OperationalFlownController {
   public static $inject = ['$scope', '$ionicLoading', '$ionicPopover', '$filter',
-    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', 'ReportSvc'];
+    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService'];
   private tabs: [tabObject];
   private toggle: toggleObject;
   private header: headerObject;
@@ -42,10 +42,23 @@ class OperationalFlownController {
   private flightCountSection: string;
   private couponCountSection: string;
 
+  private pageSize = 4;
+  private currentPage = [];
+  private selectedDrill = [];
+  private groups = [];
+  private columnToOrder: string;
+  private shownGroup: number;
+  private drillType: string;
+  private drillBarLabel: string;
+  private exceptionCategory: string;
+  private drilltabs: string[];
+  private drillName: string[];
+  private drillpopover: Ionic.IPopover;
+
   constructor(private $scope: ng.IScope, private $ionicLoading: Ionic.ILoading,
     private $ionicPopover: Ionic.IPopover, private $filter: ng.IFilterService,
     private operationalService: OperationalService, private $ionicSlideBoxDelegate: Ionic.ISlideBoxDelegate,
-    private $timeout: ng.ITimeoutService, private reportSvc: ReportSvc) {
+    private $timeout: ng.ITimeoutService, private $window: ng.IWindowService, private reportSvc: ReportSvc, private filteredListService: FilteredListService) {
     this.tabs = [
       { title: 'My Dashboard', names: 'MyDashboard', icon: 'iconon-home' },
       { title: 'Flight Process Status', names: 'FlightProcessStatus', icon: 'ion-home' },
@@ -66,28 +79,68 @@ class OperationalFlownController {
     };
 
     this.initData();
+
+    var that = this;
+    this.$scope.$on('elementClick.directive', function(angularEvent, event) {
+      if (that.header.tabIndex == 1 && !isNaN(event.point[0])) {
+        that.openFlightProcessDrillPopover(event.e, event, -1);
+      }
+
+      if (that.header.tabIndex == 3 && !isNaN(event.point[0])) {
+        that.openCounponCountDrillPopover(event.e, event, -1);
+      }
+
+      if (that.header.tabIndex == 2 && !isNaN(event.point[0])) {
+        that.openFlightCountDrillPopover(event.e, event, -1);
+      }
+
+    });
   }
   initData() {
     var that = this;
+
+    this.$ionicPopover.fromTemplateUrl('components/operational/flown/drildown.html', {
+      scope: that.$scope
+    }).then(function(drillpopover) {
+      that.drillpopover = drillpopover;
+    });
+
+
     this.$ionicPopover.fromTemplateUrl('components/operational/flown/infotooltip.html', {
       scope: that.$scope
     }).then(function(infopopover) {
       that.infopopover = infopopover;
     });
-    this.operationalService.getPaxFlownOprHeader({ userId: 'Victor' }).then(
+
+    var req = {
+        userId: that.$window.localStorage.getItem('rapidMobile.user')
+    }
+    this.operationalService.getPaxFlownOprHeader(req).then(
       (data) => {
         that.subHeader = data.response.data;
         // console.log(that.subHeader.paxFlownOprMonths);
         that.header.flownMonth = that.subHeader.defaultMonth;
         // console.log(that.header.flownMonth);
+        that.onSlideMove({ index: 0 });
       },
       (error) => {
         console.log('an error occured');
       });
-    this.onSlideMove({ index: 0 });
+    
   }
+  selectedFlownMonth(month: string){
+    return (month == this.header.flownMonth);
+  }
+  getProfileUserName(): string {
+    var obj = this.$window.localStorage.getItem('rapidMobile.user');
+    var profileUserName = JSON.parse(obj);
+    return profileUserName.username;
+  }
+
+  
   onSlideMove(data: any) {
     this.header.tabIndex = data.index;
+	this.toggle.chartOrTable = "chart";
     switch (this.header.tabIndex) {
       case 0:
         this.callMyDashboard();
@@ -302,33 +355,340 @@ class OperationalFlownController {
     this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').next();
   }
    toggleChartOrTableView(val: string) {
-    this.toggle.chartOrTable = 'chart';
+    this.toggle.chartOrTable = val;
   }
   runReport(chartTitle: string,monthOrYear: string,flownMonth: string){
-	//if no cordova, then running in browser and need to use dataURL and iframe
-	if (!window.cordova) {
-		this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth)
-			.then(function(dataURL) {
-				//set the iframe source to the dataURL created
-				//console.log(dataURL);
-				//document.getElementById('pdfImage').src = dataURL;
-			});
-		return true;
+		var that = this;
+		//if no cordova, then running in browser and need to use dataURL and iframe
+		if (!window.cordova) {
+			that.ionicLoadingShow();
+			this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth)
+				.then(function(dataURL) {
+					that.ionicLoadingHide();
+					//set the iframe source to the dataURL created
+					//console.log(dataURL);
+					//document.getElementById('pdfImage').src = dataURL;
+				},function(error) {
+					that.ionicLoadingHide();
+					console.log('Error ');
+				});
+			return true;
+		}
+		//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
+		else {
+			that.ionicLoadingShow();
+			this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth)
+				.then(function(filePath) {
+					that.ionicLoadingHide();
+					//log the file location for debugging and oopen with inappbrowser
+					console.log('report run on device using File plugin');
+					console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
+					var lastPart = filePath.split("/").pop();
+					var fileName = "/mnt/sdcard/"+lastPart;
+					if(device.platform !="Android")
+					fileName = filePath;
+					//window.openPDF(fileName);
+					//else
+					//window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
+										
+					cordova.plugins.fileOpener2.open(
+						fileName, 
+						'application/pdf', 
+						{ 
+							error : function(e) { 
+								console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
+							},
+							success : function () {
+								console.log('file opened successfully');                
+							}
+						}
+					);
+				},function(error) {
+					that.ionicLoadingHide();
+					console.log('Error ');
+				});
+			return true;
+		}
 	}
-	//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
-	else {
-		this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth)
-			.then(function(filePath) {
-				//log the file location for debugging and oopen with inappbrowser
-				console.log('report run on device using File plugin');
-				console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-				var fileName = "/mnt/sdcard/"+chartTitle+".pdf";
-				if(device.platform =="Android")
-				window.openPDF(fileName);
-				else
-				window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');
-			});
-		return true;
-	}
+
+  openFlightProcessDrillPopover($event,data,selFindLevel) {
+    this.drillName = 'FLIGHT PROCESSING STATUS - ' + data.point[0] + '-' + this.header.flownMonth;
+    this.drillType = 'flight-process';
+    this.drillpopover.show($event);
+    this.shownGroup = 0;
+    this.groups = [];
+    this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
+    this.initiateArray(this.drilltabs);
+    this.openDrillDown(data.point,selFindLevel);
+  };
+
+  openCounponCountDrillPopover($event,data,selFindLevel) {
+    this.drillName = 'COUPON COUNT BY EXCEPTION CATEGORY ';
+    this.drillType = 'coupon-count';
+    this.drillpopover.show($event);
+    this.shownGroup = 0;
+    this.groups = [];
+    this.drilltabs = ['Coupon Count Flight Status', 'Document Level'];
+    this.initiateArray(this.drilltabs);
+    this.openDrillDown(data.point,selFindLevel);
+  };
+
+  openFlightCountDrillPopover($event,data,selFindLevel) {
+    this.drillName = 'LIST OF OPEN FLIGHTS FOR ' + data.point[0] + '-' + this.header.flownMonth +' BY REASON ';
+    this.drillType = 'flight-count';
+    this.drillpopover.show($event);
+    this.shownGroup = 0;
+    this.groups = [];
+    this.drilltabs = ['Open Flight Status', 'Document Level'];
+    this.initiateArray(this.drilltabs);
+    this.openDrillDown(data.point,selFindLevel);
+  };
+  
+  drillDownRequest (drillType, selFindLevel, data){
+    var reqdata;
+    if(drillType == 'flight-process') {
+      var drillLevel = (selFindLevel + 2);
+      if (data.label) {
+        this.drillBarLabel = data[0];
+      }
+
+      var flightDate;
+      //flightDate = (data.flightDate && drillLevel > 1) ? String(data.flightDate) : String(data[0]);
+      flightDate = (data.flightDate && drillLevel > 1) ? data.flightDate : 1;
+      var countryFromTo = (data.countryFrom && data.countryTo) ? data.countryFrom + '-' + data.countryTo : "";
+      var sectorFromTo = (data.flownSector) ? data.flownSector : "";
+      var flightNumber = (data.flightNumber) ? data.flightNumber : "";
+
+      
+
+      reqdata = {
+        "flownMonth": this.header.flownMonth,
+        "userId": this.getProfileUserName(),
+        "fullDataFlag": "",
+        "drillLevel": drillLevel,
+        "pageNumber": 0,
+        "flightDate": flightDate,
+        "countryFromTo": countryFromTo,
+        "sectorFromTo": sectorFromTo,
+        "flightNumber": flightNumber
+      };  
+    }
+
+
+    if(drillType == 'coupon-count') {
+      var drillLevel = (selFindLevel + 2);
+      if (data.label) {
+        this.drillBarLabel = data[0];
+      }
+      console.log(this.exceptionCategory);
+      var flightDate;
+      //flightDate = (data.flightDate && drillLevel > 1) ? String(data.flightDate) : String(data[0]);
+      flightDate = (data.flightDate && drillLevel > 1) ? data.flightDate : 1;
+      var exceptionCategory = (this.exceptionCategory && drillLevel > 1) ? this.exceptionCategory : "";
+      var flightSector = (data.flownSector) ? data.flownSector : "";
+      var flightNumber = (data.flightNumber) ? data.flightNumber : "";
+
+      
+
+      reqdata = {
+        "flownMonth": this.header.flownMonth,
+        "userId": this.getProfileUserName(),
+        "fullDataFlag": "",
+        "drillLevel": drillLevel,
+        "pageNumber": 0,
+        "exceptionCategory": exceptionCategory,
+        "flightNumber": flightNumber,
+        "flightDate": flightDate,
+        "flightSector": flightSector,
+      };  
+    }
+
+    if(drillType == 'flight-count') {
+      var drillLevel = (selFindLevel + 2);
+      if (data.label) {
+        this.drillBarLabel = data[0];
+      }
+      var flightDate;
+      //flightDate = (data.flightDate && drillLevel > 1) ? String(data.flightDate) : String(data[0]);
+      flightDate = (data.flightDate && drillLevel > 1) ? data.flightDate : 1;
+      var toggle1 = this.toggle.openOrClosed.toLowerCase();
+      var flightSector = (data.flownSector) ? data.flownSector : "";
+      var flightNumber = (data.flightNumber) ? data.flightNumber : "";
+      var flightStatus = (this.exceptionCategory && drillLevel > 1) ? this.exceptionCategory : "";
+      
+
+      reqdata = {
+        "flownMonth": this.header.flownMonth,
+        "userId": this.getProfileUserName(),
+        "fullDataFlag": "",
+        "drillLevel": drillLevel,
+        "pageNumber": 0,
+        "toggle1": toggle1,
+        "flightStatus": flightStatus,
+        "flightNumber": flightNumber,
+        "flightDate": flightDate,
+        "flightSector": flightSector,
+      };  
+    }
+
+    return reqdata;
   }
+
+  getDrillDownURL (drilDownType) {
+    var url
+    switch(drilDownType){
+      case 'flight-process':
+        url = "/paxflnopr/flightprocessingstatusdrill";
+      break;
+      case 'coupon-count':
+        url = "/paxflnopr/couponcountbyexpdrill";
+      break;
+      case 'flight-count':
+        url = "/paxflnopr/flightcountbyreasondrill";
+      break;
+    }
+    return url;
+  }
+  tabSlideHasChanged(index){
+    var data = this.groups[0].completeData[0];
+    this.groups[0].items[0] = data[index].values;
+    this.groups[0].orgItems[0] = data[index].values;
+    this.sort('', 0, false);
+    this.exceptionCategory = data[index].key;
+  }
+
+  openDrillDown(data, selFindLevel) {
+    selFindLevel = Number(selFindLevel);
+    var that = this;
+    this.selectedDrill[selFindLevel] = data;
+    this.selectedDrill[selFindLevel + 1] = '';
+    
+    if (selFindLevel != (this.groups.length - 1)) {
+      var drillLevel = (selFindLevel + 2);
+      var reqdata = this.drillDownRequest(this.drillType, selFindLevel, data);
+      var URL = this.getDrillDownURL(this.drillType);
+      this.operationalService.getDrillDown(reqdata, URL)
+        .then(function(data) {
+          that.ionicLoadingHide();
+          var data = data.response;
+          console.log(data);
+          var findLevel = drillLevel - 1;
+          if (data.status == 'success') {
+            var respResult;
+            if(data.data.rows){
+              respResult = data.data.rows;
+            }else{
+              respResult = data.data;
+            }
+
+            if((that.drillType == 'coupon-count' || that.drillType == 'flight-count') && data.data.rows){
+              that.groups[findLevel].items[0] = respResult[0].values;
+              that.groups[findLevel].orgItems[0] = respResult[0].values;
+              that.groups[findLevel].completeData[0] = respResult;
+              that.exceptionCategory = respResult[0].key;
+            }else{
+              that.groups[findLevel].items[0] = respResult;
+              that.groups[findLevel].orgItems[0] = respResult;
+            }
+
+            that.shownGroup = findLevel;
+            that.sort('', findLevel, false);
+            that.clearDrill(drillLevel);
+          } else {
+            that.shownGroup = findLevel;
+            that.clearDrill(findLevel);
+          }
+        }, function(error) {
+          that.ionicLoadingHide();
+          that.closesPopover();
+          console.log(error);
+          alert('Server Error');
+        });
+    }
+  }
+
+  closeDrillPopover(){
+    this.drillpopover.hide();
+  }
+
+  clearDrill(level: number) {
+    var i: number;
+    for (var i = level; i < this.drilltabs.length; i++) {
+      this.groups[i].items.splice(0, 1);
+      this.groups[i].orgItems.splice(0, 1);
+      this.sort('',i,false);
+    }
+  }
+  initiateArray(drilltabs) {
+    for (var i in drilltabs) {
+      this.groups[i] = {
+        id: i,
+        name: this.drilltabs[i],
+        items: [],
+        orgItems: [],
+        ItemsByPage: [],
+        completeData: []
+      };
+    }
+  }
+
+  isDrillRowSelected(level,obj) {
+    return this.selectedDrill[level] == obj;
+  }
+  searchResults (level,obj) {
+    this.groups[level].items[0] = this.filteredListService.searched(this.groups[level].orgItems[0], obj.searchText, level, this.drillType);
+    if (obj.searchText == '') {
+      this.resetAll(level); 
+      this.groups[level].items[0] = this.groups[level].orgItems[0];
+    }
+    this.currentPage[level] = 0;
+    this.pagination(level); 
+  }
+  pagination (level) {
+    this.groups[level].ItemsByPage = this.filteredListService.paged(this.groups[level].items[0], this.pageSize );
+  };
+  setPage (level, pageno) {
+    this.currentPage[level] = pageno;
+  };
+  lastPage(level) {
+    this.currentPage[level] = this.groups[level].ItemsByPage.length - 1;
+  };
+  resetAll(level) {
+    this.currentPage[level] = 0;
+  }
+  sort(sortBy,level,order) {
+    this.resetAll(level);
+    this.columnToOrder = sortBy; 
+    //$Filter - Standard Service
+    this.groups[level].items[0] = this.$filter('orderBy')(this.groups[level].items[0], this.columnToOrder, order); 
+    this.pagination(level);
+  };
+  range(total, level) {
+    var ret = [];
+    var start: number;
+    start = Number(this.currentPage[level]) - 2;
+    if(start < 0) {
+      start = 0;
+    }
+    var k = 1;
+    for (var i = start; i < total; i++) {
+      ret.push(i);
+      k++;
+      if (k > 6) {
+        break;
+      }
+    }
+    return ret;
+  }
+  toggleGroup (group) {
+    if (this.isGroupShown(group)) {
+      this.shownGroup = null;
+    } else {
+      this.shownGroup = group;
+    }
+  }
+  isGroupShown(group: number) {
+    return this.shownGroup == group;
+  }
+
 }

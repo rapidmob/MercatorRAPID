@@ -32,8 +32,8 @@
         <div class="col box-cont rev-modifier targetActual" data-item-title="{{netRevenue.heading1 +' '+ netRevenue.heading2}}" data-item-flag="2" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
             <nvd3 data="[{ values: netRevenue.values}]" options="MisCtrl.options.targetBarChart"></nvd3>
         </div>
-		<div ng-show="MisCtrl.toggle.chartOrTable=='table'">
-			<table class="resptbl" style="margin: 65px 0px 66px 0px">
+		
+			<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
 			  <tr class="tblhder">				
 				<th>Actual</th>
 				<th>Target</th>
@@ -43,7 +43,7 @@
 				<td data-th="Target">{{netRevenue.values[1].value}}</td>
 			  </tr>
 			</table>
-		</div>
+		
 	</div>      
     </div>
   </div>
@@ -63,9 +63,8 @@
         <div class="col box-cont targetActual" style='padding: 0%' data-item-title="{{monthAnalysis.heading1 +' '+ monthAnalysis.heading2}}" data-item-pdfFlag="pdfFlag" data-item-flag="3" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
           <nvd3 data="monthAnalysis.lineChartItems" options="MisCtrl.options.targetLineChart" class="with-3d-shadow with-transitions"></nvd3>
         </div>
-		<div ng-show="MisCtrl.toggle.chartOrTable=='table'">
-			<ion-scroll>
-			<table class="resptbl" style="margin: 20px 0px 0px 0px">
+		
+			<table class="resptbl" style="margin: 20px 0px 0px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
 			  <tr class="tblhder">
 				<th>Month</th>
 				<th>{{monthAnalysis.lineChartItems[0].key}}</th>
@@ -156,8 +155,7 @@
 			  </tr>
 
 			</table>
-			</ion-scroll>
-		</div>
+			
 
         </div>		
       </div>

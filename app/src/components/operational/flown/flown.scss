@@ -33,13 +33,27 @@
     vertical-align: middle;
     margin-top: -2px;
 }
-@media only screen and (max-device-width: 1024px) and (min-device-width: 768px){
-	
-}
+
 @media only screen and (max-device-width: 1024px) and (min-device-width: 768px){
     .closed-percentage{
         margin-right: -2em;
     }
+    .arrow-middle{
+        display: -webkit-box;
+        vertical-align: middle;
+        line-height: 230px;
+    }
+    .arrow-middle{
+        .ion-chevron-left:before{
+            font-size: 30px;        
+            opacity: 0.3 !important;
+        }
+        .ion-chevron-right:before{
+            font-size: 30px;
+            padding-left: 15px;
+            opacity: 0.3 !important;
+        }
+}
 }
 
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) { 
@@ -56,8 +70,7 @@
     .four-bar {
         width: 327px;
         margin: -1em -3em 0 !important;
-    }
-    
+    }    
 }
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) { 
     .arrow-middle{
@@ -66,6 +79,10 @@
     .four-bar {
         width: 340px;
         margin: -28px auto 0 !important;
+    }
+    .tab-cust{
+        padding-left: 45px !important;
+        padding-right: 45px !important;
     }
 }
 .capitalize{
@@ -108,8 +125,10 @@
         padding-left: 15px;
         opacity: 0.3 !important;
     }
+    .disable-icon{
+        opacity: 0.2;
+    }
 }
-
 .three-bar, .four-bar{ 
         svg{
             text{
@@ -122,3 +141,60 @@
         background-color: #ffffff !important;
     }
 }
+.no-margin-top{
+    margin-top:0 !important;
+}
+#tab-drill .scroll{
+    border: 0 !important;
+}
+.drill-tab{
+    padding-left: 2.5em !important;
+    padding-right: 2.5em !important;
+    padding-bottom: 3px !important;
+    line-height: 0!important;
+    font: 0.9em;  
+}
+#tab-drill a.active{
+    font: 0.9em !important;  
+}
+.tab-slide{
+    margin-top: 10px;
+}
+.tab-ion-slide{
+    text-align: left !important;
+}
+
+@media only screen  and (min-width: 1025px) {
+    .metric{
+        .monthdata-modifier{
+            padding: 0 22%;
+            min-height: 370px;
+            max-height: 370px;
+        }
+        .weekdata-modifier{
+            min-height: 370px;
+            max-height: 370px;
+        }
+    }
+    .arrow-middle{
+        display: -webkit-box;
+        vertical-align: middle;
+        line-height: 347px;
+        .ion-chevron-left:before{
+            font-size: 30px;
+            opacity: 0.3 !important;
+        }
+        .ion-chevron-right:before{
+            font-size: 30px;
+            padding-left: 43px;
+            opacity: 0.3 !important;
+        }
+    }
+    .tab-cust{
+        padding-left: 7.5em !important;
+        padding-right: 7.5em !important;        
+    }
+}
+
+
+

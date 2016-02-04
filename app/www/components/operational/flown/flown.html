@@ -7,7 +7,7 @@
         <div class="pas-head-subtitle">Month:
           <label>
           <select class="selectmonth">
-             <option ng-repeat="month in OprCtrl.subHeader.paxFlownOprMonths.values" value="{{month}}">{{month}}</option>
+             <option ng-repeat="month in OprCtrl.subHeader.paxFlownOprMonths.values" ng-selected="OprCtrl.selectedFlownMonth(month)" value="{{month}}">{{month}}</option>
           </select>
           <i class="icon ion-chevron-down move-left"></i></label>
         </div>
@@ -16,7 +16,7 @@
         <div class="last-login">Last refreshed: {{OprCtrl.subHeader.lastRefresh}}</div>
         <div class="profile-name">
           <!--Blaine Cooper &#9662;-->
-          <div class="dropdown"> <span class="dropbtn">Victor&nbsp;<i class="icon ion-chevron-down" ></i></span>
+          <div class="dropdown"> <span class="dropbtn">{{ OprCtrl.getProfileUserName() }}&nbsp;<i class="icon ion-chevron-down" ></i></span>
           </div>
         </div>
         <div class="profile-img"><img ng-src="res/img/profile.jpg" class="img-circle" alt="" ></div>
@@ -38,7 +38,7 @@
           <div class="tsb-ic-wrp">
           <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
           <div class="no-padding">
-              <a href="" ng-click="OprCtrl.onSlideMove({'index' : $index})" class="tab text-center text-center"  ng-repeat="tab in OprCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a></a>
+              <a href="" ng-click="OprCtrl.onSlideMove({'index' : $index})" class="tab text-center text-center tab-cust"  ng-repeat="tab in OprCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a></a>
             </div>
           </ion-scroll>
         </div>

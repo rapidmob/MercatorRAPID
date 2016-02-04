@@ -27,8 +27,8 @@
 			  </div>
 			  <div class="chart-legend-rev from">Passenger</div><div class="chart-legend-rev to">Ancillary</div>
 			</div>
-			<div ng-show="MisCtrl.toggle.chartOrTable=='table'">
-				<table class="resptbl" style="margin: 65px 0px 66px 0px">
+			
+				<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
 					<tr class="tblhder">              
 					<th>Passenger</th>
 					<th>Ancillary</th>
@@ -38,7 +38,7 @@
 						<td data-th="Ancillary">{{revenueData.values[1].value}}</td>
 					</tr>
 				</table>
-			</div> 
+			
 		  </div>                  
 		</div>
 	  </div>
@@ -53,12 +53,12 @@
 			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,1,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
 		  </div>
 		  <div class="row">
-			<div class="col box-cont-rev net-rev-height revenueAnalysis" data-item-title=" {{MisCtrl.revenueData.revenuePieChart.chartName | limitTo : 27}}{{MisCtrl.revenueData.revenuePieChart.chartName.length > 27 ? '...' : ''}}" data-item-flag="2" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+			<div class="col box-cont-rev net-rev-height rev-pie-modifier revenueAnalysis" data-item-title=" {{MisCtrl.revenueData.revenuePieChart.chartName | limitTo : 27}}{{MisCtrl.revenueData.revenuePieChart.chartName.length > 27 ? '...' : ''}}" data-item-flag="2" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
 			  <!-- <nvd3 data="revenuePieChart" options="options.revenuePieChart"></nvd3> -->
 			  <he-custom-pie-chart chart-height="280" chart-width="300" chart-data="MisCtrl.revenueData.revenuePieChart.data"></he-custom-pie-chart>
 			</div>
-			<div ng-show="MisCtrl.toggle.chartOrTable=='table'">
-				<table class="resptbl" style="margin: 65px 0px 66px 0px">				  
+			
+				<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">				  
 					<tr class="tblhder">              
 					<th>First</th>
 					<th>Business</th>
@@ -70,7 +70,7 @@
 					<td data-th="Economy">{{MisCtrl.revenueData.revenuePieChart.data[2].yval}}</td>
 					</tr>
 				</table>
-			</div>
+			
 		  </div>
 		</div>
 	  </div>
@@ -87,8 +87,8 @@
 			  <nvd3 data="MisCtrl.revenueData.revenueBarChart" options="MisCtrl.options.passengerChart"></nvd3>
 			  <div class="chart-legend-rev from">OWN</div><div class="chart-legend-rev to">OAL</div>
 			</div>
-			<div ng-show="MisCtrl.toggle.chartOrTable=='table'">
-				<table class="resptbl" style="margin: 65px 0px 66px 0px">
+			
+				<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
 					<tr class="tblhder">              
 					<th>First</th>
 					<th>Business</th>
@@ -100,7 +100,7 @@
 					<td data-th="Economy">{{revenueData.values[2].value}}</td>
 					</tr>
 				</table>
-			</div>
+			
 		  </div>                  
 		</div>
 	  </div>

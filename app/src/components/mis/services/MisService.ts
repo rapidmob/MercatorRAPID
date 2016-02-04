@@ -127,4 +127,19 @@ class MisService {
 
 		return def.promise;
 	}
+
+	getDrillDown (reqdata, URL){
+		var requestUrl: string = URL;
+		var def: ng.IDeferred<any> = this.$q.defer();
+		this.dataProviderService.postData(requestUrl, reqdata).then(
+		(response) => {
+			var result: any = response.data;
+			def.resolve(result);
+		},
+		(error) => {
+			console.log('an error occured');
+		});
+
+		return def.promise;
+	}
 }

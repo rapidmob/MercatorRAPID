@@ -40,8 +40,8 @@
 				<he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items"></he-progress-bar>
 				<p class="float-right">Others {{sector.others[0].progress}}</p>
 			</div>
-			<div ng-show="MisCtrl.toggle.chartOrTable=='table'">
-				<table class="resptbl">
+			
+				<table class="resptbl" ng-show="MisCtrl.toggle.chartOrTable=='table'">
 				  <tr class="tblhder">    
 				  <th>{{sector.heading1}}</th>
 				  <th>Progress</th>
@@ -52,7 +52,7 @@
 				  </tr>
 				  <tr class="tblcol"><td>Others</td> <td data-th="Others">{{sector.others[0].progress}}</td></tr>
 				</table>
-			</div>
+			
         </div>
       </div>
     </div>

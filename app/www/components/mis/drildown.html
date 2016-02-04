@@ -22,12 +22,12 @@
               </div>
               <div class="col-33 ">
               <span class="ion-android-search search-icon"></span>
-                      <input type="text" name="searchText" class="drill-search col col-100" ng-model="searchText"  ng-change="MisCtrl.searchResults($index,this)">
+                      <input type="text" name="searchText" class="drill-search col col-100" ng-model="searchText" placeholder="Search"  ng-change="MisCtrl.searchResults($index,this)">
                       <div ng-click="searchText = ''" ng-show="searchText" class="search-close"><i class="icon ion-close placeholder-icon"></i></div>
               </div>
               <div class="col-33">
                  <ul class="pagination pagination-sm">
-                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length)"> <a href="#" ng-click="MisCtrl.setPage(MisCtrl.shownGroup, n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
+                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length,MisCtrl.shownGroup)"> <a href="#" ng-click="MisCtrl.setPage(MisCtrl.shownGroup, n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
 
                   </li>
               </ul>
