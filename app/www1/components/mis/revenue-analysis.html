@@ -1,0 +1,108 @@
+ <div class="row section-margin responsive-sm content-head">
+  <div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">REVENUE ANALYSIS</div>
+  <div class="col col-33">
+    <div class="row btn-section responsive-sm">
+		<div class=" pull-right padding-horizontal download-btn"><button class="button export" ng-click="MisCtrl.runReport('revenueAnalysis','REVENUE ANALYSIS',MisCtrl.header.flownMonth)"><img src="res/img/download.svg" /></button></div>
+		<div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+			<a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('chart')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='chart'}"><img src="res/img/graph.svg" /></a>
+			<a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('table')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='table'}"><img src="res/img/tabular.svg" /></a>
+		</div>
+    </div>
+  </div>
+</div>
+<div class="route-rev-section">
+  <div class="row section-margin responsive-sm">
+	  <div class="col col-33 padding-horizontal">
+		<div class="col-demo">
+		  <div class="row">
+			<div class="col col-90 no-padding pull-left graph-title">Net Revenue by OWN OAL <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.revenueData.revenueHorBarChart.chartInfo)"></i></div>
+			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,0,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+		  </div>
+		  <div class="row">
+			<div class="col box-cont-rev net-rev-height" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+			  <!-- <nvd3 data="revenueHorBarChart" options="options.revenueHorBarChart"></nvd3> -->
+			  <div ng-repeat="revenueData in MisCtrl.revenueData.revenueHorBarChart">
+				<div class="net-rev-title from">{{revenueData.key}}</div>
+				<he-revenue-progress-bar chart-data="revenueData.values"></he-revenue-progress-bar>           
+			  </div>
+			  <div class="chart-legend-rev from">Passenger</div><div class="chart-legend-rev to">Ancillary</div>
+			</div>
+			
+				<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
+					<tr class="tblhder">              
+					<th>Passenger</th>
+					<th>Ancillary</th>
+					</tr>
+					<tr class="tblcol" ng-repeat="revenueData in MisCtrl.revenueData.revenueHorBarChart">             
+						<td data-th="Passenger">{{revenueData.values[0].value}}</td>
+						<td data-th="Ancillary">{{revenueData.values[1].value}}</td>
+					</tr>
+				</table>
+			
+		  </div>                  
+		</div>
+	  </div>
+	  <div class="col col-33 col-offset-5 padding-horizontal">
+		<div class="col-demo">
+		  <div class="row">
+			<div class="col col-90 no-padding pull-left graph-title">
+			{{MisCtrl.revenueData.revenuePieChart.chartName | limitTo : 27}}
+			{{MisCtrl.revenueData.revenuePieChart.chartName.length > 27 ? '' : ''}}
+			<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.revenueData.revenueHorBarChart.chartInfo)"></i>
+			</div>
+			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,1,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+		  </div>
+		  <div class="row">
+			<div class="col box-cont-rev net-rev-height rev-pie-modifier revenueAnalysis" data-item-title=" {{MisCtrl.revenueData.revenuePieChart.chartName | limitTo : 27}}{{MisCtrl.revenueData.revenuePieChart.chartName.length > 27 ? '...' : ''}}" data-item-flag="2" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+			  <!-- <nvd3 data="revenuePieChart" options="options.revenuePieChart"></nvd3> -->
+			  <he-custom-pie-chart chart-height="280" chart-width="300" chart-data="MisCtrl.revenueData.revenuePieChart.data"></he-custom-pie-chart>
+			</div>
+			
+				<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">				  
+					<tr class="tblhder">              
+					<th>First</th>
+					<th>Business</th>
+					<th>Economy</th>
+					</tr>
+					<tr class="tblcol">             
+					<td data-th="First">{{MisCtrl.revenueData.revenuePieChart.data[0].yval}}</td>
+					<td data-th="Business">{{MisCtrl.revenueData.revenuePieChart.data[1].yval}}</td>
+					<td data-th="Economy">{{MisCtrl.revenueData.revenuePieChart.data[2].yval}}</td>
+					</tr>
+				</table>
+			
+		  </div>
+		</div>
+	  </div>
+	  <div class="col col-33 col-offset-5 padding-horizontal">
+		<div class="col-demo">
+		  <div class="row">
+			<div class="col col-90 no-padding pull-left graph-title">Passenger Count by class of Travel
+			  <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.revenueData.revenueHorBarChart.chartInfo)"></i>
+			</div>
+			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,2,'revenue')" class="icon icon-larger font-normal ion-android-open curs"></i></div>
+		  </div>
+		  <div class="row">
+			<div class="col box-cont-rev net-rev-height revenueAnalysis" data-item-title="Passenger Count by class of Travel" data-item-flag="3" ng-show="MisCtrl.toggle.chartOrTable=='chart'">
+			  <nvd3 data="MisCtrl.revenueData.revenueBarChart" options="MisCtrl.options.passengerChart"></nvd3>
+			  <div class="chart-legend-rev from">OWN</div><div class="chart-legend-rev to">OAL</div>
+			</div>
+			
+				<table class="resptbl" style="margin: 65px 0px 66px 0px" ng-show="MisCtrl.toggle.chartOrTable=='table'">
+					<tr class="tblhder">              
+					<th>First</th>
+					<th>Business</th>
+					<th>Economy</th>
+					</tr>
+					<tr class="tblcol" ng-repeat="revenueData in MisCtrl.revenueData.revenueBarChart">              
+					<td data-th="First">{{revenueData.values[0].value}}</td>
+					<td data-th="Business">{{revenueData.values[1].value}}</td>
+					<td data-th="Economy">{{revenueData.values[2].value}}</td>
+					</tr>
+				</table>
+			
+		  </div>                  
+		</div>
+	  </div>
+  </div>  
+</div>
