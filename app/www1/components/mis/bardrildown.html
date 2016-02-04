@@ -1,0 +1,50 @@
+<ion-popover-view class="drillpopover">
+  <ion-content class="padding">
+    <div class="row ">
+    <div class="col-90 drill-page-title">{{MisCtrl.drillName}}</div>
+     <div class="col-10 popup-close icon-larger ion-close"  ng-click="MisCtrl.closesBarPopover()"></div>
+    </div>
+
+    <ion-list class="row col margin-top-10">
+        <div ng-repeat="group in MisCtrl.groups track by $index">
+          <ion-item class="item-stable main-title drilldown-head"
+                    ng-click="MisCtrl.toggleGroup(group.id)"
+                    ng-class="{active: MisCtrl.isGroupShown(group.id)}">
+              <i class="icon float-right accord-icon" ng-class="MisCtrl.isGroupShown(group.id) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
+            &nbsp;
+            PAX Revenue Report - {{group.name}}
+          </ion-item>
+          <ion-item class="item-accordion drilldown-content"
+          ng-class="{'drilldown-content-active': MisCtrl.isGroupShown(group.id), 'drilldown-content-inactive': !MisCtrl.isGroupShown(group.id)}" ng-show="MisCtrl.isGroupShown(group.id)">
+            <div class="row " ng-if="group.items[0]">
+              <div class="col-33 search-results">
+                Showing {{group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]].length}} out of {{group.items[0].length}} results
+              </div>
+              <div class="col-33 ">
+              <span class="ion-android-search search-icon"></span>
+                      <input type="text" name="searchText" class="drill-search col col-100" placeholder="Search" ng-model="searchText"  ng-change="MisCtrl.searchResults($index,this)">
+                      <div ng-click="searchText = ''" ng-show="searchText" class="search-close"><i class="icon ion-close placeholder-icon"></i></div>
+              </div>
+              <div class="col-33">
+                 <ul class="pagination pagination-sm">
+                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length,MisCtrl.shownGroup)"> <a href="#" ng-click="MisCtrl.setPage(MisCtrl.shownGroup,n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
+
+                  </li>
+              </ul>
+
+              </div>
+               </div>
+            <div class="row drilldown-list " ng-if="!group.items[0]">
+            No Records Available
+            </div>
+            <div class="drill-scroll-section drill-scroll-width">
+            <div ng-if="MisCtrl.drillType == 'bar'"  ng-include="'components/mis/passenger.html'"></div>
+            <div ng-if="MisCtrl.drillType == 'target'"  ng-include="'components/mis/targetdrilldown.html'"></div>
+            </div>
+          </ion-item>
+        </div>
+      </ion-list>
+
+
+  </ion-content>
+</ion-popover-view>

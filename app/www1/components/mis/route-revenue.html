@@ -1,0 +1,28 @@
+<div class="row section-margin responsive-sm">
+  <div class="col col-90 padding-horizontal padding-vertical metric-modifier pull-left">ROUTE REVENUE</div>
+  <div class="col col-10 pull-right padding-horizontal download-btn"><button class="button export"><img src="res/img/download.svg" /></button></div>          
+</div>
+<div class="row section-margin  responsive-sm">
+  <div class="col col-33 padding-horizontal" ng-repeat="routeRevData in MisCtrl.routeRevData.RouteRevenueCharts">
+    <div class="col-demo route-rev-min-height">
+      <div class="row border-bottom">
+        <div class="col col-90 no-padding pull-left graph-title">{{routeRevData.chartName}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger font-normal curs" ng-click = "MisCtrl.openinfoPopover($event, routeRevData.chartInfo)"></i></div>
+        <div class="col col-10 no-padding pull-right"></div>
+      </div>
+      <div ng-click="MisCtrl.openDrillDownPopover($event,routeRevData, -1)" class="row route-rev-padding-top">
+        <div class="col col-33 no-padding graph-title border-right">
+          <div class="route-rev-val">{{routeRevData.paxCount}}</div>
+          <div class="route-rev-title">Net Revenue</div>
+        </div>
+      <div class="col col col-33 no-padding graph-title border-right">
+        <div class="route-rev-val">{{routeRevData.paxCount}}</div>
+        <div class="route-rev-title">% Contribution</div>
+      </div>
+      <div class="col col-33 no-padding graph-title">
+        <div class="route-rev-val">{{routeRevData.paxCount}}</div>
+        <div class="route-rev-title">PAX Count</div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

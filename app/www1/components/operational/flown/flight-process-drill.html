@@ -1,0 +1,71 @@
+<div class="drill-scroll-width-inner row drilldown-head drilldown-title active " ng-if="group.items[0]">
+  <div ng-if="(OprCtrl.shownGroup == 0)" class="col-20" >
+    <div class="col " >Country</div>
+    <div class="col" >
+      <div class="col-10">From</div>
+      <div class="col-10">To</div>      
+    </div>
+  </div>
+  <div ng-if="(OprCtrl.shownGroup == 1)" class="col-10 intial-header">Flown Sector</div>
+  <div ng-if="(OprCtrl.shownGroup == 2)" class="col-10 intial-header">Flight Number</div>
+  <div class="col-20" ng-if="(OprCtrl.shownGroup != 3)" >
+    <div class="col text-center" >Flight Count</div>
+    <div class="col" >
+      <div class="col-10 text-right">Expected</div>
+      <div class="col-10 text-right">Not Received</div>      
+    </div>
+  </div>
+  <div class="col-30" ng-if="(OprCtrl.shownGroup != 3)" >
+    <div class="col text-center" >Flight Control</div>
+    <div class="col" >
+      <div class="col-10 text-right">OWA</div>
+      <div class="col-10 text-right">OAL</div>
+      <div class="col-10 text-right">Total</div>
+    </div>
+  </div>
+  <div class="col-30" ng-if="(OprCtrl.shownGroup != 3)" >
+    <div class="col text-center" >Received Coupon Count</div>
+    <div class="col" >
+      <div class="col-10 text-right">Open</div>
+      <div class="col-10 text-right">Closed</div>
+      <div class="col-10 text-right">In Exception</div>      
+    </div>
+  </div>
+  <div  ng-if="(OprCtrl.shownGroup != 3)" class="col-15 intial-header text-right">Coupon Received%</div>
+  <div  ng-if="(OprCtrl.shownGroup != 3)" class="intial-header col-15 text-right">Un-assigned Exceptions</div>
+
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15">Carrier code</div>
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15 ">Document Level</div>
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15">Coupon </div>
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15 ">Status</div>
+
+</div>
+<div ng-class="{activedrill: OprCtrl.isDrillRowSelected(OprCtrl.shownGroup,item)}" class="drill-scroll-width-inner row drilldown-list" ng-repeat="item in group.ItemsByPage[OprCtrl.currentPage[OprCtrl.shownGroup]]"  ng-click="OprCtrl.openDrillDown(item,OprCtrl.shownGroup)">
+  <div class="col-20"  ng-if="(OprCtrl.shownGroup == 0)"><div class="col" >
+  <div class="col-10">{{item.countryFrom}}</div>
+  <div class="col-10">{{item.countryTo}}</div>
+  </div></div>
+  <div ng-if="(OprCtrl.shownGroup == 1)" class="col-10">{{item.flownSector}}</div>
+  <div ng-if="(OprCtrl.shownGroup == 2)" class="col-10">{{item.flightNumber}}</div>
+  <div class="col-20"  ng-if="(OprCtrl.shownGroup != 3)"><div class="col" >
+  <div class="col-10 text-right">{{item.expectedFlightCount}}</div>
+  <div class="col-10 text-right">{{item.notReceivedFlightCount}}</div>
+  </div></div>
+  <div  ng-if="(OprCtrl.shownGroup != 3)"class="col-30" ><div class="col" >
+  <div class="col-10 text-right">{{item.ownCouponCount}}</div>
+  <div class="col-10 text-right">{{item.oalCouponCount}}</div>
+  <div class="col-10 text-right"> 0</div>
+  </div></div>
+  <div ng-if="(OprCtrl.shownGroup != 3)" class="col-30" ><div class="col" >
+  <div class="col-10 text-right">{{item.openCouponCount}}</div>
+  <div class="col-10 text-right">{{item.closedCouponCount}}</div>
+  <div class="col-10 text-right">{{item.inExceptionCouponCount}}</div>
+  </div></div>
+  <div  ng-if="(OprCtrl.shownGroup != 3)" class="col-15 text-right">{{item.couponReceivedPercent}}</div>
+  <div  ng-if="(OprCtrl.shownGroup != 3)" class="col-15 text-right">{{item.unassignedExceptions}}</div>
+
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15">{{item['carrierCode#']}}</div>
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15 ">{{item['document#']}}</div>
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15">{{item['coupon']}}</div>
+  <div  ng-if="(OprCtrl.shownGroup == 3)" class="col-15">{{item.couponStatus}}</div>
+</div>
