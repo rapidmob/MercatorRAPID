@@ -15,6 +15,8 @@
 /// <reference path="./components/operational/flown/OperationalFlownController.ts"/>
 /// <reference path="./components/user/LoginController.ts"/>
 
+/// <reference path="./common/chart-event/ChartEvent.ts" />
+
 var SERVER_URL = 'http://10.91.152.99:8082/rapid-ws/services/rest';
 angular.module('rapidMobile', ['ionic', 'rapidMobile.config', 'tabSlideBox', 'nvd3ChartDirectives', 'nvd3'])
 
@@ -81,6 +83,7 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.config', 'tabSlideBox', 'nv
 .controller('OperationalFlownController', OperationalFlownController)
 .controller('LoginController', LoginController)
 
+.directive('chartevent', ChartEvent.factory())
 // .directive('fetchList', FetchList.factory())
 
 

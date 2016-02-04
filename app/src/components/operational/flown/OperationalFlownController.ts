@@ -126,7 +126,7 @@ class OperationalFlownController {
       (error) => {
         console.log('an error occured');
       });
-    
+    that.header.userName = that.getProfileUserName();
   }
   selectedFlownMonth(month: string){
     return (month == this.header.flownMonth);
@@ -164,8 +164,8 @@ class OperationalFlownController {
   callFlightProcStatus() {
     var that = this;
     var reqdata = {
-      flownMonth: 'Jul-2015',//this.header.flownMonth,
-      userId: '',
+      flownMonth: this.header.flownMonth,
+      userId: this.header.userName,
       toggle1: '',
       fullDataFlag: 'N'
     };
@@ -214,8 +214,8 @@ class OperationalFlownController {
   callFlightCountByReason() {
     var that = this;
     var reqdata = {
-      flownMonth: 'Jul-2015',
-      userId: '',
+      flownMonth: this.header.flownMonth,
+      userId: this.header.userName,
       toggle1: 'open',
       fullDataFlag: 'N'
     };
@@ -249,8 +249,8 @@ class OperationalFlownController {
   callCouponCountByException() {
     var that = this;
     var reqdata = {
-      flownMonth: 'Jul-2015',
-      userId: '',
+      flownMonth: this.header.flownMonth,
+      userId: this.header.userName,
       toggle1: '',
       fullDataFlag: 'N'
     };

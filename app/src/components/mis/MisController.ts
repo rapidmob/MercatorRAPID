@@ -120,6 +120,12 @@ class MisController{
         this.$scope.$on('onSlideMove', (event: any, response: any) => {
             this.$scope.MisCtrl.onSlideMove(response);
         });
+
+        this.$scope.$on('openDrillPopup', (event: any, response: any) => {
+            if (response.type == 'metric') {
+                this.$scope.MisCtrl.openBarDrillDownPopover(response.event, { "point": response.data }, -1);
+            }
+        });
         
     }
     initData() {
@@ -164,6 +170,8 @@ class MisController{
                     console.log('an error occured');
                 });
                 //
+				
+		that.header.username = that.getProfileUserName();
         
     }
     selectedFlownMonth(month: string){

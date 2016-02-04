@@ -38,7 +38,9 @@
 		  </div>
 		  <div class="row">
 			<div class="col box-cont metric-modifier metricSnapshot" data-item-title="{{MisCtrl.metricResult[$index].chartName}}" data-item-flag="{{$index}}">
+			<chartevent type="metric">
 			  <nvd3 data="[{ values: MisCtrl.metricResult[$index].values}]" options="MisCtrl.options.metric" events="events" api="{}"></nvd3>
+			  </chartevent>
 			</div>
 		  </div>
 		  <div class="row">
@@ -66,7 +68,9 @@
 		  </div>
 		  <div class="row">
 			<div class="col box-cont metric-modifier metricSnapshot" data-item-title="{{MisCtrl.metricResult[$index + 1].chartName}}" data-item-flag="{{$index+1}}">
+			<chartevent type="metric">
 			  <nvd3 data="[{ values: MisCtrl.metricResult[$index + 1].values}]" options="MisCtrl.options.metric" events="events" api="{}"></nvd3>
+			  </chartevent>
 			</div>
 		  </div>
 		  <div class="row">
@@ -95,7 +99,9 @@
 		  </div>
 		  <div class="row">
 			<div class="col box-cont metric-modifier metricSnapshot" data-item-title="{{MisCtrl.metricResult[$index +2].chartName}}" data-item-flag="{{$index+2}}">
+			<chartevent type="metric">
 			  <nvd3 data="[{ values: MisCtrl.metricResult[$index + 2].values}]" options="MisCtrl.options.metric" events="events" api="{}"></nvd3>
+			  </chartevent>
 			</div>
 		  </div>
 		  <div class="row">

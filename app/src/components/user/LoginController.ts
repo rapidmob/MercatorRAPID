@@ -29,8 +29,23 @@ class LoginController {
 			SERVER_URL = 'http://' + this.ipaddress + '/' + 'rapid-ws/services/rest';
 			this.userService.login(this.username,this.password).then(
 				(result) => {
-					if (result.response.status == "success") {
-						this.$state.go("app.mis-flown");
+					if (result.response.status == "success") {						
+						var req = {
+							userId: this.username
+						}
+						this.userService.getUserProfile(req).then(
+							(profile) => {
+								var userName = {
+									username: profile.response.data.userInfo.userName
+								}
+								this.userService.setUser(userName);
+								this.$state.go("app.mis-flown");
+							},
+							(error) => {
+								console.log('an error occured on loading user profile');
+								
+						});
+						
 					} else {
 						this.invalidMessage = true;
 						this.eroormessage = "Please check your credentials";

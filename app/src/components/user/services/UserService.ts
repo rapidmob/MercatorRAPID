@@ -35,29 +35,14 @@ class UserService {
 			userId: _userName,
 			password: _password
 		}
-
 		this.setUser({ username: "" });
-
 		this.dataProviderService.postData(requestUrl, requestObj).then(
 			(response) => {
-				var data: any = response.data;
-				if (data.response.status == "success") {
-					var req = {
-						userId: _userName
-					}
-					this.getUserProfile(req).then(
-						(profile) => {
-							var userName = {
-								username: profile.response.data.userInfo.userName
-							}
-							this.setUser(userName);
-						},
-						(error) => {
-							console.log('an error occured on loading user profile');
-							def.reject(error);
-						});
+				if (typeof response.data === 'object') {
+					def.resolve(response.data);
+				} else {
+					def.reject(response.data);
 				}
-				def.resolve(data);
 			},
 			(error) => {
 				console.log('an error occured on log in');

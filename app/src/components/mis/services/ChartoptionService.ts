@@ -94,7 +94,7 @@ class ChartoptionService {
                 discretebar: {
                     dispatch: {
                         elementDblClick: function(e) {
-                            misCtrl.openBarDrillDownPopover(d3.event, e, -1);
+                            // misCtrl.openBarDrillDownPopover(d3.event, e, -1);
                         }
                     }
                 },
