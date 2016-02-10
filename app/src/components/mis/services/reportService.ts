@@ -2,12 +2,12 @@
     'use strict';
     // attach the service to the [rapidMobile] module in angular
     angular.module('rapidMobile')
-	 	.service('ReportSvc', ['$q', '$timeout', 'ReportBuilderSvc',
+	 	.service('ReportSvc', ['$q', '$timeout',
                                reportSvc]);
 
 	// genReportDef --> genReportDoc --> buffer[] --> Blob() --> saveFile --> return filePath
 
-	 function reportSvc($q, $timeout, ReportBuilderSvc) {
+	 function reportSvc($q, $timeout) {
 		 this.runReportAsync = _runReportAsync;
 		 this.runReportDataURL = _runReportDataURL;
 
@@ -77,7 +77,7 @@
             // properly generate the doc declaration
             $timeout(function() {
                 var dd = {};
-                dd = ReportBuilderSvc.generateReport(statusFlag,title,flownMonth)
+                dd = generateReport(statusFlag,title,flownMonth)
 				deferred.resolve(dd);
             }, 100);
             
@@ -217,6 +217,149 @@
 			return fileName.toUpperCase()+"_"+timestamp;
 		
 		}
+		
+		function generateReport(param, chartTitle,flownMonth) {
+			var deferred = $q.defer();
+			
+			var title = "";
+			if(param == "metricSnapshot")
+				title = "METRIC SNAPSHOT -"+flownMonth+" "+chartTitle.toUpperCase()+"- VIEW";
+			else if(param == "targetActual")
+				title = "TARGET VS ACTUAL - "+((chartTitle == "revenue")?"NET REVENUE":"PAX Count")+" "+flownMonth+ " - VIEW";
+			else
+				title = chartTitle+" "+flownMonth+" - VIEW";
+							
+			var svgNode = d3.selectAll("."+param).selectAll("svg");
+			var content = [];
+			var imageColumn = [];
+			var textColumn = [];
+			var imagesObj = {};
+			var textObj = {};
+			content.push(title);
+			var nodeExists = [];
+			angular.forEach(svgNode, function(value, key) {				
+				var html = "";
+				if(nodeExists.indexOf(svgNode[key].parentNode.getAttribute("data-item-flag")) == -1 && svgNode[key].length >= 1){
+					html = svgNode[key][0].outerHTML;
+					if(svgNode[key].parentNode.getAttribute("data-item-pdfFlag") === "dynamicWH"){
+						d3.select("."+param+"Flag").select("svg").attr("width",1500);
+						d3.select("."+param+"Flag").select("svg").attr("height",600);
+						var node = d3.select("."+param+"Flag").select("svg");
+						html = node[0][0].outerHTML;
+						imagesObj['width'] = 500;
+						imagesObj['height'] = 500;
+					}
+					if(svgNode[key].parentNode.getAttribute("data-item-pdfFlag") === "pdfFlag")
+					{
+						imagesObj['width'] = 750;
+						imagesObj['height'] = 300;
+					}
+					canvg(document.getElementById('canvas'), html);
+					var test = document.getElementById('canvas');
+					var imgsrc = test.toDataURL();
+					var  text = "\n"+svgNode[key].parentNode.getAttribute("data-item-title")+"\n";
+					textObj['text'] = text;
+					textColumn.push(textObj);
+					imagesObj['image'] = imgsrc;
+					imageColumn.push(imagesObj);				
+					var imgTemp ={}, txtTemp ={};		
+					txtTemp['columns'] = textColumn;
+					imgTemp['alignment'] = 'center';
+					imgTemp['columns'] = imageColumn;
+					content.push(txtTemp);
+					content.push(imgTemp);					
+					imageColumn = [];
+					textColumn = [];
+					imagesObj = {};
+					textObj = {};
+					imgTemp = {};
+					txtTemp ={};
+					nodeExists.push(svgNode[key].parentNode.getAttribute("data-item-flag"));
+				}
+			});			
+			if(param == "revenueAnalysis"){
+				var node = document.getElementById('net-revenue-chart');
+				domtoimage.toPng(node).then(function (dataUrl) {
+					var  text = "\n\n\n\n\n"+node.getAttribute('data-item-title')+"\n\n";
+					textObj['text'] = text;
+					textColumn.push(textObj);
+					imagesObj['image'] = dataUrl;
+					imageColumn.push(imagesObj);				
+					var imgTemp ={}, txtTemp ={};		
+					txtTemp['columns'] = textColumn;
+					imgTemp['alignment'] = 'center';
+					imgTemp['columns'] = imageColumn;
+					content.push(txtTemp);
+					content.push(imgTemp);					
+					imageColumn = [];
+					textColumn = [];
+					imagesObj = {};
+					textObj = {};
+					imgTemp = {};
+					txtTemp ={};	
+					deferred.resolve({content: content});				
+				});			
+			} else if(param == "sectorcarrieranalysis"){			
+				var svgNode = d3.selectAll("."+param);
+				angular.forEach(svgNode[0], function(value, key) {
+					var node = document.getElementById('sector-carrier-chart'+key);
+					domtoimage.toPng(node).then(function (dataUrl) {
+						//var  text = "\n"+node.getAttribute('data-item-title')+"\n\n";
+						textObj['text'] = "\n\n";
+						textColumn.push(textObj);
+						imagesObj['width'] = 500;
+						imagesObj['image'] = dataUrl;
+						imageColumn.push(imagesObj);				
+						var imgTemp ={}, txtTemp ={};		
+						txtTemp['columns'] = textColumn;
+						imgTemp['alignment'] = 'center';
+						imgTemp['columns'] = imageColumn;
+						content.push(txtTemp);
+						content.push(imgTemp);					
+						imageColumn = [];
+						textColumn = [];
+						imagesObj = {};
+						textObj = {};
+						imgTemp = {};
+						txtTemp ={};
+						if(key == svgNode[0].length-1)
+						deferred.resolve({content: content});
+					});
+				});				
+			}else if(param == "routerevenue"){				
+				var svgNode = d3.selectAll("."+param);
+				angular.forEach(svgNode[0], function(value, key) {
+					var node = document.getElementById('route-revenue-chart'+key);
+					domtoimage.toPng(node).then(function (dataUrl) {
+						//var  text = "\n"+node.getAttribute('data-item-title')+"\n\n";
+						textObj['text'] = "\n\n";
+						textColumn.push(textObj);
+						imagesObj['width'] = 500;
+						imagesObj['image'] = dataUrl;
+						imageColumn.push(imagesObj);				
+						var imgTemp ={}, txtTemp ={};		
+						txtTemp['columns'] = textColumn;
+						imgTemp['alignment'] = 'center';
+						imgTemp['columns'] = imageColumn;
+						content.push(txtTemp);
+						content.push(imgTemp);					
+						imageColumn = [];
+						textColumn = [];
+						imagesObj = {};
+						textObj = {};
+						imgTemp = {};
+						txtTemp ={};
+						if(key == svgNode[0].length-1)
+						deferred.resolve({content: content});
+					});
+				});
+			}else{
+				deferred.resolve({content: content});
+			}
+		
+			return deferred.promise;
+		};
+		
 	 }
     
 })();

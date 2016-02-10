@@ -1,10 +1,10 @@
  <ion-popover-view class="graphpopover">
     <ion-content>
       <div id="popover-content">
-        <div ng-if="MisCtrl.charttype == 'metric'">
+        <div ng-if="MisCtrl.chartType == 'metric'">
           <div class="row">
             <div class="col-90">
-              <h2 class="graph-title pop-title padding-left">{{MisCtrl.metricResult[graphindex].chartName}}
+              <h2 class="graph-title pop-title padding-left">{{MisCtrl.metricResult[MisCtrl.graphIndex].chartName}}
               </h2>   
             </div>
             <div class="col-10 popup-close padding-right" ng-click="MisCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
@@ -12,11 +12,11 @@
            <div class="row no-padding">
              <div class="col pull-right">
               <div id="chart_legend" ng-show="MisCtrl.toggle.monthOrYear=='month'">
-                <div class="chart_legend middle" style="display: block;">{{MisCtrl.metricLegends.month[2]}}</div>
-                <div class="chart_legend to">{{MisCtrl.metricLegends.month[1]}}</div>
                 <div class="chart_legend from">{{MisCtrl.metricLegends.month[0]}}</div>
+                <div class="chart_legend to">{{MisCtrl.metricLegends.month[1]}}</div>
+                <div class="chart_legend middle" style="display: block;">{{MisCtrl.metricLegends.month[2]}}</div>
               </div>
-              <div id="chart_legend" ng-show="toggle.monthOrYear=='year'">
+              <div id="chart_legend" ng-show="MisCtrl.toggle.monthOrYear=='year'">
                 <div class="chart_legend to">{{MisCtrl.metricLegends.year[1]}}</div>
                 <div class="chart_legend from">{{MisCtrl.metricLegends.year[0]}}</div>
               </div>
@@ -24,27 +24,27 @@
            </div>
           <div class="row">
             <div class="col box-cont percentpadding">
-             <nvd3 width="100" height="200" data="[{values: MisCtrl.metricResult[MisCtrl.graphindex].values}]" options="MisCtrl.options.metric" events="events"></nvd3>
+             <nvd3 width="100" height="200" data="[{values: MisCtrl.metricResult[MisCtrl.graphIndex].values}]" options="MisCtrl.options.metric" events="events"></nvd3>
             </div>
           </div>
           <div class="row">
             <div class="col col-50 pull-left padding-left graph-title">
-              <div class="pop-text" ng-class="{'graph-percent-red': MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend == 'down',
-                        'graph-percent-blue' : MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend == 'up'}"> {{MisCtrl.metricResult[MisCtrl.graphindex].trends[0].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend}} icon-larger {'icon-larger-red': MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend == 'down',
-                        'icon-larger-blue' : MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend == 'up'}"></i> 
+              <div class="pop-text" ng-class="{'graph-percent-red': MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend == 'down',
+                        'graph-percent-blue' : MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend == 'up'}"> {{MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend}} icon-larger {'icon-larger-red': MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend == 'down',
+                        'icon-larger-blue' : MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend == 'up'}"></i> 
                         </div>
-              <div class="graph-percent-title pop-text">{{MisCtrl.metricResult[MisCtrl.graphindex].trends[0].label}}</div>
+              <div class="graph-percent-title pop-text">{{MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].label}}</div>
             </div>
-        <div ng-show="MisCtrl.metricResult[MisCtrl.graphindex].trends[1]" class="col col-50 padding-right pull-right graph-title">
-              <div class="pop-text" ng-class="{'graph-percent-red': MisCtrl.metricResult[MisCtrl.graphindex].trends[1].trend == 'down',
-                        'graph-percent-blue' : MisCtrl.metricResult[MisCtrl.graphindex].trends[1].trend == 'up'}"> {{MisCtrl.metricResult[MisCtrl.graphindex].trends[1].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{MisCtrl.metricResult[MisCtrl.graphindex].trends[1].trend}} icon-larger {'icon-larger-red': MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend == 'down',
-                        'icon-larger-blue' : MisCtrl.metricResult[MisCtrl.graphindex].trends[0].trend == 'up'}"></i> 
+        <div ng-show="MisCtrl.metricResult[MisCtrl.graphIndex].trends[1]" class="col col-50 padding-right pull-right graph-title">
+              <div class="pop-text" ng-class="{'graph-percent-red': MisCtrl.metricResult[MisCtrl.graphIndex].trends[1].trend == 'down',
+                        'graph-percent-blue' : MisCtrl.metricResult[MisCtrl.graphIndex].trends[1].trend == 'up'}"> {{MisCtrl.metricResult[MisCtrl.graphIndex].trends[1].value}}&nbsp; <i class="icon ion-ios-arrow-thin-{{MisCtrl.metricResult[MisCtrl.graphIndex].trends[1].trend}} icon-larger {'icon-larger-red': MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend == 'down',
+                        'icon-larger-blue' : MisCtrl.metricResult[MisCtrl.graphIndex].trends[0].trend == 'up'}"></i> 
                         </div>
-              <div class="graph-percent-title pop-text">{{MisCtrl.metricResult[MisCtrl.graphindex].trends[1].label}}</div>
+              <div class="graph-percent-title pop-text">{{MisCtrl.metricResult[MisCtrl.graphIndex].trends[1].label}}</div>
             </div>
           </div>
        </div>
-      <div ng-if="MisCtrl.charttype == 'revenue' && MisCtrl.graphindex == 0">
+      <div ng-if="MisCtrl.chartType == 'revenue' && MisCtrl.graphIndex == 0">
         <div class="row no-padding">
           <div class="col-90">
               <h2 class="padding-left graph-title pop-title">Net Revenue by OWN OAL</h2>
@@ -62,7 +62,7 @@
         </div>         
       </div>
 
-      <div ng-if="MisCtrl.charttype == 'revenue' && MisCtrl.graphindex == 1">
+      <div ng-if="MisCtrl.chartType == 'revenue' && MisCtrl.graphIndex == 1">
         <div class="row no-padding">
           <div class="col-90">
             <h2 class="padding-left graph-title pop-title">Passenger Revenue by class of Travel</h2>
@@ -71,11 +71,11 @@
         </div>
         <div class="row">
             <div class="col box-cont net-rev-height percentpadding-revenuechart">
-                <he-custom-pie-chart chart-data="MisCtrl.revenueData.revenuePieChart.data"></he-custom-pie-chart>
+                <he-custom-pie-chart chart-height="300" chart-width="300" format-value="label-value2" chart-data="MisCtrl.revenueData.revenuePieChart.data"></he-custom-pie-chart>
             </div>
         </div>
       </div> 
-      <div  ng-if="MisCtrl.charttype == 'revenue' && MisCtrl.graphindex == 2">
+      <div  ng-if="MisCtrl.chartType == 'revenue' && MisCtrl.graphIndex == 2">
             <div class="row">
               <div class="col-90">
               <h2 class="padding-left graph-title pop-title">Passenger Count by class of Travel</h2>
@@ -83,13 +83,13 @@
               <div class="col-10 popup-close padding-right" ng-click="MisCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
             </div>
             <div class="row">
-               <div class="col box-cont percentpadding-revenuechart net-rev-height">
+               <div class="col box-cont percentpadding-revenuechart-bar net-rev-height">
                   <nvd3 data="MisCtrl.revenueData.revenueBarChart" options="MisCtrl.options.passengerChart"></nvd3>
                   <div class="chart-legend-rev from pop-text">OWN</div><div class="chart-legend-rev to pop-text">OAL</div>
                 </div>
              </div>
       </div>
-      <div ng-if="MisCtrl.charttype == 'netRevenue-target'">
+      <div ng-if="MisCtrl.chartType == 'netRevenue-target'">
        <div class="padding-horizontal" ng-repeat="netRevenue in MisCtrl.targetActualData.horBarChart | filter: MisCtrl.targetActualFilter(MisCtrl)">
            <div class="row">
                <div class="col-90">
@@ -99,12 +99,13 @@
            </div>   
           <div class="row">
             <div class="col box-cont percentpadding rev-modifier">
+            <p>&nbsp;</p>
               <nvd3 data="[{ values: netRevenue.values}]" options="MisCtrl.options.targetBarChart"></nvd3>
             </div>
           </div>                    
      </div>
      </div>
-    <div ng-if="MisCtrl.charttype == 'monthAnalysis-target'">
+    <div ng-if="MisCtrl.chartType == 'monthAnalysis-target'">
       <div class="col col-offset-5 padding-horizontal" ng-repeat="monthAnalysis in MisCtrl.targetActualData.lineChart | filter: MisCtrl.targetActualFilter(MisCtrl)"> 
           <div class="row">
              <div class="col-90">
@@ -114,6 +115,7 @@
           </div>
           <div class="row">
             <div class="col box-cont">
+            <p>&nbsp;</p>
               <nvd3 data="monthAnalysis.lineChartItems" options="MisCtrl.options.targetLineChart" class="with-3d-shadow with-transitions"></nvd3>
             </div>
           </div>

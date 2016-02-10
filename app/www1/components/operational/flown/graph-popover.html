@@ -1,0 +1,233 @@
+ <ion-popover-view class="graphpopover bar-popover-cust">
+    <ion-content>
+      <div id="operational-popover-content">
+          
+          <div ng-if="OprCtrl.charttype == 'weekdata'">
+               <div class="row">
+                  <div class="col-90">
+                        <div ng-if = "OprCtrl.graphType == 'flight-proc-status'">
+                           <h2 class="graph-title pop-title padding-left">{{OprCtrl.flightProcSection}}
+                           </h2>
+                        </div>
+                        <div ng-if = "OprCtrl.graphType == 'flight-count-reason'">
+                            <h2 class="graph-title pop-title padding-left">{{OprCtrl.flightCountSection}}
+                           </h2>
+                        </div>
+                        <div ng-if = "OprCtrl.graphType == 'cc-exception-category'">
+                            <h2 class="graph-title pop-title padding-left">{{OprCtrl.couponCountSection}}
+                           </h2>
+                        </div>     
+                  </div>
+                  <div class="col-10 popup-close padding-right" ng-click="OprCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
+               </div>
+               <div class="row no-padding">
+                  <div class="col col-20 padding-left pull-left graph-title">
+                      Week Data
+                    </div>
+                    <div class="col col-80 pull-right"> 
+                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-proc-status'">
+                  <div class="chart_legend expected">Expected</div>
+                  <div class="chart_legend not-received">Not Received</div>
+                  <div class="chart_legend open">Open</div>
+                  <div class="chart_legend closed">Closed</div>
+                </div>
+               <!--  <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-count-reason'">
+                  <div class="chart_legend not-received">Interface</div>
+                  <div class="chart_legend open">Live not Processed</div>
+                  <div class="chart_legend closed">Processed with Exception</div>
+                </div> -->
+                <div ng-show="OprCtrl.graphType == 'flight-count-reason'">
+                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'OPEN'">
+                  <div class="chart_legend not-received">Interface</div>
+                  <div class="chart_legend open">Live not Processed</div>
+                  <div class="chart_legend closed">Processed with Exception</div>
+                </div>
+                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'CLOSED'">                  
+                  <div class="chart_legend not-received">Balanced</div>
+                  <div class="chart_legend open">Un-balanced</div>                  
+                </div>
+                </div>
+                
+                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'cc-exception-category'">
+                  <div class="chart_legend not-received">Interface Exception</div>
+                  <div class="chart_legend open">Proration Exception</div>
+                  <div class="chart_legend closed">Transactional Exception</div>
+                </div>
+              </div>
+                </div>
+               <div class="row">
+                <div class="col box-cont">
+                  <div ng-if="OprCtrl.graphType == 'flight-proc-status'">
+                    <div ng-repeat="weekdata in OprCtrl.flightProcStatus.weekData" ng-if="$index == OprCtrl.currentIndex">
+                    <div class="row">
+                      <div class="col col-80 weekdata-zoom-margin">
+                      <div  class="flightprocessStatus four-bar-pop weekdata-popover-padding" data-item-title="Month Data">
+                      <nvd3-discrete-bar-chart
+                          data="[weekdata]"                              
+                          tooltips="true"
+                          showXAxis="false"
+                          showYAxis="false"
+                          showValues="true"
+                          height="280"
+                          color="OprCtrl.fourBarColorFunction()"
+                                          width="340">
+                        <svg></svg>
+                      </nvd3-discrete-bar-chart>
+                      <p class="graph-title-bottom text-center">{{weekdata.key}}</p>
+                      </div>
+                      <p class="pull-right graph-title-percent">{{weekdata.closedPercent}}<br/><span class="graph-title-percent">Close%</span></p>
+                      </div>                    
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-if="OprCtrl.graphType == 'flight-count-reason'">
+                    <div ng-repeat="weekData in OprCtrl.flightCountReason.weekData" ng-if="$index == OprCtrl.currentIndex">
+                    <div class="row">
+                     <div class="col col-80 weekdata-zoom-margin">
+                      <div class="openflightcountbyreason three-bar weekdata-popover-padding" data-item-title="Month Data" data-item-flag="{{$index+2}}">
+                        <nvd3-discrete-bar-chart
+                              data="[weekData]"                              
+                              tooltips="true"
+                              showXAxis="false"
+                              showYAxis="false"
+                              showValues="true"
+                              color="OprCtrl.colorFunction()"
+                              height="280"
+                              width="300">
+                          <svg></svg>
+                        </nvd3-discrete-bar-chart>
+                        <p class="graph-title-bottom text-center">{{weekData.key}}</p>
+                        </div>
+                        <p class="pull-right weekdata-zoom-perecent-margin">{{weekData.closedPercent}}</p>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div ng-if="OprCtrl.graphType == 'cc-exception-category'">
+                    <div ng-repeat="weekData in OprCtrl.couponCountException.weekData" ng-if="$index == OprCtrl.currentIndex">
+                    <div class="row">
+                      <div class="col col-80 weekdata-zoom-margin">
+                        <div class="couponcountbyexceptioncategory three-bar weekdata-popover-padding" data-item-title="Month Data" data-item-flag="{{$index+2}}">
+                        <nvd3-discrete-bar-chart
+                              data="[weekData]"                             
+                              tooltips="true"
+                              showXAxis="false"
+                              showYAxis="false"
+                              showValues="true"
+                              color="OprCtrl.colorFunction()"
+                              height="280"
+                              width="300">
+                          <svg></svg>
+                        </nvd3-discrete-bar-chart>
+                        <p class="graph-title-bottom text-center">{{weekData.key}}</p>
+                        </div>
+                        <p class="graph-title-bottom weekdata-zoom-perecent-margin">{{weekData.closedPercent}}</p>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+          </div>
+
+          <div ng-if="OprCtrl.charttype == 'daydata'">
+               <div class="row">
+                  <div class="col-90">
+                       <div ng-if = "OprCtrl.graphType == 'flight-proc-status'">
+                           <h2 class="graph-title pop-title padding-left">{{OprCtrl.flightProcSection}}
+                           </h2>
+                        </div>
+                        <div ng-if = "OprCtrl.graphType == 'flight-count-reason'">
+                            <h2 class="graph-title pop-title padding-left">{{OprCtrl.flightCountSection}}
+                           </h2>
+                        </div>
+                        <div ng-if = "OprCtrl.graphType == 'cc-exception-category'">
+                            <h2 class="graph-title pop-title padding-left">{{OprCtrl.couponCountSection}}
+                           </h2>
+                        </div>     
+                  </div>
+                  <div class="col-10 popup-close padding-right" ng-click="OprCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
+               </div>
+                <div class="row no-padding" >
+                <div class="col col-20 padding-left pull-left graph-title">
+                           Day Data
+                </div>
+              <div class="col col-80 pull-right">
+                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-proc-status'">
+                  <div class="chart_legend expected">Expected</div>
+                  <div class="chart_legend not-received">Not Received</div>
+                  <div class="chart_legend open">Open</div>
+                  <div class="chart_legend closed">Closed</div>
+                </div>
+                <div ng-show="OprCtrl.graphType == 'flight-count-reason'">
+                  <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'OPEN'">
+                    <div class="chart_legend not-received">Interface</div>
+                    <div class="chart_legend open">Live not Processed</div>
+                    <div class="chart_legend closed">Processed with Exception</div>
+                  </div>
+                  <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'CLOSED'">                  
+                    <div class="chart_legend not-received">Balanced</div>
+                    <div class="chart_legend open">Un-balanced</div>                  
+                  </div>
+                </div>
+                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'cc-exception-category'">
+                  <div class="chart_legend not-received">Interface Exception</div>
+                  <div class="chart_legend open">Proration Exception</div>
+                  <div class="chart_legend closed">Transactional Exception</div>
+                </div>
+              </div>
+            </div>
+               
+               <div class="row no-padding">    
+                   <div class="col no-padding pull-left graph-title flightprocessStatus day-padding" data-item-title="Day Data" data-item-flag="6">
+                         
+                         <div ng-if = "OprCtrl.graphType == 'flight-proc-status'">
+                          <nvd3-multi-bar-chart                         
+                          data="OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems"                         
+                          showXAxis="true"
+                          showYAxis="true"
+                          height="300"
+                          stacked="true"
+                          tooltips="true"
+                          staggerLabels="true"
+                          interactive="true"
+                          useInteractiveGuideline="true"
+                          xAxisLabel="Day" 
+                          yAxisLabel="Open Flights Count">
+                          <svg></svg></nvd3-multi-bar-chart> </div>
+
+                          <div ng-if = "OprCtrl.graphType == 'flight-count-reason'">
+                          <nvd3-multi-bar-chart                          
+                          data="OprCtrl.flightCountReason.stackedChart.stackedBarchartItems"                         
+                          showXAxis="true"
+                          showYAxis="true"
+                          height="300"
+                          stacked="true"
+                          tooltips="true"
+                          staggerLabels="true"
+                          interactive="true"
+                          useInteractiveGuideline="true"
+                          xAxisLabel="Day" 
+                          yAxisLabel="Open Flights Count"
+                          <svg></svg></nvd3-multi-bar-chart></div>
+
+                          <div ng-if = "OprCtrl.graphType == 'cc-exception-category'">
+                          <nvd3-multi-bar-chart
+                          data="OprCtrl.couponCountException.stackedChart.stackedBarchartItems"                         
+                          showXAxis="true"
+                          showYAxis="true"
+                          height="300"
+                          stacked="true"
+                          tooltips="true"
+                          staggerLabels="true"
+                          interactive="true"
+                          useInteractiveGuideline="true"
+                          xAxisLabel="Day" 
+                          yAxisLabel="Open Flights Count"
+                          <svg></svg></nvd3-multi-bar-chart> </div>
+                    </div>  
+                </div>
+          </div>
+        </div>
+    </ion-content>
+ </ion-popover-view>

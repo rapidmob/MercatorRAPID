@@ -1,4 +1,4 @@
-<ion-view hide-nav-bar="true">
+<ion-view hide-nav-bar="true" cache-view="false">
   <ion-content class="login-bg">
 
         <div class="login-topmargin" >
@@ -18,21 +18,21 @@
                       <input type="text" name="username" ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="Username" ng-model="LoginCtrl.username" required>
                       <div ng-click="LoginCtrl.username = null" ng-show="!loginForm.username.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
                   </div>       
-                  <span ng-show="(loginForm.username.$dirty && loginForm.username.$error.required && !invalidMessage)" class="help-block errorspan ng-binding">Username is required</span>
-                  <div class="item newitem item-input row">
+                  <span ng-show="(loginForm.username.$dirty && loginForm.username.$error.required && !LoginCtrl.invalidMessage) || (loginForm.username.$pristine && loginForm.$submitted)" class="help-block errorspan ng-binding">Username is required</span>
+                  <div class="item newitem item-input row  username-bottom">
                       <span class=""><img ng-src="res/img/icon-password.svg" alt="" ></span>
                       <input type="password"name="password" ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="Password" ng-model="LoginCtrl.password" required>
                       <div ng-click="LoginCtrl.password = null" ng-show="!loginForm.password.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
                   </div>      
-                  <span ng-show="(loginForm.password.$dirty && loginForm.password.$error.required && !invalidMessage)" class="help-block errorspan ng-binding">Password is required</span>
+                  <span ng-show="(loginForm.password.$dirty && loginForm.password.$error.required && !LoginCtrl.invalidMessage) || (loginForm.password.$pristine && loginForm.$submitted)" class="help-block errorspan ng-binding">Password is required</span>
                   <!-- <div class="item newitem item-input row">
                       
                       <input type="text" name="ipaddress"  class="login-input" placeholder="IP Address" ng-model="loginData.ipaddress" required>
                       <div ng-click="loginData.password = null" ng-show="!loginForm.password.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
                   </div>  -->
 				  <div class="item newitem item-input row">                      
-                      <input type="text" name="ipaddress"  ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="10.91.152.99:8082" ng-model="LoginCtrl.ipaddress" required>
-                      <div ng-click="LoginCtrl.ipaddress = null" ng-show="!loginForm.ipaddress.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
+                      <input type="text" name="ipaddress"  ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="10.91.152.99:8082" ng-model="LoginCtrl.ipaddress">
+                      <div ng-click="LoginCtrl.ipaddress = null" ng-show="LoginCtrl.ipaddress"><i class="icon ion-close placeholder-icon"></i></div>
                   </div>
                   <div class="spacer" style="width: 300px; height: 50px;"></div>
                 <center> <button class="button button-custom-color login-btn-width" type="submit">Login</button>

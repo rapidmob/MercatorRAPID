@@ -10,8 +10,10 @@ interface tabObject {
 
 interface toggleObject {
     monthOrYear: string,
-	chartOrTable: string,
-    openOrClosed: string
+    openOrClosed: string,
+    flightStatus: string,
+    flightReason: string,
+    ccException: string
 }
 
 interface headerObject {
@@ -21,8 +23,8 @@ interface headerObject {
 }
 
 class OperationalFlownController {
-  public static $inject = ['$scope', '$ionicLoading', '$ionicPopover', '$filter',
-    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService'];
+  public static $inject = ['$state', '$scope', '$ionicLoading', '$ionicPopover', '$filter',
+    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService', 'UserService', '$ionicHistory', 'GRAPH_COLORS', 'TABS', '$ionicPopup'];
   private tabs: [tabObject];
   private toggle: toggleObject;
   private header: headerObject;
@@ -32,15 +34,19 @@ class OperationalFlownController {
   private carouselIndex: number = 0;
   private flightCountReason: any;
   private couponCountException: any;
-
-  private threeBarChartColors: [string] = ['#4EB2F9', '#FFC300', '#5C6BC0'];
-  private fourBarChartColors: [string] = ['#7ED321', '#4EB2F9', '#FFC300', '#5C6BC0'];
+  private charttype: string;
+  private graphType: string;
+  private graphpopover: Ionic.IPopover;
+  private popovershown: boolean;
+  private threeBarChartColors: [string] = this.GRAPH_COLORS.THREE_BARS_CHART;
+  private fourBarChartColors: [string] = this.GRAPH_COLORS.FOUR_BARS_CHART;
 
   private infopopover: Ionic.IPopover;
   private infodata: string;
   private flightProcSection: string;
   private flightCountSection: string;
   private couponCountSection: string;
+  private currentIndex: number;
 
   private pageSize = 4;
   private currentPage = [];
@@ -52,24 +58,30 @@ class OperationalFlownController {
   private drillBarLabel: string;
   private exceptionCategory: string;
   private drilltabs: string[];
-  private drillName: string[];
+  private drillName: string;
+  private firstColumns: string[];
   private drillpopover: Ionic.IPopover;
 
-  constructor(private $scope: ng.IScope, private $ionicLoading: Ionic.ILoading,
+  private flightCountLegends: any;
+  private popupStatus: any;
+
+  constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
+    private $ionicLoading: Ionic.ILoading,
     private $ionicPopover: Ionic.IPopover, private $filter: ng.IFilterService,
-    private operationalService: OperationalService, private $ionicSlideBoxDelegate: Ionic.ISlideBoxDelegate,
-    private $timeout: ng.ITimeoutService, private $window: ng.IWindowService, private reportSvc: ReportSvc, private filteredListService: FilteredListService) {
-    this.tabs = [
-      { title: 'My Dashboard', names: 'MyDashboard', icon: 'iconon-home' },
-      { title: 'Flight Process Status', names: 'FlightProcessStatus', icon: 'ion-home' },
-      { title: 'Flight Count by Reason', names: 'FlightCountbyReason', icon: 'ion-home' },
-      { title: 'Coupon Count by Exception Category', names: 'CouponCountbyExceptionCategory', icon: 'ion-home' }
-    ];
+    private operationalService: OperationalService,
+    private $ionicSlideBoxDelegate: Ionic.ISlideBoxDelegate,
+    private $timeout: ng.ITimeoutService, private $window: ng.IWindowService,
+    private reportSvc: ReportSvc, private filteredListService: FilteredListService,
+    private userService: UserService, private $ionicHistory: any, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup) {
+      
+    this.tabs = this.TABS.DB2_TABS;
 
     this.toggle = {
       monthOrYear: 'month',
-	   chartOrTable: 'chart',
-      openOrClosed: 'OPEN'
+      openOrClosed: 'OPEN',
+      flightStatus: 'chart',
+      flightReason: 'chart',
+      ccException: 'chart'
     };
 
     this.header = {
@@ -77,25 +89,34 @@ class OperationalFlownController {
       tabIndex: 0,
       userName: ''
     };
-
+	this.popupStatus = false;
     this.initData();
-
     var that = this;
-    this.$scope.$on('elementClick.directive', function(angularEvent, event) {
-      if (that.header.tabIndex == 1 && !isNaN(event.point[0])) {
-        that.openFlightProcessDrillPopover(event.e, event, -1);
-      }
 
-      if (that.header.tabIndex == 3 && !isNaN(event.point[0])) {
-        that.openCounponCountDrillPopover(event.e, event, -1);
-      }
+      this.$scope.$on('onSlideMove', (event: any, response: any) => {
+          that.$scope.OprCtrl.onSlideMove(response);
+      });
 
-      if (that.header.tabIndex == 2 && !isNaN(event.point[0])) {
-        that.openFlightCountDrillPopover(event.e, event, -1);
-      }
+      this.$scope.$on('$ionicView.enter', () => {
+        if (!that.userService.showDashboard('Operational')) {
+          that.$state.go("login");
+        }
+      });
 
-    });
+      this.$scope.$on('openDrillPopup1', (event: any, response: any) => {
+        console.log(response.type);
+        if (response.type == 'flight-process') {
+          this.$scope.OprCtrl.openFlightProcessDrillPopover(response.event, { "point": response.data }, -1);
+        }
+        if (response.type == 'coupon-count') {
+          this.$scope.OprCtrl.openCounponCountDrillPopover(response.event, { "point": response.data }, -1);
+        }
+        if (response.type == 'flight-count') {
+          this.$scope.OprCtrl.openFlightCountDrillPopover(response.event, { "point": response.data }, -1);
+        }
+      });
   }
+
   initData() {
     var that = this;
 
@@ -113,34 +134,47 @@ class OperationalFlownController {
     });
 
     var req = {
-        userId: that.$window.localStorage.getItem('rapidMobile.user')
+      userId: that.$window.localStorage.getItem('rapidMobile.user')
     }
-    this.operationalService.getPaxFlownOprHeader(req).then(
-      (data) => {
-        that.subHeader = data.response.data;
-        // console.log(that.subHeader.paxFlownOprMonths);
-        that.header.flownMonth = that.subHeader.defaultMonth;
-        // console.log(that.header.flownMonth);
-        that.onSlideMove({ index: 0 });
-      },
-      (error) => {
-        console.log('an error occured');
-      });
+
+    if (req.userId != "null") {
+      this.operationalService.getPaxFlownOprHeader(req).then(
+        (data) => {
+          that.subHeader = data.response.data;
+          // console.log(that.subHeader.paxFlownOprMonths);
+          that.header.flownMonth = that.subHeader.defaultMonth;
+          // console.log(that.header.flownMonth);
+          that.onSlideMove({ index: 0 });
+        },
+        (error) => {
+          console.log('an error occured');
+        });
+    }
     that.header.userName = that.getProfileUserName();
   }
-  selectedFlownMonth(month: string){
+  selectedFlownMonth(month: string) {
     return (month == this.header.flownMonth);
   }
+
   getProfileUserName(): string {
-    var obj = this.$window.localStorage.getItem('rapidMobile.user');
-    var profileUserName = JSON.parse(obj);
-    return profileUserName.username;
+    if (this.userService.isUserLoggedIn()) {
+      var obj = this.$window.localStorage.getItem('rapidMobile.user');
+      if (obj != 'null') {
+        var profileUserName = JSON.parse(obj);
+        return profileUserName.username;
+      }
+    }
   }
 
-  
+  updateHeader() {
+    var flownMonth = this.header.flownMonth;
+    this.onSlideMove({ index: this.header.tabIndex });
+  }
+
+
   onSlideMove(data: any) {
     this.header.tabIndex = data.index;
-	this.toggle.chartOrTable = "chart";
+    this.toggle.chartOrTable = "chart";
     switch (this.header.tabIndex) {
       case 0:
         this.callMyDashboard();
@@ -157,6 +191,7 @@ class OperationalFlownController {
     }
   };
   callMyDashboard() {
+		this.popupStatus = false;
         this.callFlightProcStatus();
         this.callFlightCountByReason();
         this.callCouponCountByException();
@@ -173,41 +208,54 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprFlightProcStatus(reqdata)
       .then(function(data) {
-      var otherChartColors = [{ "color": "#7ED321" }, { "color": "#4EB2F9" },
-          { "color": "#FFC300" }, { "color": "#5C6BC0" }];
-        var pieChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
+		if(data.response.status === "success"){		  
+			var otherChartColors = [{ "color": that.GRAPH_COLORS.FOUR_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[1] },
+			  { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[2] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[3] }];
+			var pieChartColors = [{ "color": that.GRAPH_COLORS.THREE_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[1] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[2] }];
 
-        var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
-        that.flightProcSection = jsonObj.sectionName;
-        var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
-          if (u) return u.favoriteInd == 'Y';
-        });
-        var multiCharts = _.filter(jsonObj.multibarCharts, function(u: any) {
-          if (u) return u.favoriteInd == 'Y';
-        });
-        var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
-          if (u) return u.favoriteInd == 'Y';
-        });          
-        // console.log(stackCharts);
-        if (that.header.tabIndex == 0) {
-          that.flightProcStatus = {
-            pieChart: pieCharts[0],
-            weekData: multiCharts[0].multibarChartItems,
-            stackedChart: (stackCharts.length) ? stackCharts[0] : []
-          }
-        } else {
-          that.flightProcStatus = {
-            pieChart: jsonObj.pieCharts[0],
-            weekData: jsonObj.multibarCharts[0].multibarChartItems,
-            stackedChart: jsonObj.stackedBarCharts[0]
-          }
-        }
-        // console.log(stackCharts);
-        that.$timeout(function() {
-          that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
-        }, 500);
-        // console.log(JSON.stringify(that.flightProcStatus.weekData));
-        that.ionicLoadingHide();
+			var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+			that.flightProcSection = jsonObj.sectionName;
+			var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
+			  if (u) return u.favoriteInd == 'Y';
+			});
+			var multiCharts = _.filter(jsonObj.multibarCharts, function(u: any) {
+			  if (u) return u.favoriteInd == 'Y';
+			});
+			var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
+			  if (u) return u.favoriteInd == 'Y';
+			});          
+			// console.log(stackCharts);
+			if (that.header.tabIndex == 0) {
+			  that.flightProcStatus = {
+				pieChart: pieCharts[0],
+				weekData: multiCharts[0].multibarChartItems,
+				stackedChart: (stackCharts.length) ? stackCharts[0] : []
+			  }
+			} else {
+			  that.flightProcStatus = {
+				pieChart: jsonObj.pieCharts[0],
+				weekData: jsonObj.multibarCharts[0].multibarChartItems,
+				stackedChart: jsonObj.stackedBarCharts[0]
+			  }
+			}
+			// console.log(stackCharts);
+			that.$timeout(function() {
+			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+			}, 0);
+			// console.log(JSON.stringify(that.flightProcStatus.weekData));
+			that.ionicLoadingHide();
+		}else{
+			that.ionicLoadingHide();
+			if(!that.popupStatus){
+				that.popupStatus = true;
+				that.$ionicPopup.alert({
+					title: 'Error',
+					content: 'No Data Found!!!'
+				}).then(function(res) {
+					console.log('done');
+				});
+			}
+		}
       }, function(error) {
       });
   }
@@ -216,36 +264,52 @@ class OperationalFlownController {
     var reqdata = {
       flownMonth: this.header.flownMonth,
       userId: this.header.userName,
-      toggle1: 'open',
+      toggle1: this.toggle.openOrClosed.toLowerCase(),
       fullDataFlag: 'N'
     };
     this.ionicLoadingShow();
     this.operationalService.getOprFlightCountByReason(reqdata)
       .then(function(data) {
-        // console.log(jsonObj.pieCharts[0]);
-      var otherChartColors = [{ "color": "#28AEFD" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
-      var pieChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
+		if(data.response.status === "success"){	
+			// console.log(jsonObj.pieCharts[0]);
+			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[2] }];
+			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
 
-        var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
-        that.flightCountSection = jsonObj.sectionName;
-        if (that.header.tabIndex == 0) {
-          that.flightCountReason = that.getFavoriteItems(jsonObj);
-        } else {
-          that.flightCountReason = {
-            pieChart: jsonObj.pieCharts[0],
-            weekData: jsonObj.multibarCharts[0].multibarChartItems,
-            stackedChart: jsonObj.stackedBarCharts[0]
-          }
-        }
+			that.flightCountLegends = data.response.data.legends;
 
-        that.$timeout(function() {
-          that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
-        }, 700);
-        that.ionicLoadingHide();
+			var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+			that.flightCountSection = jsonObj.sectionName;
+			if (that.header.tabIndex == 0) {
+			  that.flightCountReason = that.getFavoriteItems(jsonObj);
+			} else {
+			  that.flightCountReason = {
+				pieChart: jsonObj.pieCharts[0],
+				weekData: jsonObj.multibarCharts[0].multibarChartItems,
+				stackedChart: jsonObj.stackedBarCharts[0]
+			  }
+			}
+
+			that.$timeout(function() {
+			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+			}, 0);
+			that.ionicLoadingHide();
+		}else{
+			that.ionicLoadingHide();
+			if(!that.popupStatus){
+				that.popupStatus = true;
+              that.$ionicPopup.alert({
+                title: 'Error',
+                content: 'No Data Found!!!'
+              }).then(function(res) {
+                  console.log('done');
+              });
+			}
+		}
       }, function(error) {
         that.ionicLoadingHide();
       });
   }
+
   callCouponCountByException() {
     var that = this;
     var reqdata = {
@@ -257,53 +321,103 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprCouponCountByException(reqdata)
       .then(function(data) {
-      var otherChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
-        var pieChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
+		if(data.response.status === "success"){
+			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
+			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
 
-        var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
-        that.couponCountSection = jsonObj.sectionName;
-        if (that.header.tabIndex == 0) {
-          that.couponCountException = that.getFavoriteItems(jsonObj);
-        } else {
-          that.couponCountException = {
-            pieChart: jsonObj.pieCharts[0],
-            weekData: jsonObj.multibarCharts[0].multibarChartItems,
-            stackedChart: jsonObj.stackedBarCharts[0]
-          }
-        }
-        that.$timeout(function() {
-          that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
-        }, 500);
-        that.ionicLoadingHide();
+			var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+			that.couponCountSection = jsonObj.sectionName;
+			if (that.header.tabIndex == 0) {
+			  that.couponCountException = that.getFavoriteItems(jsonObj);
+			} else {
+			  that.couponCountException = {
+				pieChart: jsonObj.pieCharts[0],
+				weekData: jsonObj.multibarCharts[0].multibarChartItems,
+				stackedChart: jsonObj.stackedBarCharts[0]
+			  }
+			}
+			that.$timeout(function() {
+			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+			}, 0);
+			that.ionicLoadingHide();		
+		}else{
+			that.ionicLoadingHide();
+			if(!that.popupStatus){
+				that.popupStatus = true;
+              that.$ionicPopup.alert({
+                title: 'Error',
+                content: 'No Data Found!!!'
+              }).then(function(res) {
+                  console.log('done');
+              });
+			}
+		}
       }, function(error) {
         that.ionicLoadingHide();
       });
   }
+  openPopover($event, charttype, index) {
+    var that = this;
+    var temp = this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData');
+    that.currentIndex = temp.currentIndex();
+    $event.preventDefault();
+    this.charttype = charttype;
+    this.graphType = index;
+    this.$ionicPopover.fromTemplateUrl('components/operational/flown/graph-popover.html', {
+      scope: that.$scope
+    }).then(function(popover) {
+      that.popovershown = true;
+      that.graphpopover = popover;
+      that.graphpopover.show($event);
+    });
+  }
+  openPiePopover($event, charttype, index) {
+    var that = this;
+    $event.preventDefault();
+    this.charttype = charttype;
+    this.graphType = index;
+    this.$ionicPopover.fromTemplateUrl('components/operational/flown/pie-popover.html', {
+      scope: that.$scope
+    }).then(function(popover) {
+      that.popovershown = true;
+      that.graphpopover = popover;
+      that.graphpopover.show($event);
+    });
+  }
+
+  closePopover() {
+    this.graphpopover.hide();
+  };
   ionicLoadingShow() {
     this.$ionicLoading.show({
       template: '<ion-spinner class="spinner-calm"></ion-spinner>'
     });
   };
-  applyChartColorCodes(jsonObj: any, pieChartColors: any, otherChartColors: any){
+  applyChartColorCodes(jsonObj: any, pieChartColors: any, otherChartColors: any) {
     _.forEach(jsonObj.pieCharts[0].data, function(n: any, value: any) {
-          n.label = n.xval;
-          n.value = n.yval;
+      n.label = n.xval;
+      n.value = n.yval;
     });
     _.merge(jsonObj.pieCharts[0].data, pieChartColors);
-    _.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, otherChartColors);
-    _.merge(jsonObj.multibarCharts[0].multibarChartItems, otherChartColors);
+    _.merge(jsonObj.multibarCharts[0].multibarChartItems, otherChartColors);	
+	if(jsonObj.stackedBarCharts[0].stackedBarchartItems.length >= 3){
+		_.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, otherChartColors);
+	}else{
+		var tempColors = [{ "color": this.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": this.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }];
+		_.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, tempColors);
+	}
     return jsonObj;
 
   }
   getFavoriteItems(jsonObj: any) {
     var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
-          if (u) return u.favoriteInd == 'Y';
+      if (u) return u.favoriteInd == 'Y';
     });
     var multiCharts = _.filter(jsonObj.multibarCharts, function(u: any) {
-          if (u) return u.favoriteInd == 'Y';
+      if (u) return u.favoriteInd == 'Y';
     });
     var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
-          if (u) return u.favoriteInd == 'Y';
+      if (u) return u.favoriteInd == 'Y';
     });
     return {
       pieChart: pieCharts[0],
@@ -354,99 +468,120 @@ class OperationalFlownController {
   weekDataNext() {
     this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').next();
   }
-   toggleChartOrTableView(val: string) {
-    this.toggle.chartOrTable = val;
+  toggleFlightStatusView(val: string) {
+    this.toggle.flightStatus = val;
   }
-  runReport(chartTitle: string,monthOrYear: string,flownMonth: string){
-		var that = this;
-		//if no cordova, then running in browser and need to use dataURL and iframe
-		if (!window.cordova) {
-			that.ionicLoadingShow();
-			this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth)
-				.then(function(dataURL) {
-					that.ionicLoadingHide();
-					//set the iframe source to the dataURL created
-					//console.log(dataURL);
-					//document.getElementById('pdfImage').src = dataURL;
-				},function(error) {
-					that.ionicLoadingHide();
-					console.log('Error ');
-				});
-			return true;
-		}
-		//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
-		else {
-			that.ionicLoadingShow();
-			this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth)
-				.then(function(filePath) {
-					that.ionicLoadingHide();
-					//log the file location for debugging and oopen with inappbrowser
-					console.log('report run on device using File plugin');
-					console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-					var lastPart = filePath.split("/").pop();
-					var fileName = "/mnt/sdcard/"+lastPart;
-					if(device.platform !="Android")
-					fileName = filePath;
-					//window.openPDF(fileName);
-					//else
-					//window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
-										
-					cordova.plugins.fileOpener2.open(
-						fileName, 
-						'application/pdf', 
-						{ 
-							error : function(e) { 
-								console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
-							},
-							success : function () {
-								console.log('file opened successfully');                
-							}
-						}
-					);
-				},function(error) {
-					that.ionicLoadingHide();
-					console.log('Error ');
-				});
-			return true;
-		}
-	}
+  toggleFlightReasonView(val: string) {
+    this.toggle.flightReason = val;
+    if (this.toggle.flightReason == "chart")
+    this.onSlideMove({ index: this.header.tabIndex });
+  }
+  toggleCCExceptionView(val: string) {
+    this.toggle.ccException = val;
+  }   
+  runReport(chartTitle: string, monthOrYear: string, flownMonth: string) {
+    var that = this;
+    //if no cordova, then running in browser and need to use dataURL and iframe
+    if (!window.cordova) {
+      that.ionicLoadingShow();
+      this.reportSvc.runReportDataURL(chartTitle, monthOrYear, flownMonth)
+        .then(function(dataURL) {
+          that.ionicLoadingHide();
+          //set the iframe source to the dataURL created
+          //console.log(dataURL);
+          //document.getElementById('pdfImage').src = dataURL;
+		  window.open(dataURL,"_system");
+        }, function(error) {
+          that.ionicLoadingHide();
+          console.log('Error ');
+        });
+      return true;
+    }
+    //if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
+    else {
+      that.ionicLoadingShow();
+      this.reportSvc.runReportAsync(chartTitle, monthOrYear, flownMonth)
+        .then(function(filePath) {
+          that.ionicLoadingHide();
+          //log the file location for debugging and oopen with inappbrowser
+          console.log('report run on device using File plugin');
+          console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
+          var lastPart = filePath.split("/").pop();
+          var fileName = "/mnt/sdcard/" + lastPart;
+          if (device.platform != "Android")
+            fileName = filePath;
+          //window.openPDF(fileName);
+          //else
+          //window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
+                    
+          cordova.plugins.fileOpener2.open(
+            fileName,
+            'application/pdf',
+            {
+              error: function(e) {
+                console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
+              },
+              success: function() {
+                console.log('file opened successfully');
+              }
+            }
+          );
+        }, function(error) {
+          that.ionicLoadingHide();
+          console.log('Error ');
+        });
+      return true;
+    }
+  }
 
-  openFlightProcessDrillPopover($event,data,selFindLevel) {
+  openFlightProcessDrillPopover($event, data, selFindLevel) {
     this.drillName = 'FLIGHT PROCESSING STATUS - ' + data.point[0] + '-' + this.header.flownMonth;
     this.drillType = 'flight-process';
-    this.drillpopover.show($event);
-    this.shownGroup = 0;
     this.groups = [];
     this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
+    this.firstColumns = ['countryFrom', 'flownSector', 'flightNumber', 'carrierCode#'];
     this.initiateArray(this.drilltabs);
-    this.openDrillDown(data.point,selFindLevel);
+    var that = this;
+    this.$timeout(function() {
+      that.drillpopover.show($event);
+      that.shownGroup = 0;
+    }, 50);
+    this.openDrillDown(data.point, selFindLevel);
   };
 
-  openCounponCountDrillPopover($event,data,selFindLevel) {
+  openCounponCountDrillPopover($event, data, selFindLevel) {
     this.drillName = 'COUPON COUNT BY EXCEPTION CATEGORY ';
     this.drillType = 'coupon-count';
-    this.drillpopover.show($event);
-    this.shownGroup = 0;
     this.groups = [];
     this.drilltabs = ['Coupon Count Flight Status', 'Document Level'];
+    this.firstColumns = ['flightNumber', 'flownSector'];
     this.initiateArray(this.drilltabs);
-    this.openDrillDown(data.point,selFindLevel);
+    var that = this;
+    this.$timeout(function() {
+      that.drillpopover.show($event);
+      that.shownGroup = 0;
+    }, 50);
+    this.openDrillDown(data.point, selFindLevel);
   };
 
-  openFlightCountDrillPopover($event,data,selFindLevel) {
-    this.drillName = 'LIST OF OPEN FLIGHTS FOR ' + data.point[0] + '-' + this.header.flownMonth +' BY REASON ';
+  openFlightCountDrillPopover($event, data, selFindLevel) {
+    this.drillName = 'LIST OF OPEN FLIGHTS FOR ' + data.point[0] + '-' + this.header.flownMonth + ' BY REASON ';
     this.drillType = 'flight-count';
-    this.drillpopover.show($event);
-    this.shownGroup = 0;
     this.groups = [];
     this.drilltabs = ['Open Flight Status', 'Document Level'];
+    this.firstColumns = ['flightNumber', 'carrierCode'];
     this.initiateArray(this.drilltabs);
-    this.openDrillDown(data.point,selFindLevel);
+    var that = this;
+    this.$timeout(function() {
+      that.drillpopover.show($event);
+      that.shownGroup = 0;
+    }, 50);
+    this.openDrillDown(data.point, selFindLevel);
   };
-  
-  drillDownRequest (drillType, selFindLevel, data){
+
+  drillDownRequest(drillType, selFindLevel, data) {
     var reqdata;
-    if(drillType == 'flight-process') {
+    if (drillType == 'flight-process') {
       var drillLevel = (selFindLevel + 2);
       if (data.label) {
         this.drillBarLabel = data[0];
@@ -459,7 +594,7 @@ class OperationalFlownController {
       var sectorFromTo = (data.flownSector) ? data.flownSector : "";
       var flightNumber = (data.flightNumber) ? data.flightNumber : "";
 
-      
+
 
       reqdata = {
         "flownMonth": this.header.flownMonth,
@@ -471,11 +606,11 @@ class OperationalFlownController {
         "countryFromTo": countryFromTo,
         "sectorFromTo": sectorFromTo,
         "flightNumber": flightNumber
-      };  
+      };
     }
 
 
-    if(drillType == 'coupon-count') {
+    if (drillType == 'coupon-count') {
       var drillLevel = (selFindLevel + 2);
       if (data.label) {
         this.drillBarLabel = data[0];
@@ -488,7 +623,7 @@ class OperationalFlownController {
       var flightSector = (data.flownSector) ? data.flownSector : "";
       var flightNumber = (data.flightNumber) ? data.flightNumber : "";
 
-      
+
 
       reqdata = {
         "flownMonth": this.header.flownMonth,
@@ -500,10 +635,10 @@ class OperationalFlownController {
         "flightNumber": flightNumber,
         "flightDate": flightDate,
         "flightSector": flightSector,
-      };  
+      };
     }
 
-    if(drillType == 'flight-count') {
+    if (drillType == 'flight-count') {
       var drillLevel = (selFindLevel + 2);
       if (data.label) {
         this.drillBarLabel = data[0];
@@ -515,7 +650,7 @@ class OperationalFlownController {
       var flightSector = (data.flownSector) ? data.flownSector : "";
       var flightNumber = (data.flightNumber) ? data.flightNumber : "";
       var flightStatus = (this.exceptionCategory && drillLevel > 1) ? this.exceptionCategory : "";
-      
+
 
       reqdata = {
         "flownMonth": this.header.flownMonth,
@@ -528,28 +663,28 @@ class OperationalFlownController {
         "flightNumber": flightNumber,
         "flightDate": flightDate,
         "flightSector": flightSector,
-      };  
+      };
     }
 
     return reqdata;
   }
 
-  getDrillDownURL (drilDownType) {
+  getDrillDownURL(drilDownType) {
     var url
-    switch(drilDownType){
+    switch (drilDownType) {
       case 'flight-process':
         url = "/paxflnopr/flightprocessingstatusdrill";
-      break;
+        break;
       case 'coupon-count':
         url = "/paxflnopr/couponcountbyexpdrill";
-      break;
+        break;
       case 'flight-count':
         url = "/paxflnopr/flightcountbyreasondrill";
-      break;
+        break;
     }
     return url;
   }
-  tabSlideHasChanged(index){
+  tabSlideHasChanged(index) {
     var data = this.groups[0].completeData[0];
     this.groups[0].items[0] = data[index].values;
     this.groups[0].orgItems[0] = data[index].values;
@@ -562,11 +697,12 @@ class OperationalFlownController {
     var that = this;
     this.selectedDrill[selFindLevel] = data;
     this.selectedDrill[selFindLevel + 1] = '';
-    
+
     if (selFindLevel != (this.groups.length - 1)) {
       var drillLevel = (selFindLevel + 2);
       var reqdata = this.drillDownRequest(this.drillType, selFindLevel, data);
       var URL = this.getDrillDownURL(this.drillType);
+      this.ionicLoadingShow();
       this.operationalService.getDrillDown(reqdata, URL)
         .then(function(data) {
           that.ionicLoadingHide();
@@ -575,18 +711,18 @@ class OperationalFlownController {
           var findLevel = drillLevel - 1;
           if (data.status == 'success') {
             var respResult;
-            if(data.data.rows){
+            if (data.data.rows) {
               respResult = data.data.rows;
-            }else{
+            } else {
               respResult = data.data;
             }
 
-            if((that.drillType == 'coupon-count' || that.drillType == 'flight-count') && data.data.rows){
+            if ((that.drillType == 'coupon-count' || that.drillType == 'flight-count') && data.data.rows) {
               that.groups[findLevel].items[0] = respResult[0].values;
               that.groups[findLevel].orgItems[0] = respResult[0].values;
               that.groups[findLevel].completeData[0] = respResult;
               that.exceptionCategory = respResult[0].key;
-            }else{
+            } else {
               that.groups[findLevel].items[0] = respResult;
               that.groups[findLevel].orgItems[0] = respResult;
             }
@@ -607,7 +743,7 @@ class OperationalFlownController {
     }
   }
 
-  closeDrillPopover(){
+  closeDrillPopover() {
     this.drillpopover.hide();
   }
 
@@ -616,7 +752,10 @@ class OperationalFlownController {
     for (var i = level; i < this.drilltabs.length; i++) {
       this.groups[i].items.splice(0, 1);
       this.groups[i].orgItems.splice(0, 1);
-      this.sort('',i,false);
+      this.sort('', i, false);
+      console.log(this.selectedDrill);
+      this.selectedDrill[i] = '';
+      console.log(this.selectedDrill);
     }
   }
   initiateArray(drilltabs) {
@@ -627,27 +766,28 @@ class OperationalFlownController {
         items: [],
         orgItems: [],
         ItemsByPage: [],
-        completeData: []
+        completeData: [],
+        firstColumns: this.firstColumns[i]
       };
     }
   }
 
-  isDrillRowSelected(level,obj) {
+  isDrillRowSelected(level, obj) {
     return this.selectedDrill[level] == obj;
   }
-  searchResults (level,obj) {
+  searchResults(level, obj) {
     this.groups[level].items[0] = this.filteredListService.searched(this.groups[level].orgItems[0], obj.searchText, level, this.drillType);
     if (obj.searchText == '') {
-      this.resetAll(level); 
+      this.resetAll(level);
       this.groups[level].items[0] = this.groups[level].orgItems[0];
     }
     this.currentPage[level] = 0;
-    this.pagination(level); 
+    this.pagination(level);
   }
-  pagination (level) {
-    this.groups[level].ItemsByPage = this.filteredListService.paged(this.groups[level].items[0], this.pageSize );
+  pagination(level) {
+    this.groups[level].ItemsByPage = this.filteredListService.paged(this.groups[level].items[0], this.pageSize);
   };
-  setPage (level, pageno) {
+  setPage(level, pageno) {
     this.currentPage[level] = pageno;
   };
   lastPage(level) {
@@ -656,18 +796,21 @@ class OperationalFlownController {
   resetAll(level) {
     this.currentPage[level] = 0;
   }
-  sort(sortBy,level,order) {
+  sort(sortBy, level, order) {
     this.resetAll(level);
     this.columnToOrder = sortBy; 
     //$Filter - Standard Service
-    this.groups[level].items[0] = this.$filter('orderBy')(this.groups[level].items[0], this.columnToOrder, order); 
+    this.groups[level].items[0] = this.$filter('orderBy')(this.groups[level].items[0], this.columnToOrder, order);
     this.pagination(level);
   };
   range(total, level) {
     var ret = [];
     var start: number;
-    start = Number(this.currentPage[level]) - 2;
-    if(start < 0) {
+    start = 0;
+    if(total > 5) {
+      start = Number(this.currentPage[level]) - 2;
+    }
+    if (start < 0) {
       start = 0;
     }
     var k = 1;
@@ -680,7 +823,7 @@ class OperationalFlownController {
     }
     return ret;
   }
-  toggleGroup (group) {
+  toggleGroup(group) {
     if (this.isGroupShown(group)) {
       this.shownGroup = null;
     } else {

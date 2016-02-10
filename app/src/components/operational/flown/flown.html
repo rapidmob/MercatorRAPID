@@ -6,7 +6,7 @@
         <div class="pas-head-title">Passenger Flown</div>
         <div class="pas-head-subtitle">Month:
           <label>
-          <select class="selectmonth">
+          <select class="selectmonth" ng-change="OprCtrl.updateHeader()" ng-model="OprCtrl.header.flownMonth">
              <option ng-repeat="month in OprCtrl.subHeader.paxFlownOprMonths.values" ng-selected="OprCtrl.selectedFlownMonth(month)" value="{{month}}">{{month}}</option>
           </select>
           <i class="icon ion-chevron-down move-left"></i></label>

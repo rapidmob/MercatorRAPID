@@ -39,12 +39,23 @@ function searchUtil(item, toSearch, level, drilltype) {
       return (item.flownSector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
     } else if(item.flightNumber && level == 2) {
       return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
-    } else if(item['document#'] && level == 2) {
+    } else if(item['document#'] && level == 3) {
       return (item['document#'].toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
     } else {
       return false;
     }
   }
+
+  if(drilltype == 'target') {
+    if(item.routetype && level == 0) {
+      return (item.routetype.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
+    }else if(item.routecode && level == 1) {
+      return (item.routecode.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
   if(drilltype == 'bar') {
     if(item.routeCode && level == 0) {
       return (item.routeCode.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
@@ -86,6 +97,20 @@ function searchUtil(item, toSearch, level, drilltype) {
       return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
     }else if(item['flownSector'] && level == 1) {
       return (item['flownSector'].toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  if(drilltype == 'analysis' || drilltype == 'passenger-count') {
+    if(item.regionName && level == 0) {
+      return (item.regionName.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.countryFrom && item.countryTo && level == 1) {
+      return (item.countryFrom.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || item.countryTo.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
+    } else if(item.flownSector && level == 2) {
+      return (item.flownSector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightNumber && level == 3) {
+      return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
     } else {
       return false;
     }

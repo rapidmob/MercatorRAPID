@@ -17,7 +17,10 @@ interface toggleObject {
     targetRevOrPax: string,
     sectorOrder: string,
     sectorRevOrPax: string,
-    chartOrTable: string
+    chartOrTable: string,
+    targetView: string,
+    revenueView: string,
+    sectorView: string
 }
 
 interface headerObject {
@@ -30,8 +33,8 @@ interface headerObject {
 
 class MisController{
 
-    public static $inject = ['$scope', '$ionicLoading', '$timeout', '$window', '$ionicPopover',
-        '$filter', 'MisService', 'ChartoptionService', 'FilteredListService', 'UserService', 'ReportSvc'];
+    public static $inject = ['$state', '$scope', '$ionicLoading', '$timeout', '$window', '$ionicPopover',
+        '$filter', 'MisService', 'ChartoptionService', 'FilteredListService', 'UserService', '$ionicHistory', 'ReportSvc', 'GRAPH_COLORS', 'TABS', '$ionicPopup'];
 
     private tabs: [tabObject];
     private toggle: toggleObject;
@@ -52,8 +55,8 @@ class MisController{
 
     private infodata: string;
     private regionName: string;
-    private charttype: string;
-    private graphindex: number;
+    private chartType: string;
+    private graphIndex: number;
     private columnToOrder: string;
     private shownGroup: number;
 
@@ -72,62 +75,73 @@ class MisController{
     private popovershown: boolean;
     private drillType: string;
     private drillBarLabel: string;
-    private drillName: string[];
-
+    private drillName: string;
+    private firstColumns: string[];
+    
     private that: any;
 
-    constructor(private $scope: ng.IScope, private $ionicLoading: Ionic.ILoading, private $timeout: ng.ITimeoutService, private $window: ng.IWindowService,
-        private $ionicPopover: Ionic.IPopover, private $filter: ng.IFilterService, private misService: MisService, private chartoptionService: ChartoptionService,
-        private filteredListService: FilteredListService, private userService: UserService, private reportSvc: ReportSvc) {
+    constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
+        private $ionicLoading: Ionic.ILoading, private $timeout: ng.ITimeoutService,
+        private $window: ng.IWindowService, private $ionicPopover: Ionic.IPopover,
+        private $filter: ng.IFilterService, private misService: MisService,
+        private chartoptionService: ChartoptionService, private filteredListService: FilteredListService,
+        private userService: UserService, private $ionicHistory: any, private reportSvc: ReportSvc, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup) {
 
-        this.that = this;
+            this.that = this;
 
-        this.tabs = [
-        { title: 'My Dashboard', names: 'MyDashboard', icon : 'iconon-home' },
-        { title: 'Metric Snapshot', names: 'MetricSnapshot', icon : 'ion-home' },
-        { title: 'Target Vs Actual', names: 'TargetVsActual', icon : 'ion-home' },
-        { title: 'Revenue Analysis', names: 'RevenueAnalysis', icon : 'ion-home'},
-        { title: 'Sector & Carrier Analysis', names: 'SectorAndCarrierAnalysis', icon : 'ion-home' },
-        { title: 'Route Revenue', names: 'RouteRevenue', icon : 'ion-home' }
-        ];
+            this.tabs = this.TABS.DB1_TABS;
 
-        this.toggle = {
-            monthOrYear : 'month',
-            targetRevOrPax: 'revenue',
-            sectorOrder: 'top5',
-            sectorRevOrPax: 'revenue',
-			chartOrTable: 'chart'
-        }
-                
-
-        this.header = {
-            flownMonth: '',
-            surcharge : false,
-            tabIndex: 0,
-            headerIndex: 0,
-            username: ''
-        };
-
-        /*
-        angular.element(window).bind('orientationchange', function (e, scope) {
-            this.onSlideMove({index: this.header.tabIndex});
-        }); */
-        angular.element(window).bind('orientationchange', this.orientationChange); 
-        
-        //this.$scope.$watch('MisCtrl.header.surcharge', () => { this.onSlideMove({index:this.header.tabIndex}); }, true);
-        this.initData();
-
-        this.$scope.$on('onSlideMove', (event: any, response: any) => {
-            this.$scope.MisCtrl.onSlideMove(response);
-        });
-
-        this.$scope.$on('openDrillPopup', (event: any, response: any) => {
-            if (response.type == 'metric') {
-                this.$scope.MisCtrl.openBarDrillDownPopover(response.event, { "point": response.data }, -1);
+            this.toggle = {
+                monthOrYear : 'month',
+                targetRevOrPax: 'revenue',
+                sectorOrder: 'top5',
+                sectorRevOrPax: 'revenue',
+                chartOrTable: 'chart',
+                targetView: 'chart',
+                revenueView: 'chart',
+                sectorView: 'chart'
             }
-        });
+            this.header = {
+                flownMonth: '',
+                surcharge: false,
+                tabIndex: 0,
+                headerIndex: 0,
+                username: ''
+            };
+
+            /*
+            angular.element(window).bind('orientationchange', function (e, scope) {
+                this.onSlideMove({index: this.header.tabIndex});
+            }); */
+            angular.element(window).bind('orientationchange', this.orientationChange); 
         
+            //this.$scope.$watch('MisCtrl.header.surcharge', () => { this.onSlideMove({index:this.header.tabIndex}); }, true);
+            this.initData();
+
+            this.$scope.$on('onSlideMove', (event: any, response: any) => {
+                this.$scope.MisCtrl.onSlideMove(response);
+            });
+            var self = this;
+            this.$scope.$on('$ionicView.enter', () => {
+                if (!self.userService.showDashboard('MIS')) {
+                    self.$state.go("login");
+                }
+            });
+
+            this.$scope.$on('openDrillPopup', (event: any, response: any) => {
+                if (response.type == 'metric') {
+                    this.$scope.MisCtrl.openBarDrillDownPopover(response.event, { "point": response.data }, -1);
+                }
+                if (response.type == 'target') {
+                    this.$scope.MisCtrl.openTargetDrillDownPopover(response.event, { "point": response.data }, -1);
+                }
+                if (response.type == 'passenger-count') {
+                   // this.$scope.MisCtrl.openRevenuePassengerDrillDownPopover(response.event, { "point": response.data }, -1);
+                }
+                
+            });
     }
+
     initData() {
         var that = this;
         this.$ionicPopover.fromTemplateUrl('components/mis/infotooltip.html', {
@@ -159,21 +173,32 @@ class MisController{
             userId: this.$window.localStorage.getItem('rapidMobile.user')
         }
 
-        this.misService.getPaxFlownMisHeader(req).then(
+        if(req.userId != "null") {
+            this.misService.getPaxFlownMisHeader(req).then(
                 (data) => {
                     that.subHeader = data.response.data;
                     that.header.flownMonth = that.subHeader.paxFlownMisMonths[0].flowMonth;
-                    
-                    that.onSlideMove({index: 0});  
+
+                    that.onSlideMove({ index: 0 });
                 },
                 (error) => {
                     console.log('an error occured');
                 });
-                //
-				
+        }
+	
 		that.header.username = that.getProfileUserName();
-        
     }
+
+    getProfileUserName(): string {
+        if (this.userService.isUserLoggedIn()) {
+            var obj = this.$window.localStorage.getItem('rapidMobile.user');
+            if (obj != 'null') {
+                var profileUserName = JSON.parse(obj);
+                return profileUserName.username;
+            }
+        }
+    }
+
     selectedFlownMonth(month: string){
         return (month == this.header.flownMonth);
     }
@@ -190,12 +215,6 @@ class MisController{
         console.log(index);
         this.infopopover.show($event);
     };
-
-    getProfileUserName(): string {
-        var obj = this.$window.localStorage.getItem('rapidMobile.user');
-        var profileUserName = JSON.parse(obj);
-        return profileUserName.username;
-    }
 
     closePopover() {
         this.graphpopover.hide();
@@ -268,26 +287,35 @@ class MisController{
         this.ionicLoadingShow();
         this.misService.getMetricSnapshot(reqdata)
         .then(function(data) {
+			if(data.response.status === "success"){
+				// fav Items to display in dashboard
+				that.metricResult  = _.sortBy(data.response.data.metricSnapshotCharts, function(u: any) {
+					if (u) return [u.favoriteChartPosition]; 
+				});
 
-            // fav Items to display in dashboard
-            that.metricResult  = _.sortBy(data.response.data.metricSnapshotCharts, function(u: any) {
-                if (u) return [u.favoriteChartPosition]; 
-            });
+				_.forEach(that.metricResult, function (n: any, value: any) {
+					n.values[0].color = that.GRAPH_COLORS.METRIC[0];
+					n.values[1].color = that.GRAPH_COLORS.METRIC[1];
+					if(n.values[2]) n.values[2].color = that.GRAPH_COLORS.METRIC[2];
+				});
 
-            _.forEach(that.metricResult, function (n: any, value: any) {
-                n.values[0].color = '#4A90E2';
-                n.values[1].color = '#50E3C2';
-                if(n.values[2]) n.values[2].color = '#B8E986';
-            });
-
-            that.favMetricResult = _.filter(that.metricResult, function(u: any) {
-                if(u) return u.favoriteInd == 'Y';
-            });
-            that.metricLegends = data.response.data.legends;
-            if(that.header.tabIndex == 0) {
-                that.metricResult = that.favMetricResult;
-            }
-            that.ionicLoadingHide();
+				that.favMetricResult = _.filter(that.metricResult, function(u: any) {
+					if(u) return u.favoriteInd == 'Y';
+				});
+				that.metricLegends = data.response.data.legends;
+				if(that.header.tabIndex == 0) {
+					that.metricResult = that.favMetricResult;
+				}
+				that.ionicLoadingHide();
+			}else{
+				that.ionicLoadingHide();
+				  that.$ionicPopup.alert({
+					title: 'Error',
+					content: 'No Data Found!!!'
+				  }).then(function(res) {
+					  console.log('done');
+				  });
+			}
         }, function(error) {
         });
     }
@@ -305,32 +333,43 @@ class MisController{
 
         this.misService.getTargetVsActual(reqdata)
         .then(function(data) {
-            // fav Items to display in dashboard
-            that.favTargetLineResult = _.filter(data.response.data.lineCharts, function(u: any) { 
-                if(u) return u.favoriteInd == 'Y';
-            });
-            that.favTargetBarResult = _.filter(data.response.data.verBarCharts, function(u: any) { 
-                if(u) return u.favoriteInd == 'Y';
-            });
-            _.forEach(data.response.data.verBarCharts, function (n: any, value: any) {
-                n.values[0].color = '#4A90E2';
-                n.values[1].color = '#50E3C2';
-            });
-            var lineColors = [{"color": "#4A90E2", "classed": "dashed","strokeWidth": 2},
-            {"color": "#50E3C2"},{"color": "#B8E986", "area" : true, "disabled": true}];
+			if(data.response.status === "success"){
+				// fav Items to display in dashboard
+				that.favTargetLineResult = _.filter(data.response.data.lineCharts, function(u: any) { 
+					if(u) return u.favoriteInd == 'Y';
+				});
+				that.favTargetBarResult = _.filter(data.response.data.verBarCharts, function(u: any) { 
+					if(u) return u.favoriteInd == 'Y';
+				});
+				_.forEach(data.response.data.verBarCharts, function (n: any, value: any) {
+					n.values[0].color = that.GRAPH_COLORS.verBarCharts[0];
+					n.values[1].color = that.GRAPH_COLORS.verBarCharts[1];
+				});
 
-            _.forEach(data.response.data.lineCharts, function (n: any, value: any) {
-                _.merge(n.lineChartItems, lineColors);
-            });
+				var lineColors = [{"color": that.GRAPH_COLORS.LINE[0], "classed": "dashed","strokeWidth": 2},
+				{"color": that.GRAPH_COLORS.LINE[1]},{"color": that.GRAPH_COLORS.LINE[2], "area" : true, "disabled": true}];
 
-            console.log(data.response.data.lineCharts);
+				_.forEach(data.response.data.lineCharts, function (n: any, value: any) {
+					_.merge(n.lineChartItems, lineColors);
+				});
 
-            that.targetActualData = {
-                horBarChart: data.response.data.verBarCharts,
-                lineChart: data.response.data.lineCharts
-            };
+				console.log(data.response.data.lineCharts);
 
-            that.ionicLoadingHide();
+				that.targetActualData = {
+					horBarChart: data.response.data.verBarCharts,
+					lineChart: data.response.data.lineCharts
+				};
+
+				that.ionicLoadingHide();
+			}else{
+				that.ionicLoadingHide();
+				  that.$ionicPopup.alert({
+					title: 'Error',
+					content: 'No Data Found!!!'
+				  }).then(function(res) {
+					  console.log('done');
+				  });
+			}
         }, function(error) {
             console.log('Error ');
             that.ionicLoadingHide();
@@ -346,7 +385,17 @@ class MisController{
         };
         this.misService.getRouteRevenue(routeRevRequest)
         .then(function(data) {
-            that.routeRevData = data.response.data;
+			if(data.response.status === "success"){
+				that.routeRevData = data.response.data;
+			}else{
+				that.ionicLoadingHide();
+				  that.$ionicPopup.alert({
+					title: 'Error',
+					content: 'No Data Found!!!'
+				  }).then(function(res) {
+					  console.log('done');
+				  });
+			}
         }, function(error) {
             console.log('Error ');
         });
@@ -365,42 +414,52 @@ class MisController{
         this.ionicLoadingShow();
         this.misService.getRevenueAnalysis(reqdata)
         .then(function(data) {
-            // fav Items to display in dashboard
-            var jsonObj = data.response.data;
-            var sortedData = _.sortBy(jsonObj.multibarCharts, function(u: any) { 
-                if (u) return [u.favoriteChartPosition]; 
-            });
-            var favRevenueBarResult = _.filter(sortedData, function(u: any) { 
-                if(u) return u.favoriteInd == 'Y';
-            });
-            var sortedData = _.sortBy(jsonObj.pieCharts, function(u: any) { 
-                if (u) return [u.favoriteChartPosition]; 
-            });
-            var favRevenuePieResult = _.filter(sortedData, function(u: any) { 
-                if(u) return u.favoriteInd == 'Y';
-            });
+			if(data.response.status === "success"){
+				// fav Items to display in dashboard
+				var jsonObj = data.response.data;
+				var sortedData = _.sortBy(jsonObj.multibarCharts, function(u: any) { 
+					if (u) return [u.favoriteChartPosition]; 
+				});
+				var favRevenueBarResult = _.filter(sortedData, function(u: any) { 
+					if(u) return u.favoriteInd == 'Y';
+				});
+				var sortedData = _.sortBy(jsonObj.pieCharts, function(u: any) { 
+					if (u) return [u.favoriteChartPosition]; 
+				});
+				var favRevenuePieResult = _.filter(sortedData, function(u: any) { 
+					if(u) return u.favoriteInd == 'Y';
+				});
 
-            var barColors = ['#4A90E2', '#50E3C2'];
-            _.merge(jsonObj.multibarCharts[1], barColors);
-            _.forEach(jsonObj.multibarCharts, function(n: any, value: any) {
-                n.color = barColors[value];
-            });
+				var barColors = [that.GRAPH_COLORS.BAR[0], that.GRAPH_COLORS.BAR[1]];
+				_.merge(jsonObj.multibarCharts[1], barColors);
+				_.forEach(jsonObj.multibarCharts, function(n: any, value: any) {
+					n.color = barColors[value];
+				});
 
-            var pieColors = [{"color": "#28b6f6"},{"color": "#7bd4fc"},{"color": "#C6E5FA"}];
-            _.forEach(jsonObj.pieCharts[0].data, function (n: any, value: any) {
-                n.label = n.xval;
-                n.value = n.yval;
-            });
+				var pieColors = [{"color": that.GRAPH_COLORS.PIE[0]},{"color": that.GRAPH_COLORS.PIE[1]},{"color": that.GRAPH_COLORS.PIE[2]}];
+				_.forEach(jsonObj.pieCharts[0].data, function (n: any, value: any) {
+					n.label = n.xval;
+					n.value = n.yval;
+				});
 
-            _.merge(jsonObj.pieCharts[0].data, pieColors);
+				_.merge(jsonObj.pieCharts[0].data, pieColors);
 
-            that.revenueData = {
-                revenuePieChart : jsonObj.pieCharts[0],
-                revenueBarChart : jsonObj.multibarCharts[1].multibarChartItems,
-                revenueHorBarChart : jsonObj.multibarCharts[2].multibarChartItems
-            }
+				that.revenueData = {
+					revenuePieChart : jsonObj.pieCharts[0],
+					revenueBarChart : jsonObj.multibarCharts[1].multibarChartItems,
+					revenueHorBarChart : jsonObj.multibarCharts[2].multibarChartItems
+				}
 
-            that.ionicLoadingHide();
+				that.ionicLoadingHide();
+			}else{
+				that.ionicLoadingHide();
+				  that.$ionicPopup.alert({
+					title: 'Error',
+					content: 'No Data Found!!!'
+				  }).then(function(res) {
+					  console.log('done');
+				  });
+			}
         }, function(error) {
             this.ionicLoadingHide();
             console.log('Error ');
@@ -414,7 +473,7 @@ class MisController{
         this.selectedDrill[selFindLevel + 1] = '';
         if(selFindLevel != '3') {
             var drillLevel = (selFindLevel + 2);
-            this.regionName = (regionData.regionName) ? regionData.regionName : regionData.cahrtName;
+            this.regionName = (regionData.regionName) ? regionData.regionName : regionData.chartName;
             var countryFromTo = (regionData.countryFrom && regionData.countryTo) ? regionData.countryFrom + '-' + regionData.countryTo : "";
             var sectorFromTo = (regionData.flownSector && drillLevel >= 3) ? regionData.flownSector : "";
             var flightNumber = (regionData.flightNumber && drillLevel == 4) ? regionData.flightNumber : "";
@@ -465,6 +524,7 @@ class MisController{
             this.groups[i].items.splice(0, 1);
             this.groups[i].orgItems.splice(0, 1);
             this.sort('paxCount',i,false);
+            this.selectedDrill[i] = '';
         }
     }
     drillDownRequest (drillType, selFindLevel, data){
@@ -523,6 +583,68 @@ class MisController{
                 "routetype": routetype
             };  
         }
+
+        if(drillType == 'analysis') {
+            var drillLevel = (selFindLevel + 2);
+            
+            var regionName;
+            var countryFromTo;
+            var ownOalFlag;
+            var sectorFromTo;
+            var flightNumber;
+
+            if (drillLevel > 1) {
+                console.log(data);
+                regionName = (data.regionName) ? data.regionName : "";
+                countryFromTo = (data.countryFrom && data.countryTo) ? data.countryFrom + '-' + data.countryTo : "";
+                ownOalFlag = (data.ownOal) ? data.ownOal : "";
+                sectorFromTo = (data.flownSector) ? data.flownSector : "";
+                flightNumber = (data.flightNumber) ? data.flightNumber : "";
+            }
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "pageNumber": 0,
+                "regionName": regionName,
+                "countryFromTo": countryFromTo,
+                "ownOalFlag": ownOalFlag,
+                "sectorFromTo": sectorFromTo,
+                "flightNumber": flightNumber,
+                "flightDate": 0
+            };  
+        }
+        if(drillType == 'passenger-count') {
+            var drillLevel = (selFindLevel + 2);
+            
+            console.log(data);
+            var regionName = (data.regionName) ? data.regionName : "";
+            var countryFromTo = (data.countryFrom && data.countryTo) ? data.countryFrom + '-' + data.countryTo : "";
+            var ownOalFlag = (data.ownOalFlag) ? data.ownOalFlag : "";
+            var sectorFromTo  = (data.sectorFromTo) ? data.sectorFromTo : "";
+            var flightNumber  = (data.flightNumber) ? data.flightNumber : "";
+
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "pageNumber": 0,
+                "regionName": regionName,
+                "countryFromTo": countryFromTo,
+                "ownOalFlag": ownOalFlag,
+                "sectorFromTo": sectorFromTo,
+                "flightNumber": flightNumber,
+                "flightDate": 0
+            };  
+        }
         return reqdata;
     }
     getDrillDownURL (drilDownType) {
@@ -533,6 +655,12 @@ class MisController{
             break;
             case 'target':
                 url = "/paxflnmis/tgtvsactdrill";
+            break;
+            case 'analysis':
+                url = "/paxflnmis/netrevenueownoaldrill";
+            break;
+            case 'passenger-count':
+                url = "/paxflnmis/netrevenueownoaldrill";
             break;
             
         }
@@ -546,6 +674,7 @@ class MisController{
         
         if (selFindLevel != (this.groups.length - 1)) {
             var drillLevel = (selFindLevel + 2);
+            this.ionicLoadingShow();
             var reqdata = this.drillDownRequest(this.drillType, selFindLevel, data);
             var URL = this.getDrillDownURL(this.drillType);
             this.misService.getDrillDown(reqdata, URL)
@@ -581,32 +710,67 @@ class MisController{
                 name: this.drilltabs[i],
                 items: [],
                 orgItems: [],
-                ItemsByPage: []
+                ItemsByPage: [],
+                firstColumns: this.firstColumns[i]
             };
         }
     }
     openBarDrillDownPopover($event, selData, selFindLevel) {
         this.drillName = 'METRIC SNAPSHOT REPORT - ' + selData.point.label;
         this.drillType = 'bar';
-        this.drillBarpopover.show($event);
+        this.groups = [];
         this.drilltabs = ['Route Level', 'Sector Level', 'Data Level', 'Flight Level'];
+        this.firstColumns = ['routeCode', 'flownSector', 'flightNumber', 'flightDate'];
         this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
         this.openBarDrillDown(selData.point, selFindLevel);
     };
     openTargetDrillDownPopover($event, selData, selFindLevel) {
         this.drillName = 'Target Vs Actual';
         this.drillType = 'target';
-        this.drillBarpopover.show($event);
+        this.groups = [];
         this.drilltabs = ['Route Type', 'Route code'];
+        this.firstColumns = ['routetype', 'routecode'];
         this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    };
+
+    openRevenueDrillDownPopover($event, selData, selFindLevel) {
+        console.log(selData);
+        this.drillName = 'Net Revenue by OWN and OAL';
+        this.drillType = 'analysis';
+        this.groups = [];
+        this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
+        this.firstColumns = ['countryFrom', 'flownSector', 'flightNumber', 'netRevenue'];
+        this.initiateArray(this.drilltabs);
+        this.drillBarpopover.show($event);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    };
+
+    openRevenuePassengerDrillDownPopover($event, selData, selFindLevel) {
+        console.log(selData);
+        this.drillName = 'Passenger Count by Class of Travel';
+        this.drillType = 'passenger-count';
+        this.groups = [];
+        this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
+        this.firstColumns = ['countryFrom', 'flownSector', 'flightNumber', 'netRevenue'];
+        this.initiateArray(this.drilltabs);
+        this.drillBarpopover.show($event);
         this.openBarDrillDown(selData.point, selFindLevel);
     };
 
     openPopover ($event, index, charttype) {
         var that = this;
         $event.preventDefault();
-        this.charttype = charttype;
-        this.graphindex = index;
+        this.chartType = charttype;
+        this.graphIndex = index;
         this.$ionicPopover.fromTemplateUrl('components/mis/graph-popover.html', {
             scope: that.$scope
         }).then(function(popover) {
@@ -618,8 +782,8 @@ class MisController{
 
     openSectorPopover ($event,index,charttype) {
         var that = this;
-        this.charttype = charttype;
-        this.graphindex = index;
+        this.chartType = charttype;
+        this.graphIndex = index;
         this.$ionicPopover.fromTemplateUrl('components/mis/sector-graph-popover.html', {
             scope: that.$scope
         }).then(function(popover) {
@@ -705,9 +869,11 @@ class MisController{
 
     openDrillDownPopover($event,regionData,selFindLevel) {
         this.drillType = 'route';
-        this.drillpopover.show($event);
+        this.groups = [];
         this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
+        this.firstColumns = ['countryFrom','flownSector', 'flightNumber', 'document#'];
         this.initiateArray(this.drilltabs);
+        this.drillpopover.show($event);
         this.openDrillDown(regionData,selFindLevel);
     };
 
@@ -750,7 +916,10 @@ class MisController{
     range(total, level) {
         var ret = [];
         var start: number;
-        start = Number(this.currentPage[level]) - 2;
+        start = 0;
+        if(total > 5) {
+            start = Number(this.currentPage[level]) - 2;
+        }
         if(start < 0) {
           start = 0;
         }
@@ -777,7 +946,16 @@ class MisController{
     }
 	toggleChartOrTableView(val: string) {
         this.toggle.chartOrTable = val;
-    }	
+    }
+    toggleTargetView(val: string) {
+        this.toggle.targetView = val;
+    }
+    toggleRevenueView(val: string) {
+        this.toggle.revenueView = val;
+    }
+    toggleSectorView(val: string) {
+        this.toggle.sectorView = val;
+    }
 	runReport(chartTitle: string,monthOrYear: string,flownMonth: string){
 		var that = this;
 		//if no cordova, then running in browser and need to use dataURL and iframe
@@ -789,6 +967,7 @@ class MisController{
 					//set the iframe source to the dataURL created
 					//console.log(dataURL);
 					//document.getElementById('pdfImage').src = dataURL;
+					window.open(dataURL,"_system");
 				}, function(error) {
 					that.ionicLoadingHide();
 					console.log('Error ');

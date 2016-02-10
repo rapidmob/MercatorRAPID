@@ -4,7 +4,7 @@
 		var d3pieDirectiveObj =  {
 			restrict: 'E',
 			replace: true,
-			scope: {data: '=chartData',height:'@chartHeight',width:'@chartWidth'},
+			scope: {data: '=chartData',height:'@chartHeight',width:'@chartWidth',formatType:'@formatValue'},
 			link: function (scope, element, attrs) {
 				scope.$watch('data', function(newValue, oldValue) {
           			if (newValue) {
@@ -18,7 +18,7 @@
 							data: {content: scope.data},
 							"labels": {
 								"outer": {
-									"format": "value",
+									"format": scope.formatType,
 									"pieDistance": 20
 								},
 								"inner": {

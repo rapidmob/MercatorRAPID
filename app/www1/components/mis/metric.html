@@ -1,21 +1,26 @@
 <div class="row responsive-sm section-margin content-head">
-  <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">METRIC SNAPSHOT</div>
-  <div class="col col-50">
+  <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">
+  	METRIC SNAPSHOT
+  	<a href="#" ng-click="hideOptions= !hideOptions" class="hide-option">{{ hideOptions == true ? 'Hide Options' : 'Show Options' }}</a>
+  </div>
+  <div class="col col-50" ng-class="{'hide-options' : !hideOptions}">
     <div class="row btn-section">
-      <div class=" pull-right padding-horizontal download-btn"><button class="button export" ng-click="MisCtrl.runReport('metricSnapshot',MisCtrl.toggle.monthOrYear,MisCtrl.header.flownMonth)"><img src="res/img/download.svg" /></button></div>
-      <div class=" button-bar button-small padding-horizontal ">
-        <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleMetric('month')" ng-class="{'button-custom-color': MisCtrl.toggle.monthOrYear=='month'}">Month</a>
-        <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleMetric('year')" ng-class="{'button-custom-color': MisCtrl.toggle.monthOrYear=='year'}">Year</a>
-      </div>
-      <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
-        <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('chart')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='chart'}"><img src="res/img/graph.svg" /></a>
-        <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('table')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='table'}"><img src="res/img/tabular.svg" /></a>
+      <div class=" pull-right padding-horizontal download-btn">
+      	<button class="button export" ng-click="MisCtrl.runReport('metricSnapshot',MisCtrl.toggle.monthOrYear,MisCtrl.header.flownMonth)">
+      		<img src="res/img/download.svg" />
+      	</button>
+      	<div class=" button-bar">
+			<a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleMetric('month')" ng-class="{'button-custom-color': MisCtrl.toggle.monthOrYear=='month'}">Month</a>
+			<a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleMetric('year')" ng-class="{'button-custom-color': MisCtrl.toggle.monthOrYear=='year'}">Year</a>
+			<a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('chart')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='chart'}"><img src="res/img/graph.svg" /></a>
+			<a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleChartOrTableView('table')" ng-class="{'button-custom-color': MisCtrl.toggle.chartOrTable=='table'}"><img src="res/img/tabular.svg" /></a>
+		</div>
       </div>
     </div>
   </div>
 </div>
 <div ng-show="MisCtrl.toggle.chartOrTable=='chart'"> 
-	<div class="row no-padding">
+	<div class="row no-padding" ng-class="{'hide-options' : !hideOptions}">
 	  <div class="col pull-right">
 		<div id="chart_legend" ng-show="MisCtrl.toggle.monthOrYear=='month'">
 		  <div class="chart_legend middle" style="display: block;">{{MisCtrl.metricLegends.month[2]}}</div>
@@ -33,7 +38,7 @@
 		<div class="col-demo">
 		  <div class="row">
 		  <div class="col col-90 no-padding pull-left graph-title">{{MisCtrl.metricResult[$index].chartName}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.metricResult[$index].chartInfo)"></i></div>
-			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event, $index, 'metric')" class="icon icon-larger font-normal ion-android-open curs">
+			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event, $index, 'metric')" class="icon icon-larger font-normal ion-android-open curs mis-zoom">
 			</i></div>
 		  </div>
 		  <div class="row">
@@ -63,7 +68,7 @@
 		<div class="col-demo">
 		  <div class="row">
 			<div class="col col-90 no-padding pull-left graph-title">{{MisCtrl.metricResult[$index + 1].chartName}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.metricResult[$index+1].chartInfo)"></i></div>
-			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,$index + 1,'metric')" class="icon icon-larger font-normal ion-android-open curs">
+			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,$index + 1,'metric')" class="icon icon-larger font-normal ion-android-open curs mis-zoom">
 			</i></div>
 		  </div>
 		  <div class="row">
@@ -94,7 +99,7 @@
 		<div class="col-demo">
 		  <div class="row">
 			<div class="col col-90 no-padding pull-left graph-title">{{MisCtrl.metricResult[$index + 2].chartName}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.metricResult[$index+2].chartInfo)"></i></div>
-			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,$index + 2,'metric')" class="icon icon-larger font-normal ion-android-open curs">
+			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,$index + 2,'metric')" class="icon icon-larger font-normal ion-android-open curs mis-zoom">
 			</i></div>
 		  </div>
 		  <div class="row">
@@ -141,7 +146,7 @@
 				<th>{{MisCtrl.metricResult[$index+1].trends[0].label}}</th>    
 			</tr>
 			<tr class="tblcol" ng-repeat="metric in MisCtrl.metricResult">
-				<td data-th="KPI">{{MisCtrl.metricResult[$index].chartName}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" style="float:right" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.metricResult[$index].chartInfo)"></i></td>
+				<td class="tblvalname" data-th="KPI">{{MisCtrl.metricResult[$index].chartName}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" style="float:right" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.metricResult[$index].chartInfo)"></i></td>
 				<td class="tblval" data-th="{{MisCtrl.metricLegends.month[0]}}">{{metric.values[0].value}}</td>
 				<td class="tblval" data-th="{{MisCtrl.metricLegends.month[1]}}">{{metric.values[1].value}}</td>
 				<td class="tblval" data-th="{{MisCtrl.metricLegends.month[2]}}" ng-show="MisCtrl.toggle.monthOrYear=='month'">{{metric.values[2].value}}</td>

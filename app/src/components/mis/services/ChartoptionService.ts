@@ -91,13 +91,6 @@ class ChartoptionService {
                 valueFormat: function(d){
                     return d3.format(',.2f')(d);
                 },
-                discretebar: {
-                    dispatch: {
-                        elementDblClick: function(e) {
-                            // misCtrl.openBarDrillDownPopover(d3.event, e, -1);
-                        }
-                    }
-                },
                 tooltip: {
                     enabled: true
                 },
@@ -126,13 +119,6 @@ class ChartoptionService {
                 showYAxis: false,
                 valueFormat: function(d){
                     return d3.format(',.2f')(d);
-                },
-                discretebar: {
-                    dispatch: {
-                        elementDblClick: function(e) {
-                            misCtrl.openTargetDrillDownPopover(d3.event, e, -1);
-                        }
-                    }
                 },
                 duration: 700
             }

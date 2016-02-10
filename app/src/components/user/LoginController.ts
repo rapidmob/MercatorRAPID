@@ -1,24 +1,26 @@
 /// <reference path="../../_libs.ts" />
 
 class LoginController {
-	public static $inject = ['$scope', '$state', 'UserService'];
+	public static $inject = ['$scope', '$state', 'UserService', '$ionicHistory'];
 	private invalidMessage: boolean = false;
 	private username: string;
 	private password: string;
 	private ipaddress: string;
 	private eroormessage: string;
 
-	constructor(private $scope: ng.IScope, private $state: angular.ui.IStateService, 
-		private userService: UserService) {
-
+	constructor(private $scope: ng.IScope, private $state: angular.ui.IStateService,
+	private userService: UserService, private $ionicHistory: any) {
+		if (this.userService.isLoggedIn()) {
+			$ionicHistory.nextViewOptions({
+				disableBack: true
+			});
+			console.log('navgating to mis-flown..');
+			this.$state.go('app.mis-flown');
+		}
 	}
 
 	clearError() {
 		this.invalidMessage = false;
-	}
-
-	logout() {
-		this.$state.go("app.login");
 	}
 
 	doLogin(loginForm: boolean) {
@@ -39,6 +41,9 @@ class LoginController {
 									username: profile.response.data.userInfo.userName
 								}
 								this.userService.setUser(userName);
+								this.$ionicHistory.nextViewOptions({
+									disableBack: true
+								}); 
 								this.$state.go("app.mis-flown");
 							},
 							(error) => {
@@ -55,9 +60,6 @@ class LoginController {
 					this.invalidMessage = true;
 					this.eroormessage = "Please check your network connection";
 				});
-		}else {
-			this.invalidMessage = true;
-			this.eroormessage = "Please check your credentials";
-		}   
+		} 
 	}
 }

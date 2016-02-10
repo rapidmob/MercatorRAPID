@@ -1,8 +1,8 @@
 <ion-popover-view class="sector-graph-popover">
  <ion-content> 
-  <div ng-if="MisCtrl.charttype == 'sector'">
+  <div ng-if="MisCtrl.chartType == 'sector'">
     <div class="padding-horizontal" ng-repeat="sector in MisCtrl.SectorCarrierAnalysisCharts | filter: MisCtrl.sectorCarrierFilter(MisCrtl)">
-     <div ng-if="MisCtrl.graphindex == $index">
+     <div ng-if="MisCtrl.graphIndex == $index">
           <div class="row">
               <div class="col-90">
                 <h2 class="padding-left graph-title pop-title">{{sector.heading1}}</h2>

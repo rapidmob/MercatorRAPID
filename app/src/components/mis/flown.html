@@ -23,7 +23,7 @@
       </div>
     </div>
   </ion-nav-title>
-  <div class="">
+  <div class="web-view" >
     <div class="row border-bottom header-padding">
       <div class="col col-20 no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].flowMonth}})</span></div>
       <div class="no-padding cust-font">(Expected: <span class="heade2-values">
@@ -40,13 +40,32 @@
         &nbsp;&nbsp;<span class="heade3-values">Surcharge</span></div>
     </div>
   </div>
+  <div class="row mob-view">
+    <ion-scroll direction="x" class="tsb-hscroll">
+    <div class="row border-bottom header-padding">
+      <div class="col no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].flowMonth}})</span></div>
+      <div class="no-padding cust-font">(Expected: <span class="heade2-values">
+      {{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].expectedCount}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">Processed: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].processedCount}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">Completed: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].completedCount}}</span>)</div>
+      
+      <div class="col no-padding pull-right cust-font">(Currency: <span class="heade2-values">{{MisCtrl.subHeader.currency}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">PAX count: <span class="heade2-values">{{MisCtrl.subHeader.paxCount}}</span>)</div>
+    
+      <div class="col no-padding pull-right margin-top-1">
+        <input id="checkbox-1" class="checkbox-custom checkbox-custom1" name="checkbox-1" type="checkbox" ng-model="MisCtrl.header.surcharge" ng-click="MisCtrl.toggleSurcharge()">
+        <label for="checkbox-1" class="checkbox-custom-label"></label>
+        &nbsp;&nbsp;<span class="heade3-values">Surcharge</span></div>
+    </div>
+    </ion-scroll>
+  </div>
   <ion-content scroll="false" class="title-height">
     <tab-slide-box tab="0">
       <div class="tsb-icons no-margin">
           <div class="tsb-ic-wrp">
           <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
           <div class="no-padding">
-              <a href="" ng-click="MisCtrl.onSlideMove({'index' : $index})" class="tab text-center text-center"  ng-repeat="tab in MisCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a>
+              <a href="" class="tab text-center text-center"  ng-repeat="tab in MisCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a>
             </div>
           </ion-scroll>
         </div>
@@ -76,7 +95,7 @@
         <ion-slide>
 			<ion-scroll class="scroll-height">
 				<div ng-include="'components/mis/target-actual.html'"></div>
-        <div class="row padding-horizontal flown-footer"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
+        <div class="row padding-horizontal" ng-class="{'flown-footer': MisCtrl.toggle.targetView=='chart'}"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
 				<div class="clear"></div>
 				<h1>&nbsp;</h1>	
 			</ion-scroll>

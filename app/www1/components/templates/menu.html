@@ -16,22 +16,26 @@
     <ion-header-bar class="nav-title-slide-ios7 nav-height button-custom-color"></ion-header-bar>
     <ion-content class="has-header-menu button-custom-color">
       <ion-list class="menu-bg">
-        <ion-item menu-close class="button-custom-color" >
-         <span class="head-title">MIS</span>
-        </ion-item>
-        <ion-item menu-close class="button-custom-color"  href="#/app/mis/flown">
-          Passenger Flown
-        </ion-item>
+        <div ng-show="appCtrl.showDashboard('MIS')">
+          <ion-item menu-close class="button-custom-color" >
+            <span class="head-title">MIS</span>
+          </ion-item>
+          <ion-item menu-close class="button-custom-color"  href="#/app/mis/flown">
+            Passenger Flown
+          </ion-item>
+        </div>
         <!-- <ion-item menu-close class="button-custom-color" href="#">
           Passenger Sales
         </ion-item> -->
-        <hr>
-        <ion-item menu-close class="button-custom-color" >
-         <span class="head-title">OPERATIONAL</span>
-        </ion-item>
-        <ion-item menu-close class="button-custom-color"  href="#/app/operational/flown">
-          Passenger Flown 
-        </ion-item>
+        <div ng-show="appCtrl.showDashboard('Operational')">
+          <hr>
+            <ion-item menu-close class="button-custom-color" >
+              <span class="head-title">OPERATIONAL</span>
+            </ion-item>
+            <ion-item menu-close class="button-custom-color"  href="#/app/operational/flown">
+             Passenger Flown 
+            </ion-item>
+        </div>
         <!-- <ion-item menu-close class="button-custom-color" href="#">
           Passenger Sales
         </ion-item> -->

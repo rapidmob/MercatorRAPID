@@ -7,17 +7,21 @@
 
 class AppController {
 
-	public static $inject = ['$state', '$scope', 'DataProviderService',
-		'$ionicModal', '$ionicPlatform', 'LocalStorageService', '$ionicPopup',
+	public static $inject = ['$state', '$scope', 'DataProviderService', 'UserService',
+		'$ionicPlatform', 'LocalStorageService', '$ionicPopup',
 		'$ionicLoading', '$ionicHistory', 'ErrorHandlerService'];
 
 	constructor(
-		protected $state: angular.ui.IStateService, protected $scope: ng.IScope, protected dataProviderService: DataProviderService, $ionicPlatform: Ionic.IPlatform,
-		private localStorageService: LocalStorageService, private $ionicPopup: Ionic.IPopup,
+		protected $state: angular.ui.IStateService,
+		protected $scope: ng.IScope,
+		protected dataProviderService: DataProviderService,
+		private userService: UserService,
+		private $ionicPlatform: Ionic.IPlatform,
+		private localStorageService: LocalStorageService,
+		private $ionicPopup: Ionic.IPopup,
 		private $ionicLoading: Ionic.ILoading,
-		private $ionicHistory: any, private errorHandlerService: ErrorHandlerService) {
-
-		var that: AppController = this;
+		private $ionicHistory: any,
+		private errorHandlerService: ErrorHandlerService) {
 	}
 
 	isNotEmpty(value: string): boolean {
@@ -29,6 +33,16 @@ class AppController {
 	}
 
 	logout() {
+		this.$ionicHistory.clearCache();
+		this.userService.logout();
 		this.$state.go("login");
+	}
+
+	getUserDefaultPage() {
+		return this.userService.userProfile.userInfo.defaultPage;
+	}
+
+	showDashboard(name: string): boolean {
+		return this.userService.showDashboard(name);
 	}
 }

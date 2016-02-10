@@ -19,7 +19,7 @@ class NetService implements INetService {
 	constructor(private $http: ng.IHttpService, private cordovaService: CordovaService, protected $q: ng.IQService, public URL_WS: string, private OWNER_CARRIER_CODE: string) {
 		this.$http.defaults.timeout = 60000;
 		cordovaService.exec(() => {
-			this.fileTransfer = new FileTransfer();
+			// this.fileTransfer = new FileTransfer();
 		});
 	}
 

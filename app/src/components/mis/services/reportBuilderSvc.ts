@@ -27,11 +27,25 @@
 			content.push(title);
 			var nodeExists = [];
 			angular.forEach(svgNode, function(value, key) {				
-				console.log(key + ': ' + svgNode[key][0].outerHTML);
 				//textObj['alignment'] = 'center'				
 				
-				if(nodeExists.indexOf(svgNode[key].parentNode.getAttribute("data-item-flag")) == -1){
-					var html = svgNode[key][0].outerHTML;
+				var html = "";
+				if(nodeExists.indexOf(svgNode[key].parentNode.getAttribute("data-item-flag")) == -1 && svgNode[key].length >= 1){
+				
+					html = svgNode[key][0].outerHTML;
+					if(svgNode[key].parentNode.getAttribute("data-item-pdfFlag") === "dynamicWH"){
+						d3.select("."+param+"Flag").select("svg").attr("width",1500);
+						d3.select("."+param+"Flag").select("svg").attr("height",600);
+						var node = d3.select("."+param+"Flag").select("svg");
+						html = node[0][0].outerHTML;
+						imagesObj['width'] = 500;
+						imagesObj['height'] = 500;
+					}
+					if(svgNode[key].parentNode.getAttribute("data-item-pdfFlag") === "pdfFlag")
+					{
+						imagesObj['width'] = 750;
+						imagesObj['height'] = 300;
+					}
 					canvg(document.getElementById('canvas'), html);
 					var test = document.getElementById('canvas');
 					var imgsrc = test.toDataURL();

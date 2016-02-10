@@ -2,7 +2,7 @@
   "name": "Rapid",
   "private": "true",
   "dependencies": {
-    "ionic": "~1.2.3",
+    "ionic": "~1.1.1",
     "lodash": "~3.10.0",
     "d3": "3.3.13",
     "nvd3": "~v1.1.15-beta",
