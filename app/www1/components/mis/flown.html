@@ -24,7 +24,7 @@
     </div>
   </ion-nav-title>
   <div class="web-view" >
-    <div class="row border-bottom header-padding">
+    <div class="row header-padding">
       <div class="col col-20 no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].flowMonth}})</span></div>
       <div class="no-padding cust-font">(Expected: <span class="heade2-values">
       {{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].expectedCount}}</span></div>&nbsp;&nbsp;
@@ -42,7 +42,7 @@
   </div>
   <div class="row mob-view">
     <ion-scroll direction="x" class="tsb-hscroll">
-    <div class="row border-bottom header-padding">
+    <div class="row header-padding">
       <div class="col no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].flowMonth}})</span></div>
       <div class="no-padding cust-font">(Expected: <span class="heade2-values">
       {{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].expectedCount}}</span></div>&nbsp;&nbsp;
@@ -126,5 +126,7 @@
         </ion-slide>  
      </ion-slide-box>
     </tab-slide-box>
+	<div style="display:none" id="pdf-render"></div>
+	<canvas style="display:none" id="canvas"></canvas>
   </ion-content>
 </ion-view>

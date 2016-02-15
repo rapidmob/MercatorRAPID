@@ -63,7 +63,6 @@ class OperationalFlownController {
   private drillpopover: Ionic.IPopover;
 
   private flightCountLegends: any;
-  private popupStatus: any;
 
   constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
     private $ionicLoading: Ionic.ILoading,
@@ -89,7 +88,7 @@ class OperationalFlownController {
       tabIndex: 0,
       userName: ''
     };
-	this.popupStatus = false;
+  angular.element(window).bind('orientationchange', this.orientationChange); 
     this.initData();
     var that = this;
 
@@ -165,6 +164,13 @@ class OperationalFlownController {
       }
     }
   }
+  
+  orientationChange = (): boolean => {
+    var that = this;
+    that.$timeout(function() {
+      that.onSlideMove({ index: that.header.tabIndex });
+    }, 200)
+  }
 
   updateHeader() {
     var flownMonth = this.header.flownMonth;
@@ -191,10 +197,9 @@ class OperationalFlownController {
     }
   };
   callMyDashboard() {
-		this.popupStatus = false;
-        this.callFlightProcStatus();
-        this.callFlightCountByReason();
-        this.callCouponCountByException();
+    this.callFlightProcStatus();
+    this.callFlightCountByReason();
+    this.callCouponCountByException();
   }
   callFlightProcStatus() {
     var that = this;
@@ -208,7 +213,7 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprFlightProcStatus(reqdata)
       .then(function(data) {
-		if(data.response.status === "success"){		  
+		if(data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')){		  
 			var otherChartColors = [{ "color": that.GRAPH_COLORS.FOUR_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[1] },
 			  { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[2] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[3] }];
 			var pieChartColors = [{ "color": that.GRAPH_COLORS.THREE_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[1] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[2] }];
@@ -246,15 +251,13 @@ class OperationalFlownController {
 			that.ionicLoadingHide();
 		}else{
 			that.ionicLoadingHide();
-			if(!that.popupStatus){
-				that.popupStatus = true;
-				that.$ionicPopup.alert({
-					title: 'Error',
-					content: 'No Data Found!!!'
-				}).then(function(res) {
-					console.log('done');
-				});
-			}
+			that.$ionicPopup.alert({
+				title: 'Error',
+				content: 'Data not found for Flights Processing Status!!!'
+			}).then(function(res) {
+				console.log('done');
+			});
+
 		}
       }, function(error) {
       });
@@ -270,7 +273,7 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprFlightCountByReason(reqdata)
       .then(function(data) {
-		if(data.response.status === "success"){	
+      if (data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')) {	
 			// console.log(jsonObj.pieCharts[0]);
 			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[2] }];
 			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
@@ -295,15 +298,13 @@ class OperationalFlownController {
 			that.ionicLoadingHide();
 		}else{
 			that.ionicLoadingHide();
-			if(!that.popupStatus){
-				that.popupStatus = true;
-              that.$ionicPopup.alert({
-                title: 'Error',
-                content: 'No Data Found!!!'
-              }).then(function(res) {
-                  console.log('done');
-              });
-			}
+      that.$ionicPopup.alert({
+        title: 'Error',
+        content: 'Data not found for Flights Count by Reason!!!'
+      }).then(function(res) {
+          console.log('done');
+      });
+
 		}
       }, function(error) {
         that.ionicLoadingHide();
@@ -321,7 +322,7 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprCouponCountByException(reqdata)
       .then(function(data) {
-		if(data.response.status === "success"){
+      if (data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')) {
 			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
 			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
 
@@ -342,15 +343,13 @@ class OperationalFlownController {
 			that.ionicLoadingHide();		
 		}else{
 			that.ionicLoadingHide();
-			if(!that.popupStatus){
-				that.popupStatus = true;
-              that.$ionicPopup.alert({
-                title: 'Error',
-                content: 'No Data Found!!!'
-              }).then(function(res) {
-                  console.log('done');
-              });
-			}
+      that.$ionicPopup.alert({
+        title: 'Error',
+        content: 'Data not found for Coupon Count by Exception Category!!!'
+      }).then(function(res) {
+          console.log('done');
+      });
+
 		}
       }, function(error) {
         that.ionicLoadingHide();

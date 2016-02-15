@@ -3,7 +3,7 @@
   	<a href="#" ng-click="hideOptions= !hideOptions" class="hide-option">{{ hideOptions == true ? 'Hide Options' : 'Show Options' }}</a>
   </div>
   <div class="col col-50" ng-class="{'hide-options' : !hideOptions}">
-    <div class="row btn-section">
+    <div class="row btn-section two-buttons-only">
 		<div class="pull-right padding-horizontal download-btn">
 			<button class="button export" ng-click="MisCtrl.runReport('revenueAnalysis','REVENUE ANALYSIS',MisCtrl.header.flownMonth)"><img src="res/img/download.svg" />
 			</button>
@@ -23,14 +23,16 @@
 			<div class="col col-90 no-padding pull-left graph-title">Net Revenue by OWN OAL <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.revenueData.revenueHorBarChart.chartInfo)"></i></div>
 			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,0,'revenue')" class="icon icon-larger font-normal ion-android-open curs mis-zoom" ng-show="MisCtrl.toggle.revenueView=='chart'"></i></div>
 		  </div>
-		  <div class="row">
+		  <div class="row" >
 			<div class="col box-cont-rev net-rev-height" ng-show="MisCtrl.toggle.revenueView=='chart'" id="net-revenue-chart" data-item-title="Net Revenue by OWN OAL">
+				<div class="net-revenue-pdf" >
 			  <!-- <nvd3 data="revenueHorBarChart" options="options.revenueHorBarChart"></nvd3> -->
 			  <div ng-repeat="revenueData in MisCtrl.revenueData.revenueHorBarChart">
 				<div class="net-rev-title from">{{revenueData.key}}</div>
 				<he-revenue-progress-bar ng-click="MisCtrl.openRevenueDrillDownPopover($event,revenueData, -1)" chart-data="revenueData.values"></he-revenue-progress-bar>           
 			  </div>
 			  <div class="chart-legend-rev from">Passenger</div><div class="chart-legend-rev to">Ancillary</div>
+			  </div>
 			</div>
 			
 				<table class="resptbl" ng-show="MisCtrl.toggle.revenueView=='table'">

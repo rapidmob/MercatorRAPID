@@ -209,7 +209,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 } 
 
 .show {display:block;}
-.border-bottom{border-bottom: 1px solid #E8E4E4;}
 
 .heade2-values, .heade3-values{
     color: $primary-text-color;
@@ -628,8 +627,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .percentpadding-revenuechart-bar{
         padding: 4% 20%;
     }
-
-
     .pass-dashboard {
         .button-bar {
             max-width: 72% !important;
@@ -640,7 +637,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             max-width: 72% !important;
         }
     }
-
+    .content-head .two-buttons-only {
+        width: 70% !important; 
+    }
 }
 @media screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
     .net-revenue{
@@ -682,6 +681,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             }
         }
     }
+    .content-head .two-buttons-only {
+        width: 70% !important;
+    }
 }
 @media only screen  and (min-width: 1025px) {
     .web-view {
@@ -717,6 +719,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         .btn-section{
             width: 60%!important;
             float: right!important;
+        }
+        .sector-analysis {
+            width: 50%!important;
         }
         .icon {
             &:before{
@@ -767,7 +772,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         height: 450px;
         top: 10% !important;
         margin-top: -5% !important; 
-    }  
+    }
+    .content-head .two-buttons-only {
+        width: 50% !important; 
+    } 
+    .op-dboard .two-buttons-only {
+        width: 70% !important; 
+    }
 }
 .menu-bg{
     hr{
@@ -865,7 +876,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     top: -21px;
     width: 30px;
     height: 21px;
-    overflow: hidden; 
+    overflow: hidden;
 }
 .popover-wrapper .infopopover .popover-arrow:after {
     position: absolute;
@@ -873,7 +884,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     left: 5px;
     width: 20px;
     height: 20px;
-    background-color: $second-shadow-color;
+    background-color: $info-popup-bg;
     @include border-radius(3px);
     content: '';
     -webkit-transform: rotate(-45deg);
@@ -883,8 +894,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     display:none;
 }
 .infopopover .ion-close {
-    @include padding-all(0px, 15px, 0px, 15px);
+    /* @include padding-all(0px, 15px, 0px, 15px); */ 
     /* @include margin-all(0px, -10px, 0px, -10px); */
+    position: absolute;
 }
 .ion-close:before {
     position:relative;
@@ -1005,6 +1017,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     @include padding-all(0px, 6px, 0px, 6px); 
 }
 
+.web-view, 
+.mob-view .tsb-hscroll.scroll-view {
+    border-bottom: 1px solid $border-grey;
+}
+
 @media only screen and (max-device-width: 480px) {
     .user-info{
         display: none;
@@ -1115,9 +1132,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .content-head .btn-section, .sector-head .btn-section {
         /* width: 85% !important; */
         float: right !important;
-    }
-    .two-buttons-only {
-        width: 50% !important;
     }
     .web-view {
         display: block;
@@ -1454,7 +1468,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     display: none; 
 }
 .resptbl td {
-    display: block; 
+    display: block;
+    text-align:left; 
 }
 .resptbl td:first-child {
     padding-top: .5em; 
@@ -1607,8 +1622,19 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .hide-options {
         display: none !important;
     }
-
 }
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 667px) 
+  and (orientation: landscape) {
+    .web-view {
+        display: none !important;
+    }
+    .mob-view {
+        display: block !important;
+    } 
+}
+
 
 /* Landscape */
 @media only screen and (min-device-width: 320px) and (max-device-width: 640px) and (orientation: landscape) {
@@ -1664,6 +1690,12 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .hide-options {
         display: none !important;
     }
+    .web-view {
+        display: none !important;
+    }
+    .mob-view {
+        display: block !important;
+    }  
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 640px) and (orientation: portrait) {
     .header-logo img {            
@@ -1724,6 +1756,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .hide-options {
         display: none !important;
     }
+
+    .sector-car-analysis {
+        .export {
+            margin-left: 65%;
+        }
+        .button-bar {
+            width: 80%;
+            margin-top: 15px;
+            padding-right: 0;
+        }
+    }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 640px){
     .col-demo{
@@ -1732,8 +1775,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         }
     }
     .flown-footer{
-        position:inherit;
-        bottom: 0;
+        position:relative;
+        bottom: 15px;
     }
     
     .nav-height {
@@ -1749,19 +1792,32 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .pas-head-subtitle {
         font-size: 14px;
         font-weight: normal;
-        color: #fff !important;
+        color: $light !important;
         margin-top: -9px;
     }
     .hide-options {
         display: none !important;
     }
     .web-view {
-        display: none;
+        display: none !important;
     }
     .mob-view {
-        display: block;
+        display: block !important;
     }
     .custom-footer {
         display: none;
+    }
+    .has-header {
+        top: 60px;
+    }
+    .header-item {
+        height: 60px !important;
+    }
+    .infopopover {
+        width: 50% !important;
+    }
+    .route-rev-padding-top .border-right {
+        border-right: 0;
+        border-bottom: 1px solid $border-grey;
     }
 }

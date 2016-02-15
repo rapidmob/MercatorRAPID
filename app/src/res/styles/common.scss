@@ -58,9 +58,10 @@ body{
 }
 .no-border{
 	border: none !important;
-
 }
-
+.border-bottom{
+	border-bottom: 1px solid $border-grey;
+}
 @mixin margin-all($value1, $value2, $value3, $value4) {
 	margin-top: $value1 !important;
 	margin-right: $value2 !important;
@@ -147,7 +148,7 @@ $primary-button-color-tr: rgba(245, 166,35, 0.7);
  	text{
  		stroke: none;
  		font-size: 14px;
- 		fill: #5D5B56;
+ 		fill: $metric-fill-color;
  	}
  }
  $button-large-icon-size: 152px !default;

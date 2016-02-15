@@ -177,9 +177,8 @@
     line-height: 0!important;
     font: 0.9em;  
 }
-.drill-tab-closed{
-    padding-left: 6em !important;
-    padding-right: 6em !important;   
+.drill-tab-closed{ 
+    @include padding-horizontal(6em, 6em);
 }
 #tab-drill a.active{
     font: 0.9em !important;  

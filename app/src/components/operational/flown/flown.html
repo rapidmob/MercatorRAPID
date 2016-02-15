@@ -38,7 +38,7 @@
           <div class="tsb-ic-wrp">
           <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
           <div class="no-padding">
-              <a href="" ng-click="OprCtrl.onSlideMove({'index' : $index})" class="tab text-center text-center tab-cust"  ng-repeat="tab in OprCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a></a>
+              <a href="" class="tab text-center text-center tab-cust"  ng-repeat="tab in OprCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a></a>
             </div>
           </ion-scroll>
         </div>
@@ -73,5 +73,6 @@
         </ion-slide-box>
     </tab-slide-box>
     <h1>&nbsp;</h1><h1>&nbsp;</h1>
+  <canvas style="display:none" id="canvas"></canvas>
   </ion-content>
 </ion-view>

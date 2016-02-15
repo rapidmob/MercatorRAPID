@@ -203,7 +203,10 @@ class MisController{
         return (month == this.header.flownMonth);
     }
     orientationChange = (): boolean => {
-        this.onSlideMove({ index: this.header.tabIndex });
+        var that = this;
+        that.$timeout(function(){
+            that.onSlideMove({ index: that.header.tabIndex });
+        },200)
     } 
     openinfoPopover ($event, index) {
         if (typeof index == "undefined" || index == "") {

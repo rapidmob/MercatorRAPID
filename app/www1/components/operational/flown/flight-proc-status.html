@@ -1,7 +1,7 @@
 	<div class="row section-margin responsive-sm content-head pass-dashboard">
               <div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">FLIGHT PROCESSING STATUS <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ng-click = "OprCtrl.openinfoPopover($event, OprCtrl.flightProcSection)"></i></div>
               <a href="#" ng-click="hideOptions= !hideOptions" class="hide-option">{{ hideOptions == true ? 'Hide Options' : 'Show Options' }}</a>
-              <div class="col col-33" ng-class="{'hide-options' : !hideOptions}">
+              <div class="col col-33 op-dboard" ng-class="{'hide-options' : !hideOptions}">
                 <div class="row btn-section responsive-sm">
                 <div class=" pull-right padding-horizontal download-btn"><button class="button export" ng-click="OprCtrl.runReport('flightprocessStatus','FLIGHT PROCESSING STATUS',OprCtrl.header.flownMonth)"><img src="res/img/download.svg"></button>
                 <div class=" button-bar button-small padding-horizontal padding-right-zero two-buttons-only">
@@ -107,8 +107,8 @@
 								<th>Closed</th>
 							</tr>
 							<tr class="tblcol" ng-repeat="weekData in OprCtrl.flightProcStatus.weekData">   
-								<td class="tblvalname">{{weekData.key}}</td>
-								<td ng-repeat="values in weekData.values">{{values[1]}}</td>
+								<td data-th="Week" class="tblvalname">{{weekData.key}}</td>
+								<td data-th="{{values[0]}}" ng-repeat="values in weekData.values">{{values[1]}}</td>
 							</tr>
 						  </table>
 					</div>   
@@ -151,8 +151,8 @@
 								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{DayData.key}}</th>
 							</tr>
 							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values">   
-								<td>{{DayData[0]}}</td>
-								<td ng-repeat="values in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>								
+								<td data-th="Day">{{DayData[0]}}</td>
+								<td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>		
 							</tr>
 						  </table>
 						  

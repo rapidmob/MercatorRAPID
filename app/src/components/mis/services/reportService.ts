@@ -255,8 +255,8 @@
 						imagesObj['height'] = 300;
 					}
 					canvg(document.getElementById('canvas'), html);
-					var test = document.getElementById('canvas');
-					var imgsrc = test.toDataURL();
+					var canvasElm = document.getElementById('canvas');
+					var imgsrc = canvasElm.toDataURL();
 					var  text = "\n"+svgNode[key].parentNode.getAttribute("data-item-title")+"\n";
 					textObj['text'] = text;
 					textColumn.push(textObj);
@@ -278,12 +278,15 @@
 				}
 			});			
 			if(param == "revenueAnalysis"){
-				var node = document.getElementById('net-revenue-chart');
-				domtoimage.toPng(node).then(function (dataUrl) {
-					var  text = "\n\n\n\n\n"+node.getAttribute('data-item-title')+"\n\n";
+				var node = document.getElementById("net-revenue-chart");
+				var pdfRender = angular.element(document.querySelector('#pdf-render'));
+				pdfRender.append(node.childNodes[1]);  
+				html2canvas(document.getElementsByClassName('net-revenue-pdf')).then(function(canvas) {
+					var c = canvas.toDataURL();
+					var  text = "\n\n\n\n\n\n\n\n\n\n\n\n"+node.getAttribute('data-item-title')+"\n\n";
 					textObj['text'] = text;
 					textColumn.push(textObj);
-					imagesObj['image'] = dataUrl;
+					imagesObj['image'] = c;
 					imageColumn.push(imagesObj);				
 					var imgTemp ={}, txtTemp ={};		
 					txtTemp['columns'] = textColumn;
@@ -297,18 +300,21 @@
 					textObj = {};
 					imgTemp = {};
 					txtTemp ={};	
-					deferred.resolve({content: content});				
-				});			
-			} else if(param == "sectorcarrieranalysis"){			
+					deferred.resolve({content: content});
+					pdfRender.empty();
+				});				
+			} else if(param == "sectorcarrieranalysis"){
 				var svgNode = d3.selectAll("."+param);
 				angular.forEach(svgNode[0], function(value, key) {
 					var node = document.getElementById('sector-carrier-chart'+key);
-					domtoimage.toPng(node).then(function (dataUrl) {
-						//var  text = "\n"+node.getAttribute('data-item-title')+"\n\n";
-						textObj['text'] = "\n\n";
+					var eleID = 'sector-carrier-chart'+key;
+					html2canvas(document.getElementById(eleID)).then(function(canvas) {
+						var c = canvas.toDataURL();
+						var  text = "\n\n"+node.getAttribute('data-item-title')+"\n\n";
+						textObj['text'] = text;
 						textColumn.push(textObj);
 						imagesObj['width'] = 500;
-						imagesObj['image'] = dataUrl;
+						imagesObj['image'] = c;
 						imageColumn.push(imagesObj);				
 						var imgTemp ={}, txtTemp ={};		
 						txtTemp['columns'] = textColumn;
@@ -321,38 +327,36 @@
 						imagesObj = {};
 						textObj = {};
 						imgTemp = {};
-						txtTemp ={};
-						if(key == svgNode[0].length-1)
-						deferred.resolve({content: content});
-					});
-				});				
+						txtTemp ={};	
+						if(key == svgNode[0].length-1){
+							deferred.resolve({content: content});
+						}
+					});					
+				});		
 			}else if(param == "routerevenue"){				
-				var svgNode = d3.selectAll("."+param);
-				angular.forEach(svgNode[0], function(value, key) {
-					var node = document.getElementById('route-revenue-chart'+key);
-					domtoimage.toPng(node).then(function (dataUrl) {
-						//var  text = "\n"+node.getAttribute('data-item-title')+"\n\n";
-						textObj['text'] = "\n\n";
-						textColumn.push(textObj);
-						imagesObj['width'] = 500;
-						imagesObj['image'] = dataUrl;
-						imageColumn.push(imagesObj);				
-						var imgTemp ={}, txtTemp ={};		
-						txtTemp['columns'] = textColumn;
-						imgTemp['alignment'] = 'center';
-						imgTemp['columns'] = imageColumn;
-						content.push(txtTemp);
-						content.push(imgTemp);					
-						imageColumn = [];
-						textColumn = [];
-						imagesObj = {};
-						textObj = {};
-						imgTemp = {};
-						txtTemp ={};
-						if(key == svgNode[0].length-1)
-						deferred.resolve({content: content});
-					});
-				});
+				var eleID = 'route-revenue-pdf';					
+				html2canvas(document.getElementById(eleID)).then(function(canvas) {
+					var c = canvas.toDataURL();
+					var  text = "";
+					textObj['text'] = text;
+					textColumn.push(textObj);
+					imagesObj['width'] = 500;
+					imagesObj['image'] = c;
+					imageColumn.push(imagesObj);				
+					var imgTemp ={}, txtTemp ={};		
+					txtTemp['columns'] = textColumn;
+					imgTemp['alignment'] = 'center';
+					imgTemp['columns'] = imageColumn;
+					content.push(txtTemp);
+					content.push(imgTemp);					
+					imageColumn = [];
+					textColumn = [];
+					imagesObj = {};
+					textObj = {};
+					imgTemp = {};
+					txtTemp ={};						
+					deferred.resolve({content: content});
+				});	
 			}else{
 				deferred.resolve({content: content});
 			}

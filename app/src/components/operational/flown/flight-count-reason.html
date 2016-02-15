@@ -46,16 +46,16 @@
                     </div>
           <table class="resptbl" ng-show="OprCtrl.toggle.flightReason=='table'">            
             <tr class="tblhder" ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">              
-			<th ng-repeat="month in OprCtrl.flightCountReason.pieChart.data">{{month.xval}}</th>
+			       <th ng-repeat="month in OprCtrl.flightCountReason.pieChart.data">{{month.xval}}</th>
             </tr>
 			<tr class="tblhder" ng-if="OprCtrl.toggle.openOrClosed=='CLOSED'">              
 			<th>Balanced</th>
 			<th>Un-Balanced</th>
             </tr>
             <tr class="tblcol">             
-            <td>{{OprCtrl.flightCountReason.pieChart.data[0].yval}}</td>
-            <td>{{OprCtrl.flightCountReason.pieChart.data[1].yval}}</td>
-            <td ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">{{OprCtrl.flightCountReason.pieChart.data[2].yval}}</td>
+            <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Interface':  'Balanced'}}">{{OprCtrl.flightCountReason.pieChart.data[0].yval}}</td>
+            <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Live not processed':  'Un-Balanced'}}">{{OprCtrl.flightCountReason.pieChart.data[1].yval}}</td>
+            <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Processed with Exception':  'Interface5'}}" ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">{{OprCtrl.flightCountReason.pieChart.data[2].yval}}</td>            
             </tr>
             </table>
                   </div>   
@@ -111,10 +111,10 @@
 				<th ng-repeat="week in OprCtrl.flightCountReason.weekData[0].values" >{{week[0]}}</th>
               </tr>
             <tr class="tblcol" ng-repeat="weekData in OprCtrl.flightCountReason.weekData">
-                <td class="tblvalname">{{weekData.key}}</td>
-                <td>{{weekData.values[0][1]}}</td>
-                <td>{{weekData.values[1][1]}}</td>
-                <td ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">{{weekData.values[2][1]}}</td>                         
+                <td data-th="Week" class="tblvalname">{{weekData.key}}</td>
+                <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Interface':  'Balanced'}}">{{weekData.values[0][1]}}</td>
+                <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Live Not Processed':  'Un-Balanced'}}">{{weekData.values[1][1]}}</td>
+                <td data-th="Processed With Exception" ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">{{weekData.values[2][1]}}</td>                         
               </tr>
               </table>
         </div>   
@@ -155,8 +155,8 @@
                 <th ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems" >{{DayData.key}}</th>
               </tr>
             <tr class="tblcol" ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems[0].values">
-                <td>{{DayData[0]}}</td>
-                <td ng-repeat="values in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>
+                <td data-th="Day">{{DayData[0]}}</td>
+                <td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>
                          
               </tr>
               </table>
