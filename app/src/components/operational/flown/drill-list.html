@@ -1,4 +1,4 @@
-<div class="row responsive-sm" ng-if="group.items[0].length >=0 "> 
+<div class="row " ng-if="group.items[0].length >=0 ">
   <div class="col-33 search-results"> Showing {{group.ItemsByPage[OprCtrl.currentPage[OprCtrl.shownGroup]].length}} out of {{group.items[0].length}} results </div>
   <div class="col-33 "> <span class="ion-android-search search-icon"></span>
     <input type="text" name="searchText" class="drill-search col col-100" ng-model="searchText" placeholder="Search"  ng-change="OprCtrl.searchResults($index,this)">
@@ -6,7 +6,7 @@
   </div>
   <div class="col-33">
     <ul class="pagination pagination-sm">
-      <li ng-repeat="n in OprCtrl.range(group.ItemsByPage.length,OprCtrl.shownGroup)"> <a href="javascript:void(0);" ng-click="OprCtrl.setPage(OprCtrl.shownGroup,n)" ng-class="{'active': OprCtrl.currentPage[OprCtrl.shownGroup] ==n}" ng-bind="n+1">1</a> </li>
+      <li ng-repeat="n in OprCtrl.range(group.ItemsByPage.length,OprCtrl.shownGroup)"> <a href="#" ng-click="OprCtrl.setPage(OprCtrl.shownGroup,n)" ng-class="{'active': OprCtrl.currentPage[OprCtrl.shownGroup] ==n}" ng-bind="n+1">1</a> </li>
     </ul>
   </div>
 </div>

@@ -12,8 +12,19 @@ $main-bg_image: "res/img/background.png";
 ----------------------------------------------------------------------
 */
 
-$light: #fff;
-$dark: #000;
+$button-large-icon-size: 152px !default;
+$big-bg-color: #0A1356;
+$header-bar-bg-color: #0A1356;
+$content-bgcolor: #FAFAFA;
+$graph-percent-red: #D01D1B;
+$graph-percent-blue: #4990E2;
+$light-border-color: #F0F0F0;
+
+$section-heading-color: #625D62;
+$box-border-color:  #cdcdcd;
+$select-month-color: #ffc900;
+
+/*$light:                           #fff !important;
 
 /*
 --------Brand Colors----------------
@@ -21,109 +32,46 @@ $dark: #000;
 /* Branding background */
 $branding-bg: #0A1356;
 $header-bar-bg-color:$branding-bg;
-$big-bg-color: $branding-bg;
+
 /* Page background */
 $page-bg: #FAFAFA;
 $content-bgcolor: $page-bg;
 /* Header background */
 $header-bg: #252c38 !default;
-$section-heading-color: #625D62;
-$item-bg: $light;
 
-/* Drill down header bgs*/
-$drilldown-header-bg: #9B9B9B;
-$drilldown-header-active-bg: #3F97E3;
-$drilldown-even-bg: #EBEBEB;
-$drilldown-active-bg: #DD9620;
-
-/* Branding Text colors */
-
-$primary-text-color: $branding-bg;
-$secondary-text-color: $drilldown-header-bg;
-$third-text-color: #ffc900;
-$fourth-text-color: #4A4A4A;
-$title-color: #5C5C5C;
-$fifth-text-color: #4990E2;
-
+/*Branding Text colors*/
 /* Link color */
-$link-color: $secondary-text-color;
-/* $link-color-active: $fourth-text-color;*/
-
-/* --------Message / Other Colors------ */
-
-/* Confirmation color */
-$confirmation-color: #7ed321;
-/* Error color */
-$error-color: #ff0000;
-/*
---------End Message / Other Colors--
-*/
-
-/* Menu colors */
-$menu-bg: #F5A623;
-$menu-bg-hover: $branding-bg;
-$menu-text-color: $page-bg;
-
-/* Border colors */
-$light-border-color: #F0F0F0;
-$box-border-color:  #cdcdcd;
-/* item border customization */
-$button-light-border: $menu-bg;
-$border-grey: #E8E4E4;
-$third-border-color: #FF8800;
-$fourth-border-color: #ddd;
-$fifth-border-color: #B3B1AF;
-$sixth-border-color: $menu-bg;
-$seventh-border-color: #B8E986;
-/* transperant borders*/
-
-$border-transparent: rgba(200, 199, 199, 0.4);
-$border-transparent-two: rgba(115, 114, 114, 0.4);
+$link-color: #9B9B9B;
+$link-color-active: #4A4A4A;
 
 /* Button Colour */
 $default-button-color: #F5A623;
 $button-bg-inactive: #D5D3D3;
 $button-bg-hover: #D5D3D3;
 
-/*Button bg trasperancy*/
-$primary-button-color-tr: rgba(245, 166,35, 0.7);
-
-/* Need to discuss */
 $button-bg-color: $default-button-color;
 $button-bg-color-inactive: $button-bg-inactive;
 
-/* Button Icon color */
-$btn-icon-color: $link-color;
+/*Button Icon color */
+$btn-icon-color: #9B9B9B;
 
-/* Dropdown colors */
-$dropdown-bg: #f9f9f9;
-$dropdown-text: #000;
-$dropdown-text-hover: #f1f1f1;
-$dropdown-border: $border-grey;
+/*Menu colors*/
+$menu-bg: #F5A623;
+$menu-bg-hover: $branding-bg;
+$menu-text-color: $page-bg;
 
-/* Custom radio and checkbox */
-$radio-color: #bbb;
+/*Text colors*/
+$primary-text-color: $branding-bg;
+$secondary-text-color: $link-color-active;
 
-/* Table colors */
-$table-header-bg: #0A8FE0;
-$table-th: #078EE0;
-$even-row-bg: rgba(213,211,211,0.44);
-$even-tr: #e9e9e9;
-$even-tr-two: #F1F0EE;
-$table-tr-border: #46637f;
+/*Graph styles*/
+$box-border-color: #C8C7C7;
+$primary-bar-color: #4A90E2;
+$secondary-bar-color: #50E3C2;
+$third-bar-color: #B8E986;
 
-/* Pop up styles */
+/*Pop up styles*/
 $pop-up-bg: #F8F2A8;
-$info-popup-bg: #FBF3AC;
 
-/* item border customization */
-$button-light-border: $menu-bg;
-
-/* Shadow */
-$shadow-color: #E4E4E4;
-$second-shadow-color: #BDBCBC;
-$third-shadow: rgba(0,0,0,0.2);
-
-/* Metric fill color */
-
-$metric-fill-color: #5D5B56;
+/*item border customization */
+$button-light-border: #F5A623;

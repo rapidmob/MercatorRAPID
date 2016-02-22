@@ -39,13 +39,11 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.config', 'tabSlideBox', 'nv
 		controller: 'AppController as appCtrl'
 	})
 	.state('login', {
-		cache: false,
 		url: '/login',
 		templateUrl: 'components/user/login.html',
 		controller: 'LoginController as LoginCtrl'
 	})
 	.state('app.mis-flown', {
-		cache: false,
 		url: '/mis/flown',
 		views: {
 			'menuContent': {
@@ -55,7 +53,6 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.config', 'tabSlideBox', 'nv
 		}
 	})
 	.state('app.operational-flown', {
-		cache: false,
 		url: '/operational/flown',
 		views: {
 			'menuContent': {

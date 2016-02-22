@@ -12,7 +12,7 @@
                     ng-class="{active: MisCtrl.isGroupShown(group.id)}">
               <i class="icon float-right accord-icon" ng-class="MisCtrl.isGroupShown(group.id) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i>
             &nbsp;
-            PAX <span ng-if="MisCtrl.drillType != 'passenger-count'">Revenue</span><span ng-if="MisCtrl.drillType == 'passenger-count'">Count</span> Report - {{group.name}}
+            PAX Revenue Report - {{group.name}}
             <span ng-if="MisCtrl.selectedDrill[($index)]"> :: {{MisCtrl.selectedDrill[($index)][MisCtrl.groups[($index)].firstColumns]}}<span ng-if="MisCtrl.groups[($index)].firstColumns == 'countryFrom'"> - {{MisCtrl.selectedDrill[($index)].countryTo}} </span> </span>
           </ion-item>
           <ion-item class="item-accordion drilldown-content"
@@ -28,7 +28,7 @@
               </div>
               <div class="col-33">
                  <ul class="pagination pagination-sm">
-                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length,MisCtrl.shownGroup)"> <a href="javascript:void(0);" ng-click="MisCtrl.setPage(MisCtrl.shownGroup,n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
+                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length,MisCtrl.shownGroup)"> <a href="#" ng-click="MisCtrl.setPage(MisCtrl.shownGroup,n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
 
                   </li>
               </ul>
@@ -41,9 +41,6 @@
             <div class="drill-scroll-section drill-scroll-width">
             <div ng-if="MisCtrl.drillType == 'bar'"  ng-include="'components/mis/passenger.html'"></div>
             <div ng-if="MisCtrl.drillType == 'target'"  ng-include="'components/mis/targetdrilldown.html'"></div>
-            <div ng-if="MisCtrl.drillType == 'analysis'"  ng-include="'components/mis/analysisdrilldown.html'"></div>
-            </div>
-            <div ng-if="MisCtrl.drillType == 'passenger-count'"  ng-include="'components/mis/analysisdrilldown.html'"></div>
             </div>
           </ion-item>
         </div>

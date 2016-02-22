@@ -5,12 +5,12 @@ $montserrat_regular: helvetica;
 $roboto_condensed: helvetica;
 
 //urls
-$helvetica_eot: url("res/styles/fonts/helvetica-webfont.eot");
-$helvetica_ie: url("res/styles/fonts/helvetica-webfont.eot?#iefix");
+$helvetica_eot: url("../fonts/helvetica-webfont.eot");
+$helvetica_ie: url("../fonts/helvetica-webfont.eot?#iefix");
 $helvetica_woff2: url("res/styles/fonts/helvetica-webfont.woff2");
-$helvetica_woff: url("res/styles/fonts/helvetica-webfont.woff");
-$helvetica_ttf: url("res/styles/fonts/helvetica-webfont.ttf");
-$helvetica_svg: url("res/styles/fonts/helvetica-webfont.svg#helveticaregular");
+$helvetica_woff: url("../fonts/helvetica-webfont.woff");
+$helvetica_ttf: url("../fonts/helvetica-webfont.ttf");
+$helvetica_svg: url("../fonts/helvetica-webfont.svg#helveticaregular");
 
 @font-face {
 	font-family: $roboto_regular;

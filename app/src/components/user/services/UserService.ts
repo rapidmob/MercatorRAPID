@@ -101,4 +101,18 @@ class UserService {
 			return this.isUserLoggedIn();
 		}
 	}
+
+	checkMenuAccess(name: string): boolean {
+		var data = this.localStorageService.getObject('userPermissionMenu', '');
+		this.menuAccess = data;
+		if (this.menuAccess) {
+			for (var i = 0; i < this.menuAccess.length; i++) {
+				if (this.menuAccess[i].menuName == name) {
+					return this.menuAccess[i].menuAccess;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
 }

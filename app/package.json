@@ -41,8 +41,7 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-file",
     "cordova-plugin-inappbrowser",
-	  "cordova-plugin-file-opener2",
-    "cordova-plugin-network-information"
+	  "cordova-plugin-file-opener2"
   ],
   "cordovaPlatforms": [
     "android",

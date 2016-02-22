@@ -1,104 +1,7 @@
-.login-bg {
-	background: url($main-bg_image) no-repeat center center fixed;
-	background-size: cover;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-color: $branding-bg;
-	height: auto !important;
-	overflow: hidden !important;
-
-    .login-topmargin {
-		display: table;
-		position: relative;
-		width: 90%;
-		left: 5%;
-		right: 5%;
-		top: 120px;
-		
-		.login-subtitle{
-			color: $third-text-color;
-			font-weight: bold;
-			font-size: 1em;
-			padding-bottom: 2em;
-			@include padding-bottom(2em);
-		}
-		.login-padding{
-			@include padding-top(3em);
-		}
-		.username-bottom{
-			@include margin-bottom(1em);
-		}
-		.errorspan {
-			color: $error-color;
-			@include margin-left(2.5em);
-		}
-		.invalidErrorMessage {
-			color: $error-color;
-			text-align: center;
-			border-bottom: 1px solid $error-color;
-		}
-		.checkbox-wrap{
-			font-size:16px;
-			color: $light;
-		}
-	}
-	.login-input{
-		@include padding-top(4px);
-		@include padding-left(19px);
-		height: 53px!important;
-		color: $light!important;
-		vertical-align: middle;
-		font-size: 20px!important;
-		line-height: 23px !important;
-	}
-
-	.login-options {
-		font-size: 14px !important;
-	}
-	.login-input::-webkit-input-placeholder, #upass::-webkit-input-placeholder {
-		color: $light;
-		font-size: 18px;
-	}
-	.login-input:-moz-placeholder, #upass:-moz-placeholder {
-		color: $light; 
-		font-size: 18px; 
-	}
-	.login-input::-moz-placeholder, #upass::-moz-placeholder {
-		color: $light; 
-		font-size: 18px; 
-	}
-	.login-input:-ms-input-placeholder, #upass:-ms-input-placeholder {  
-		color: $light;  
-		font-size: 18px;
-	}
-	.login-btn-width {
-		width: 200px;
-		font-weight: 700;
-	}
+.errorspan {
+	color: #ff0000;
+	margin-left: 2.5em;
 }
-
-.password-reset {
-	top:34%;
-}
-
-
-.invalidError-text {
-	font-size: 1.2em;
-}
-
-@media only screen and (min-device-width: 768px) {
-  	.login-bg {
-  		.login-topmargin {	
-			width: 50% !important;
-			@include margin-all(0, auto, 0, auto);
-			right: 0;
-			left: 0;
-			top: 23% !important;
-		}
-  	}
-}
-
 .close-icon {
 	display: inline-block;
     float: right;
@@ -106,4 +9,54 @@
 }
 .username-reset {
 	top: 10%;
+}
+.password-reset {
+	top:34%;
+}
+.login-topmargin {
+    display: table;
+    position: relative;
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    top: 120px;
+}
+.invalidErrorMessage {
+	color: #ff0000;
+	text-align: center;
+    /*margin-left: 21px;*/
+    border-bottom: 1px solid #ff0000;
+}
+.invalidError-text {
+	font-size: 1.2em;
+}
+
+.login-options {
+	font-size: 14px !important;
+}
+.scroll {
+    height: 100%;
+}
+
+@media only screen 
+  and (min-device-width: 768px) {
+  	.login-topmargin {	
+		width: 50% !important;
+		margin: 0 auto;
+		right: 0;
+		left: 0;
+		top: 23% !important;
+	}
+}
+.login-subtitle{
+	color: $select-month-color;
+	font-weight: bold;
+    font-size: 1em;
+    padding-bottom: 2em;
+}
+.login-padding{
+	padding-top: 3em !important;
+}
+.username-bottom{
+	margin-bottom: 1em !important;
 }

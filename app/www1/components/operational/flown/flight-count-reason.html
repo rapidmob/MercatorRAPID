@@ -1,43 +1,37 @@
 <div class="row section-margin responsive-sm content-head">
               <div class="col col-50 padding-horizontal padding-vertical metric-modifier pull-left">
               {{OprCtrl.toggle.openOrClosed}} FLIGHT COUNT BY REASON <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ng-click = "OprCtrl.openinfoPopover($event, OprCtrl.flightCountSection)"></i></div>
-              <a href="#" ng-click="hideOptions= !hideOptions" class="hide-option">{{ hideOptions == true ? 'Hide Options' : 'Show Options' }}</a>
-              <div class="col col-50" ng-class="{'hide-options' : !hideOptions}">
+              <div class="col col-50">
                 <div class="row btn-section responsive-sm">
-                <div class="pull-right padding-horizontal download-btn">
-                  <button class="button export" ng-click="OprCtrl.runReport('fcReason','OPEN FLIGHT COUNT BY REASON',OprCtrl.header.flownMonth)"><img src="res/img/download.svg">
-                  </button>
-                  <div class="button-bar button-small padding-horizontal padding-right">
-                    <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-class="{'button-custom-color': OprCtrl.toggle.openOrClosed=='OPEN'}" ng-click="OprCtrl.toggleCount('OPEN')">Open</a>
-                    <a class="button button-modifier no-border button-inactive btn-padding-top" ng-class="{'button-custom-color': OprCtrl.toggle.openOrClosed=='CLOSED'}" ng-click="OprCtrl.toggleCount('CLOSED')">Closed</a>
-                    <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleFlightReasonView('chart')" ng-class="{'button-custom-color': OprCtrl.toggle.flightReason=='chart'}"><img src="res/img/graph.svg" /></a>
-                    <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleFlightReasonView('table')" ng-class="{'button-custom-color': OprCtrl.toggle.flightReason=='table'}"><img src="res/img/tabular.svg" /></a>
+                <div class="pull-right padding-horizontal download-btn"><button class="button export" ng-click="OprCtrl.runReport('fcReason','OPEN FLIGHT COUNT BY REASON',OprCtrl.header.flownMonth)"><img src="res/img/download.svg"></button></div>
+                <div class="button-bar button-small padding-horizontal padding-right">
+                <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-class="{'button-custom-color': OprCtrl.toggle.openOrClosed=='OPEN'}" ng-click="OprCtrl.toggleCount('OPEN')">Open</a>
+                <a class="button button-modifier no-border button-inactive btn-padding-top" ng-class="{'button-custom-color': OprCtrl.toggle.openOrClosed=='CLOSED'}" ng-click="OprCtrl.toggleCount('CLOSED')">Closed</a>
                 </div>
+                <div class="button-bar button-small button-energized padding-horizontal padding-right-zero">
+          <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleFlightReasonView('chart')" ng-class="{'button-custom-color': OprCtrl.toggle.flightReason=='chart'}"><img src="res/img/graph.svg" /></a>
+          <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleFlightReasonView('table')" ng-class="{'button-custom-color': OprCtrl.toggle.flightReason=='table'}"><img src="res/img/tabular.svg" /></a>
                 </div>
                 </div>
               </div>
             </div>
-            <div class="row no-padding" ng-show="OprCtrl.toggle.flightReason=='chart'" ng-class="{'hide-options' : !hideOptions}">
+            <div class="row no-padding" ng-show="OprCtrl.toggle.flightReason=='chart'">
               <div class="col pull-right">
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed=='OPEN'">
-                  <div class="chart_legend closed">{{OprCtrl.flightCountLegends.open[2]}}</div>
-                  <div class="chart_legend open">{{OprCtrl.flightCountLegends.open[1]}}</div>
-                  <div class="chart_legend not-received">{{OprCtrl.flightCountLegends.open[0]}}</div>
-                </div>
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed=='CLOSED'">                  
-                  <div class="chart_legend open">{{OprCtrl.flightCountLegends.closed[1]}}</div>
-                  <div class="chart_legend not-received">{{OprCtrl.flightCountLegends.closed[0]}}</div>
+                <div id="chart-legend-operation">
+                  <div class="chart_legend closed">Processed with Exception</div>
+                  <div class="chart_legend open">Live not Processed</div>
+                  <div class="chart_legend not-received">Interface</div>
                 </div>
               </div>
             </div>
-            <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.flightReason=='chart'}">
+            <div class="row section-margin responsive-sm metric">
             <div ng-show="OprCtrl.flightCountReason.pieChart !== undefined" class="col col-50 padding-horizontal">
                 <div class="col-demo">
                   <div class="row">
                     <div class="col no-padding pull-left graph-title">
                       Month Data
                     </div>
-                     <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPiePopover($event,'monthdata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
+                     <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'monthdata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.flightReason=='chart'">
                           </i></div>         
                   </div>
                   <div class="row">
@@ -45,22 +39,22 @@
                         <he-custom-pie-chart chart-height="350" chart-width="330" format-value="value" chart-data="OprCtrl.flightCountReason.pieChart.data"></he-custom-pie-chart>
                     </div>
           <table class="resptbl" ng-show="OprCtrl.toggle.flightReason=='table'">            
-            <tr class="tblhder" ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">              
-			       <th ng-repeat="month in OprCtrl.flightCountReason.pieChart.data">{{month.xval}}</th>
-            </tr>
-			<tr class="tblhder" ng-if="OprCtrl.toggle.openOrClosed=='CLOSED'">              
-			<th>Balanced</th>
-			<th>Un-Balanced</th>
+            <tr class="tblhder">              
+            <th>Interface</th>
+            <th>Live not processed</th>
+            <th>Processed with Exception</th>
             </tr>
             <tr class="tblcol">             
-            <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Interface':  'Balanced'}}">{{OprCtrl.flightCountReason.pieChart.data[0].yval}}</td>
-            <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Live not processed':  'Un-Balanced'}}">{{OprCtrl.flightCountReason.pieChart.data[1].yval}}</td>
-            <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Processed with Exception':  'Interface5'}}" ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">{{OprCtrl.flightCountReason.pieChart.data[2].yval}}</td>            
+            <td data-th="First">{{OprCtrl.flightCountReason.pieChart.data[0].yval}}</td>
+            <td data-th="Business">{{OprCtrl.flightCountReason.pieChart.data[1].yval}}</td>
+            <td data-th="Economy">{{OprCtrl.flightCountReason.pieChart.data[2].yval}}</td>
             </tr>
             </table>
                   </div>   
                   <div class="row">
                     <div class="col margin-top10 text-center" ng-show="OprCtrl.toggle.flightReason=='chart'">
+                      <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">
+                      {{OprCtrl.flightCountReason.pieChart.pieChartFooter[0].value}} (100%)</span>
                     </div>        
                   </div>   
                 </div>
@@ -72,7 +66,7 @@
           <div class="col no-padding pull-left graph-title">
             Week Data
           </div>
-          <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
+          <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.flightReason=='chart'">
               </i></div>         
         </div>
         <div class="row">
@@ -108,13 +102,15 @@
       <table class="resptbl" ng-show="OprCtrl.toggle.flightReason=='table'">             
               <tr class="tblhder">              
                 <th>Week</th>
-				<th ng-repeat="week in OprCtrl.flightCountReason.weekData[0].values" >{{week[0]}}</th>
+                <th>Interface</th>
+                <th>Live not processed</th>
+                <th>Processed with Exception</th>
               </tr>
             <tr class="tblcol" ng-repeat="weekData in OprCtrl.flightCountReason.weekData">
-                <td data-th="Week" class="tblvalname">{{weekData.key}}</td>
-                <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Interface':  'Balanced'}}">{{weekData.values[0][1]}}</td>
-                <td data-th="{{OprCtrl.toggle.openOrClosed=='OPEN'  ? 'Live Not Processed':  'Un-Balanced'}}">{{weekData.values[1][1]}}</td>
-                <td data-th="Processed With Exception" ng-if="OprCtrl.toggle.openOrClosed=='OPEN'">{{weekData.values[2][1]}}</td>                         
+                <td class="tblvalname">{{weekData.key}}</td>
+                <td>{{weekData.values[0][1]}}</td>
+                <td>{{weekData.values[1][1]}}</td>
+                <td>{{weekData.values[2][1]}}</td>                         
               </tr>
               </table>
         </div>   
@@ -125,14 +121,11 @@
             <div class="row" ng-hide="OprCtrl.flightCountReason.stackedChart.length==0">
             <div class="col padding-horizontal">
                   <div class="col-demo">
-                  
-                      <div class="row">
-                        <div class="col col-80 no-padding pull-left graph-title">Day Data</div>
-                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
+                  <div class="no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.flightReason=='chart'">
                       </i></div>
-                        </div>
                       <div class="row">
                         <div class="col no-padding pull-left graph-title fcReason fcReasonFlag" data-item-title="Day Data" data-item-flag="6" ng-show="OprCtrl.toggle.flightReason=='chart'" data-item-pdfFlag="dynamicWH">
+                          Day Data
                           <chartevent type="flight-count">
                           <nvd3-multi-bar-chart                          
                           data="OprCtrl.flightCountReason.stackedChart.stackedBarchartItems"                         
@@ -150,13 +143,14 @@
                           </chartevent>
                         </div> 
             <table class="resptbl" ng-show="OprCtrl.toggle.flightReason=='table'"> 
+            <th class="graph-title">Day Data</th>
               <tr class="tblhder">              
                 <th>Day</th>
                 <th ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems" >{{DayData.key}}</th>
               </tr>
             <tr class="tblcol" ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems[0].values">
-                <td data-th="Day">{{DayData[0]}}</td>
-                <td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>
+                <td>{{DayData[0]}}</td>
+                <td ng-repeat="values in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>
                          
               </tr>
               </table>
@@ -165,7 +159,5 @@
               </div>
             </div>
             
-      <div class="clear"></div>
-              
       <div class="clear"></div>
      

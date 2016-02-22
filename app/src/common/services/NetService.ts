@@ -24,16 +24,16 @@ class NetService implements INetService {
 	}
 
 	getData(fromUrl: string): ng.IHttpPromise<any> {
-		var url: string = SERVER_URL + fromUrl;
+		var url: string = this.URL_WS + fromUrl;
 		return this.$http.get(url);
 	}
 
 	postData(toUrl: string, data: any, config?: ng.IRequestShortcutConfig): ng.IHttpPromise<any> {
-		return this.$http.post(SERVER_URL + toUrl, this.addMetaInfo(data));
+		return this.$http.post(this.URL_WS + toUrl, this.addMetaInfo(data));
 	}
 
 	deleteData(toUrl: string): ng.IHttpPromise<any> {
-		return this.$http.delete(SERVER_URL + toUrl);
+		return this.$http.delete(this.URL_WS + toUrl);
 	}
 
 	uploadFile(
@@ -45,7 +45,7 @@ class NetService implements INetService {
 		}
 		console.log(options.params);
 		this.fileTransfer.onprogress = progressCallback;
-		var url: string = SERVER_URL + toUrl;
+		var url: string = this.URL_WS + toUrl;
 		this.fileTransfer.upload(urlFile, url, successCallback, errorCallback, options);
 	}
 

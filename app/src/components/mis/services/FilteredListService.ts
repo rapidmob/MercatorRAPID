@@ -102,18 +102,4 @@ function searchUtil(item, toSearch, level, drilltype) {
     }
   }
 
-  if(drilltype == 'analysis' || drilltype == 'passenger-count') {
-    if(item.regionName && level == 0) {
-      return (item.regionName.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
-    } else if(item.countryFrom && item.countryTo && level == 1) {
-      return (item.countryFrom.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 || item.countryTo.toLowerCase().indexOf(toSearch.toLowerCase()) > -1 ) ? true : false;
-    } else if(item.flownSector && level == 2) {
-      return (item.flownSector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
-    } else if(item.flightNumber && level == 3) {
-      return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
-    } else {
-      return false;
-    }
-  }
-
 }

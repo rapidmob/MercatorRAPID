@@ -24,7 +24,7 @@ interface headerObject {
 
 class OperationalFlownController {
   public static $inject = ['$state', '$scope', '$ionicLoading', '$ionicPopover', '$filter',
-    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService', 'UserService', '$ionicHistory', 'GRAPH_COLORS', 'TABS', '$ionicPopup'];
+    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService', 'UserService', '$ionicHistory', '$ionicPopup'];
   private tabs: [tabObject];
   private toggle: toggleObject;
   private header: headerObject;
@@ -38,8 +38,8 @@ class OperationalFlownController {
   private graphType: string;
   private graphpopover: Ionic.IPopover;
   private popovershown: boolean;
-  private threeBarChartColors: [string] = this.GRAPH_COLORS.THREE_BARS_CHART;
-  private fourBarChartColors: [string] = this.GRAPH_COLORS.FOUR_BARS_CHART;
+  private threeBarChartColors: [string] = ['#4EB2F9', '#FFC300', '#5C6BC0'];
+  private fourBarChartColors: [string] = ['#7ED321', '#4EB2F9', '#FFC300', '#5C6BC0'];
 
   private infopopover: Ionic.IPopover;
   private infodata: string;
@@ -58,11 +58,8 @@ class OperationalFlownController {
   private drillBarLabel: string;
   private exceptionCategory: string;
   private drilltabs: string[];
-  private drillName: string;
-  private firstColumns: string[];
+  private drillName: string[];
   private drillpopover: Ionic.IPopover;
-
-  private flightCountLegends: any;
 
   constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
     private $ionicLoading: Ionic.ILoading,
@@ -71,37 +68,58 @@ class OperationalFlownController {
     private $ionicSlideBoxDelegate: Ionic.ISlideBoxDelegate,
     private $timeout: ng.ITimeoutService, private $window: ng.IWindowService,
     private reportSvc: ReportSvc, private filteredListService: FilteredListService,
-    private userService: UserService, private $ionicHistory: any, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup) {
-      
-    this.tabs = this.TABS.DB2_TABS;
+    private userService: UserService, private $ionicHistory: any, private $ionicPopup: Ionic.IPopup) {
+    
+    if (!this.userService.checkMenuAccess('Operational')) {
+        var self = this;
+            self.$ionicPopup.alert({
+            title: 'Error',
+            content: 'You dont have acces to this Page!!!'
+          }).then(function(res) {
+            console.log('done');
+            self.$state.go('app.mis-flown');
+            // self.$ionicHistory.currentView(self.$ionicHistory.backView());
+          });
+    } else {
+      this.tabs = [
+        { title: 'My Dashboard', names: 'MyDashboard', icon: 'iconon-home' },
+        { title: 'Flight Process Status', names: 'FlightProcessStatus', icon: 'ion-home' },
+        { title: 'Flight Count by Reason', names: 'FlightCountbyReason', icon: 'ion-home' },
+        { title: 'Coupon Count by Exception Category', names: 'CouponCountbyExceptionCategory', icon: 'ion-home' }
+      ];
 
-    this.toggle = {
-      monthOrYear: 'month',
-      openOrClosed: 'OPEN',
-      flightStatus: 'chart',
-      flightReason: 'chart',
-      ccException: 'chart'
-    };
+      this.toggle = {
+        monthOrYear: 'month',
+        openOrClosed: 'OPEN',
+        flightStatus: 'chart',
+        flightReason: 'chart',
+        ccException: 'chart'
+      };
 
-    this.header = {
-      flownMonth: '',
-      tabIndex: 0,
-      userName: ''
-    };
-  angular.element(window).bind('orientationchange', this.orientationChange); 
-    this.initData();
-    var that = this;
+      this.header = {
+        flownMonth: '',
+        tabIndex: 0,
+        userName: ''
+      };
 
-      this.$scope.$on('onSlideMove', (event: any, response: any) => {
-          that.$scope.OprCtrl.onSlideMove(response);
-      });
+      this.initData();
+      var that = this;
 
-      this.$scope.$on('$ionicView.enter', () => {
-        if (!that.userService.showDashboard('Operational')) {
-          that.$state.go("login");
-        }
-      });
 
+      //   this.$scope.$on('$ionicView.enter', () => {
+      //       if (!that.userService.showDashboard('Operational')) {
+      //           this.$ionicPopup.alert({
+      //                     title: 'Error',
+      //                     content: 'You dont have acces to this Page!!!'
+      //           }).then(function(res) {
+      //                     console.log('done');
+      //           });
+      //       } else {
+            
+      //       }
+      // });
+
+    
       this.$scope.$on('openDrillPopup1', (event: any, response: any) => {
         console.log(response.type);
         if (response.type == 'flight-process') {
@@ -114,6 +132,7 @@ class OperationalFlownController {
           this.$scope.OprCtrl.openFlightCountDrillPopover(response.event, { "point": response.data }, -1);
         }
       });
+    }
   }
 
   initData() {
@@ -151,6 +170,8 @@ class OperationalFlownController {
     }
     that.header.userName = that.getProfileUserName();
   }
+
+
   selectedFlownMonth(month: string) {
     return (month == this.header.flownMonth);
   }
@@ -163,18 +184,6 @@ class OperationalFlownController {
         return profileUserName.username;
       }
     }
-  }
-  
-  orientationChange = (): boolean => {
-    var that = this;
-    that.$timeout(function() {
-      that.onSlideMove({ index: that.header.tabIndex });
-    }, 200)
-  }
-
-  updateHeader() {
-    var flownMonth = this.header.flownMonth;
-    this.onSlideMove({ index: this.header.tabIndex });
   }
 
 
@@ -197,9 +206,9 @@ class OperationalFlownController {
     }
   };
   callMyDashboard() {
-    this.callFlightProcStatus();
-    this.callFlightCountByReason();
-    this.callCouponCountByException();
+        this.callFlightProcStatus();
+        this.callFlightCountByReason();
+        this.callCouponCountByException();
   }
   callFlightProcStatus() {
     var that = this;
@@ -213,52 +222,41 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprFlightProcStatus(reqdata)
       .then(function(data) {
-		if(data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')){		  
-			var otherChartColors = [{ "color": that.GRAPH_COLORS.FOUR_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[1] },
-			  { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[2] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[3] }];
-			var pieChartColors = [{ "color": that.GRAPH_COLORS.THREE_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[1] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[2] }];
+        var otherChartColors = [{ "color": "#7ED321" }, { "color": "#4EB2F9" },
+          { "color": "#FFC300" }, { "color": "#5C6BC0" }];
+        var pieChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
 
-			var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
-			that.flightProcSection = jsonObj.sectionName;
-			var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
-			  if (u) return u.favoriteInd == 'Y';
-			});
-			var multiCharts = _.filter(jsonObj.multibarCharts, function(u: any) {
-			  if (u) return u.favoriteInd == 'Y';
-			});
-			var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
-			  if (u) return u.favoriteInd == 'Y';
-			});          
-			// console.log(stackCharts);
-			if (that.header.tabIndex == 0) {
-			  that.flightProcStatus = {
-				pieChart: pieCharts[0],
-				weekData: multiCharts[0].multibarChartItems,
-				stackedChart: (stackCharts.length) ? stackCharts[0] : []
-			  }
-			} else {
-			  that.flightProcStatus = {
-				pieChart: jsonObj.pieCharts[0],
-				weekData: jsonObj.multibarCharts[0].multibarChartItems,
-				stackedChart: jsonObj.stackedBarCharts[0]
-			  }
-			}
-			// console.log(stackCharts);
-			that.$timeout(function() {
-			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
-			}, 0);
-			// console.log(JSON.stringify(that.flightProcStatus.weekData));
-			that.ionicLoadingHide();
-		}else{
-			that.ionicLoadingHide();
-			that.$ionicPopup.alert({
-				title: 'Error',
-				content: 'Data not found for Flights Processing Status!!!'
-			}).then(function(res) {
-				console.log('done');
-			});
-
-		}
+        var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+        that.flightProcSection = jsonObj.sectionName;
+        var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
+          if (u) return u.favoriteInd == 'Y';
+        });
+        var multiCharts = _.filter(jsonObj.multibarCharts, function(u: any) {
+          if (u) return u.favoriteInd == 'Y';
+        });
+        var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
+          if (u) return u.favoriteInd == 'Y';
+        });          
+        // console.log(stackCharts);
+        if (that.header.tabIndex == 0) {
+          that.flightProcStatus = {
+            pieChart: pieCharts[0],
+            weekData: multiCharts[0].multibarChartItems,
+            stackedChart: (stackCharts.length) ? stackCharts[0] : []
+          }
+        } else {
+          that.flightProcStatus = {
+            pieChart: jsonObj.pieCharts[0],
+            weekData: jsonObj.multibarCharts[0].multibarChartItems,
+            stackedChart: jsonObj.stackedBarCharts[0]
+          }
+        }
+        // console.log(stackCharts);
+        that.$timeout(function() {
+          that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+        }, 500);
+        // console.log(JSON.stringify(that.flightProcStatus.weekData));
+        that.ionicLoadingHide();
       }, function(error) {
       });
   }
@@ -267,50 +265,36 @@ class OperationalFlownController {
     var reqdata = {
       flownMonth: this.header.flownMonth,
       userId: this.header.userName,
-      toggle1: this.toggle.openOrClosed.toLowerCase(),
+      toggle1: 'open',
       fullDataFlag: 'N'
     };
     this.ionicLoadingShow();
     this.operationalService.getOprFlightCountByReason(reqdata)
       .then(function(data) {
-      if (data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')) {	
-			// console.log(jsonObj.pieCharts[0]);
-			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[2] }];
-			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
+        // console.log(jsonObj.pieCharts[0]);
+        var otherChartColors = [{ "color": "#28AEFD" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
+        var pieChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
 
-			that.flightCountLegends = data.response.data.legends;
+        var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+        that.flightCountSection = jsonObj.sectionName;
+        if (that.header.tabIndex == 0) {
+          that.flightCountReason = that.getFavoriteItems(jsonObj);
+        } else {
+          that.flightCountReason = {
+            pieChart: jsonObj.pieCharts[0],
+            weekData: jsonObj.multibarCharts[0].multibarChartItems,
+            stackedChart: jsonObj.stackedBarCharts[0]
+          }
+        }
 
-			var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
-			that.flightCountSection = jsonObj.sectionName;
-			if (that.header.tabIndex == 0) {
-			  that.flightCountReason = that.getFavoriteItems(jsonObj);
-			} else {
-			  that.flightCountReason = {
-				pieChart: jsonObj.pieCharts[0],
-				weekData: jsonObj.multibarCharts[0].multibarChartItems,
-				stackedChart: jsonObj.stackedBarCharts[0]
-			  }
-			}
-
-			that.$timeout(function() {
-			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
-			}, 0);
-			that.ionicLoadingHide();
-		}else{
-			that.ionicLoadingHide();
-      that.$ionicPopup.alert({
-        title: 'Error',
-        content: 'Data not found for Flights Count by Reason!!!'
-      }).then(function(res) {
-          console.log('done');
-      });
-
-		}
+        that.$timeout(function() {
+          that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+        }, 700);
+        that.ionicLoadingHide();
       }, function(error) {
         that.ionicLoadingHide();
       });
   }
-
   callCouponCountByException() {
     var that = this;
     var reqdata = {
@@ -322,35 +306,24 @@ class OperationalFlownController {
     this.ionicLoadingShow();
     this.operationalService.getOprCouponCountByException(reqdata)
       .then(function(data) {
-      if (data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')) {
-			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
-			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
+        var otherChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
+        var pieChartColors = [{ "color": "#4EB2F9" }, { "color": "#FFC300" }, { "color": "#5C6BC0" }];
 
-			var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
-			that.couponCountSection = jsonObj.sectionName;
-			if (that.header.tabIndex == 0) {
-			  that.couponCountException = that.getFavoriteItems(jsonObj);
-			} else {
-			  that.couponCountException = {
-				pieChart: jsonObj.pieCharts[0],
-				weekData: jsonObj.multibarCharts[0].multibarChartItems,
-				stackedChart: jsonObj.stackedBarCharts[0]
-			  }
-			}
-			that.$timeout(function() {
-			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
-			}, 0);
-			that.ionicLoadingHide();		
-		}else{
-			that.ionicLoadingHide();
-      that.$ionicPopup.alert({
-        title: 'Error',
-        content: 'Data not found for Coupon Count by Exception Category!!!'
-      }).then(function(res) {
-          console.log('done');
-      });
-
-		}
+        var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+        that.couponCountSection = jsonObj.sectionName;
+        if (that.header.tabIndex == 0) {
+          that.couponCountException = that.getFavoriteItems(jsonObj);
+        } else {
+          that.couponCountException = {
+            pieChart: jsonObj.pieCharts[0],
+            weekData: jsonObj.multibarCharts[0].multibarChartItems,
+            stackedChart: jsonObj.stackedBarCharts[0]
+          }
+        }
+        that.$timeout(function() {
+          that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+        }, 500);
+        that.ionicLoadingHide();
       }, function(error) {
         that.ionicLoadingHide();
       });
@@ -363,19 +336,6 @@ class OperationalFlownController {
     this.charttype = charttype;
     this.graphType = index;
     this.$ionicPopover.fromTemplateUrl('components/operational/flown/graph-popover.html', {
-      scope: that.$scope
-    }).then(function(popover) {
-      that.popovershown = true;
-      that.graphpopover = popover;
-      that.graphpopover.show($event);
-    });
-  }
-  openPiePopover($event, charttype, index) {
-    var that = this;
-    $event.preventDefault();
-    this.charttype = charttype;
-    this.graphType = index;
-    this.$ionicPopover.fromTemplateUrl('components/operational/flown/pie-popover.html', {
       scope: that.$scope
     }).then(function(popover) {
       that.popovershown = true;
@@ -398,13 +358,8 @@ class OperationalFlownController {
       n.value = n.yval;
     });
     _.merge(jsonObj.pieCharts[0].data, pieChartColors);
-    _.merge(jsonObj.multibarCharts[0].multibarChartItems, otherChartColors);	
-	if(jsonObj.stackedBarCharts[0].stackedBarchartItems.length >= 3){
-		_.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, otherChartColors);
-	}else{
-		var tempColors = [{ "color": this.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": this.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }];
-		_.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, tempColors);
-	}
+    _.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, otherChartColors);
+    _.merge(jsonObj.multibarCharts[0].multibarChartItems, otherChartColors);
     return jsonObj;
 
   }
@@ -472,8 +427,6 @@ class OperationalFlownController {
   }
   toggleFlightReasonView(val: string) {
     this.toggle.flightReason = val;
-    if (this.toggle.flightReason == "chart")
-    this.onSlideMove({ index: this.header.tabIndex });
   }
   toggleCCExceptionView(val: string) {
     this.toggle.ccException = val;
@@ -489,7 +442,6 @@ class OperationalFlownController {
           //set the iframe source to the dataURL created
           //console.log(dataURL);
           //document.getElementById('pdfImage').src = dataURL;
-		  window.open(dataURL,"_system");
         }, function(error) {
           that.ionicLoadingHide();
           console.log('Error ');
@@ -540,11 +492,8 @@ class OperationalFlownController {
     this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
     this.firstColumns = ['countryFrom', 'flownSector', 'flightNumber', 'carrierCode#'];
     this.initiateArray(this.drilltabs);
-    var that = this;
-    this.$timeout(function() {
-      that.drillpopover.show($event);
-      that.shownGroup = 0;
-    }, 50);
+    this.drillpopover.show($event);
+    this.shownGroup = 0;
     this.openDrillDown(data.point, selFindLevel);
   };
 
@@ -555,11 +504,8 @@ class OperationalFlownController {
     this.drilltabs = ['Coupon Count Flight Status', 'Document Level'];
     this.firstColumns = ['flightNumber', 'flownSector'];
     this.initiateArray(this.drilltabs);
-    var that = this;
-    this.$timeout(function() {
-      that.drillpopover.show($event);
-      that.shownGroup = 0;
-    }, 50);
+    this.drillpopover.show($event);
+    this.shownGroup = 0;
     this.openDrillDown(data.point, selFindLevel);
   };
 
@@ -570,11 +516,8 @@ class OperationalFlownController {
     this.drilltabs = ['Open Flight Status', 'Document Level'];
     this.firstColumns = ['flightNumber', 'carrierCode'];
     this.initiateArray(this.drilltabs);
-    var that = this;
-    this.$timeout(function() {
-      that.drillpopover.show($event);
-      that.shownGroup = 0;
-    }, 50);
+    this.drillpopover.show($event);
+    this.shownGroup = 0;
     this.openDrillDown(data.point, selFindLevel);
   };
 
@@ -752,9 +695,6 @@ class OperationalFlownController {
       this.groups[i].items.splice(0, 1);
       this.groups[i].orgItems.splice(0, 1);
       this.sort('', i, false);
-      console.log(this.selectedDrill);
-      this.selectedDrill[i] = '';
-      console.log(this.selectedDrill);
     }
   }
   initiateArray(drilltabs) {
@@ -805,10 +745,7 @@ class OperationalFlownController {
   range(total, level) {
     var ret = [];
     var start: number;
-    start = 0;
-    if(total > 5) {
-      start = Number(this.currentPage[level]) - 2;
-    }
+    start = Number(this.currentPage[level]) - 2;
     if (start < 0) {
       start = 0;
     }

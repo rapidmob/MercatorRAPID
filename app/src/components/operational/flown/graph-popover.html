@@ -1,7 +1,63 @@
- <ion-popover-view class="graphpopover bar-popover-cust">
+ <ion-popover-view class="graphpopover">
     <ion-content>
       <div id="operational-popover-content">
-          
+          <div ng-if="OprCtrl.charttype == 'monthdata'">
+            <div class="row">
+              <div class="col-90">
+                <div ng-if = "OprCtrl.graphType == 'flight-proc-status'">
+                   <h2 class="graph-title pop-title padding-left">{{OprCtrl.flightProcSection}}
+                   </h2>
+                </div>
+                <div ng-if = "OprCtrl.graphType == 'flight-count-reason'">
+                    <h2 class="graph-title pop-title padding-left">{{OprCtrl.flightCountSection}}
+                   </h2>
+                </div>
+                <div ng-if = "OprCtrl.graphType == 'cc-exception-category'">
+                    <h2 class="graph-title pop-title padding-left">{{OprCtrl.couponCountSection}}
+                   </h2>
+                </div>   
+              </div>
+              <div class="col-10 popup-close padding-right" ng-click="OprCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
+            </div>
+            <div class="row no-padding">
+                <div class="col padding-left pull-left graph-title">
+                      Month Data
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col box-cont monthdata-modifier monthdata-padding">
+                       <div ng-if = "OprCtrl.graphType == 'flight-proc-status'">
+                           <he-custom-pie-chart chart-height="250" chart-width="450" format-value="value" chart-data="OprCtrl.flightProcStatus.pieChart.data"></he-custom-pie-chart>
+                            <div class="row">
+                              <div class="col text-center">
+                                <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">
+                                {{OprCtrl.flightProcStatus.pieChart.pieChartFooter[0].value}} (100%)</span>
+                              </div>        
+                            </div>  
+                       </div>
+                       
+                       <div ng-if = "OprCtrl.graphType == 'flight-count-reason'">
+                           <he-custom-pie-chart chart-height="250" chart-width="450" format-value="value" chart-data="OprCtrl.flightCountReason.pieChart.data"></he-custom-pie-chart>
+                           <div class="row">
+                              <div class="col text-center">
+                                <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">
+                                {{OprCtrl.flightCountReason.pieChart.pieChartFooter[0].value}} (100%)</span>
+                              </div>        
+                            </div>   
+                        </div>
+
+                        <div ng-if = "OprCtrl.graphType == 'cc-exception-category'">
+                            <he-custom-pie-chart chart-height="250" chart-width="450" format-value="value" chart-data="OprCtrl.couponCountException.pieChart.data"></he-custom-pie-chart>
+                            <div class="row">
+                              <div class="col text-center">
+                                <span class="graph-title-bottom">Expected : </span><span class="graph-title-bottom-value">
+                                {{OprCtrl.flightProcStatus.pieChart.pieChartFooter[0].value}} (100%)</span>
+                              </div>        
+                            </div>   
+                        </div>
+                    </div>
+            </div> 
+          </div>
           <div ng-if="OprCtrl.charttype == 'weekdata'">
                <div class="row">
                   <div class="col-90">
@@ -21,39 +77,9 @@
                   <div class="col-10 popup-close padding-right" ng-click="OprCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
                </div>
                <div class="row no-padding">
-                  <div class="col col-20 padding-left pull-left graph-title">
+                  <div class="col padding-left pull-left graph-title">
                       Week Data
                     </div>
-                    <div class="col col-80 pull-right"> 
-                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-proc-status'">
-                  <div class="chart_legend expected">Expected</div>
-                  <div class="chart_legend not-received">Not Received</div>
-                  <div class="chart_legend open">Open</div>
-                  <div class="chart_legend closed">Closed</div>
-                </div>
-               <!--  <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-count-reason'">
-                  <div class="chart_legend not-received">Interface</div>
-                  <div class="chart_legend open">Live not Processed</div>
-                  <div class="chart_legend closed">Processed with Exception</div>
-                </div> -->
-                <div ng-show="OprCtrl.graphType == 'flight-count-reason'">
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'OPEN'">
-                  <div class="chart_legend not-received">Interface</div>
-                  <div class="chart_legend open">Live not Processed</div>
-                  <div class="chart_legend closed">Processed with Exception</div>
-                </div>
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'CLOSED'">                  
-                  <div class="chart_legend not-received">Balanced</div>
-                  <div class="chart_legend open">Un-balanced</div>                  
-                </div>
-                </div>
-                
-                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'cc-exception-category'">
-                  <div class="chart_legend not-received">Interface Exception</div>
-                  <div class="chart_legend open">Proration Exception</div>
-                  <div class="chart_legend closed">Transactional Exception</div>
-                </div>
-              </div>
                 </div>
                <div class="row">
                 <div class="col box-cont">
@@ -61,7 +87,7 @@
                     <div ng-repeat="weekdata in OprCtrl.flightProcStatus.weekData" ng-if="$index == OprCtrl.currentIndex">
                     <div class="row">
                       <div class="col col-80 weekdata-zoom-margin">
-                      <div  class="flightprocessStatus four-bar-pop weekdata-popover-padding" data-item-title="Month Data">
+                      <div  class="flightprocessStatus four-bar weekdata-popover-padding" data-item-title="Month Data">
                       <nvd3-discrete-bar-chart
                           data="[weekdata]"                              
                           tooltips="true"
@@ -75,7 +101,7 @@
                       </nvd3-discrete-bar-chart>
                       <p class="graph-title-bottom text-center">{{weekdata.key}}</p>
                       </div>
-                      <p class="pull-right graph-title-percent">{{weekdata.closedPercent}}<br/><span class="graph-title-percent">Close%</span></p>
+                      <p class="pull-right weekdata-zoom-perecent-margin">{{weekdata.closedPercent}}</p>
                       </div>                    
                       </div>
                     </div>
@@ -148,39 +174,12 @@
                   </div>
                   <div class="col-10 popup-close padding-right" ng-click="OprCtrl.closePopover()"><i class="icon ion-close icon-larger"></i></div>
                </div>
-                <div class="row no-padding responsive-sm" >
-                <div class="col col-20 padding-left pull-left graph-title">
-                           Day Data
-                </div>
-              <div class="col col-80 pull-right">
-                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-proc-status'">
-                  <div class="chart_legend expected">Expected</div>
-                  <div class="chart_legend not-received">Not Received</div>
-                  <div class="chart_legend open">Open</div>
-                  <div class="chart_legend closed">Closed</div>
-                </div>
-                <div ng-show="OprCtrl.graphType == 'flight-count-reason'">
-                  <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'OPEN'">
-                    <div class="chart_legend not-received">Interface</div>
-                    <div class="chart_legend open">Live not Processed</div>
-                    <div class="chart_legend closed">Processed with Exception</div>
-                  </div>
-                  <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'CLOSED'">                  
-                    <div class="chart_legend not-received">Balanced</div>
-                    <div class="chart_legend open">Un-balanced</div>                  
-                  </div>
-                </div>
-                <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'cc-exception-category'">
-                  <div class="chart_legend not-received">Interface Exception</div>
-                  <div class="chart_legend open">Proration Exception</div>
-                  <div class="chart_legend closed">Transactional Exception</div>
-                </div>
-              </div>
-            </div>
-               
                <div class="row no-padding">    
-                   <div class="col no-padding pull-left graph-title flightprocessStatus day-padding" data-item-title="Day Data" data-item-flag="6">
-                         
+                   <div class="col no-padding pull-left graph-title flightprocessStatus" data-item-title="Day Data" data-item-flag="6">
+                         <div class="col padding-left pull-left graph-title">
+                           Day Data
+
+                         </div>
                          <div ng-if = "OprCtrl.graphType == 'flight-proc-status'">
                           <nvd3-multi-bar-chart                         
                           data="OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems"                         

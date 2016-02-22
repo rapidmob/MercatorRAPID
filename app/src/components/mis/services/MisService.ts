@@ -4,7 +4,7 @@
 class MisService {
 
 	public static $inject = ['DataProviderService', '$q'];
-	private serverRequest: number;
+	
 
 	constructor(private dataProviderService: DataProviderService, private $q: ng.IQService) { }
 
@@ -131,18 +131,15 @@ class MisService {
 	getDrillDown (reqdata, URL){
 		var requestUrl: string = URL;
 		var def: ng.IDeferred<any> = this.$q.defer();
-		if(!this.serverRequest){
-			this.serverRequest = 1;
-			this.dataProviderService.postData(requestUrl, reqdata).then(
-			(response) => {
-				var result: any = response.data;
-				def.resolve(result);
-				this.serverRequest = 0;
-			},
-			(error) => {
-				console.log('an error occured');
-			});
-		}
+		this.dataProviderService.postData(requestUrl, reqdata).then(
+		(response) => {
+			var result: any = response.data;
+			def.resolve(result);
+		},
+		(error) => {
+			console.log('an error occured');
+		});
+
 		return def.promise;
 	}
 }

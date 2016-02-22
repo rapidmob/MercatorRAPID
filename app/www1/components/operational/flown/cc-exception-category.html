@@ -1,37 +1,33 @@
 <div class="row section-margin responsive-sm content-head">
               <div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">
               COUPON COUNT BY EXCEPTION CATEGORY <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ng-click = "OprCtrl.openinfoPopover($event, OprCtrl.couponCountSection)"></i></div>
-              <a href="#" ng-click="hideOptions= !hideOptions" class="hide-option">{{ hideOptions == true ? 'Hide Options' : 'Show Options' }}</a>
-              <div class="col col-33" ng-class="{'hide-options' : !hideOptions}">
+              <div class="col col-33">
                 <div class="row btn-section responsive-sm">
-                  <div class=" pull-right padding-horizontal download-btn op-dboard">
-                    <button class="button export" ng-click="OprCtrl.runReport('couponcountbyexceptioncategory','COUPON COUNT BY EXCEPTION CATEGORY',OprCtrl.header.flownMonth)"><img src="res/img/download.svg">
-                    </button>
-                    <div class=" button-bar button-small padding-horizontal padding-right-zero two-buttons-only">
-                      <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleCCExceptionView('chart')" ng-class="{'button-custom-color': OprCtrl.toggle.ccException=='chart'}"><img src="res/img/graph.svg" /></a>
-                      <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleCCExceptionView('table')" ng-class="{'button-custom-color': OprCtrl.toggle.ccException=='table'}"><img src="res/img/tabular.svg" /></a>
-                    </div>
-                  </div>
+                <div class=" pull-right padding-horizontal download-btn"><button class="button export" ng-click="OprCtrl.runReport('ccException','COUPON COUNT BY EXCEPTION CATEGORY',OprCtrl.header.flownMonth)"><img src="res/img/download.svg"></button></div>
+                <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+          <a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleCCExceptionView('chart')" ng-class="{'button-custom-color': OprCtrl.toggle.ccException=='chart'}"><img src="res/img/graph.svg" /></a>
+          <a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleCCExceptionView('table')" ng-class="{'button-custom-color': OprCtrl.toggle.ccException=='table'}"><img src="res/img/tabular.svg" /></a>
+                </div>
                 </div>
               </div>
             </div>
-            <div class="row no-padding" ng-show="OprCtrl.toggle.ccException=='chart'" ng-class="{'hide' : !hideOptions}">
+            <div class="row no-padding" ng-show="OprCtrl.toggle.ccException=='chart'">
               <div class="col pull-right">
                 <div id="chart-legend-operation">
-                  <div class="chart_legend closed">Transactional Exception</div>
+                  <div class="chart_legend closed">Transactional Exceptions</div>
                   <div class="chart_legend open">Proration Exception</div>
-                  <div class="chart_legend not-received">Interface Exception</div>
+                  <div class="chart_legend not-received">Interface Exceptions</div>
                 </div>
               </div>
             </div>
-            <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.ccException=='chart'}">
+            <div class="row section-margin responsive-sm metric">
               <div ng-show="OprCtrl.couponCountException.pieChart !== undefined" class="col col-50 padding-horizontal">
                 <div class="col-demo">
                   <div class="row">
                     <div class="col no-padding pull-left graph-title">
                       Month Data
                     </div>
-                    <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPiePopover($event,'monthdata','cc-exception-category')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.ccException=='chart'">
+                    <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'monthdata','cc-exception-category')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.ccException=='chart'">
                     </i></div>          
                   </div>
                   <div class="row">
@@ -45,9 +41,9 @@
             <th>Transaction Exception</th>
             </tr>
             <tr class="tblcol">             
-            <td data-th="Interface Exception">{{OprCtrl.couponCountException.pieChart.data[0].yval}}</td>
-            <td data-th="Live not processed">{{OprCtrl.couponCountException.pieChart.data[1].yval}}</td>
-            <td data-th="Transaction Exception">{{OprCtrl.couponCountException.pieChart.data[2].yval}}</td>
+            <td data-th="First">{{OprCtrl.couponCountException.pieChart.data[0].yval}}</td>
+            <td data-th="Business">{{OprCtrl.couponCountException.pieChart.data[1].yval}}</td>
+            <td data-th="Economy">{{OprCtrl.couponCountException.pieChart.data[2].yval}}</td>
             </tr>
             </table>
           </div>   
@@ -60,7 +56,7 @@
           <div class="col no-padding pull-left graph-title">
             Week Data
           </div>
-          <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','cc-exception-category')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.ccException=='chart'">
+          <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','cc-exception-category')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.ccException=='chart'">
               </i></div>        
         </div>
         <div class="row">
@@ -99,10 +95,10 @@
           <th>Transaction Exception</th>
         </tr>
         <tr class="tblcol" ng-repeat="weekData in OprCtrl.couponCountException.weekData">   
-          <td data-th="Week" class="tblvalname">{{weekData.key}}</td>
-          <td data-th="Interface Exception">{{weekData.values[0][1]}}</td>
-          <td data-th="Live not processed">{{weekData.values[1][1]}}</td>
-          <td data-th="Transaction Exception">{{weekData.values[2][1]}}</td>                
+          <td class="tblvalname">{{weekData.key}}</td>
+          <td>{{weekData.values[0][1]}}</td>
+          <td>{{weekData.values[1][1]}}</td>
+          <td>{{weekData.values[2][1]}}</td>                
         </tr>
         </table>
         </div>   
@@ -112,14 +108,11 @@
             <div class="row" ng-hide="OprCtrl.couponCountException.stackedChart.length==0">
             <div class="col padding-horizontal">
                   <div class="col-demo">
-                      <div class="row">
-                        <div class="col col-80 no-padding pull-left graph-title">Day Data</div>
-                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','cc-exception-category')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.ccException=='chart'">
+                  <div class="no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','cc-exception-category')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.ccException=='chart'">
                       </i></div>
-                        </div>
-
                       <div class="row">
                         <div class="col no-padding pull-left graph-title ccException ccExceptionFlag" data-item-title="Day Data" data-item-flag="6" ng-show="OprCtrl.toggle.ccException=='chart'" data-item-pdfFlag="dynamicWH">
+                          Day Data
                           <chartevent type="coupon-count">
                           <nvd3-multi-bar-chart
                           data="OprCtrl.couponCountException.stackedChart.stackedBarchartItems"                         
@@ -137,17 +130,16 @@
                           </chartevent>
                         </div> 
             <table class="resptbl" ng-show="OprCtrl.toggle.ccException=='table'">
+            <th class="graph-title">Day Data</th>             
               <tr class="tblhder">
                 <th>Day</th>
                 <th ng-repeat="DayData in OprCtrl.couponCountException.stackedChart.stackedBarchartItems">{{DayData.key}}</th>
               </tr>
               <tr class="tblcol" ng-repeat="DayData in OprCtrl.couponCountException.stackedChart.stackedBarchartItems[0].values">   
-                <td data-th="Day">{{DayData[0]}}</td>
-
-                <td data-th="Interface exception">{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[0].values[$index][1]}}</td>
-                <td data-th="Proration Exception">{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[1].values[$index][1]}}</td>
-                <td data-th="Transaction Exceptions">{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[2].values[$index][1]}}</td>
-         
+                <td>{{DayData[0]}}</td>
+                <td>{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[0].values[$index][1]}}</td>
+                <td>{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[1].values[$index][1]}}</td>
+                <td>{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[2].values[$index][1]}}</td>            
               </tr>
               </table>
              

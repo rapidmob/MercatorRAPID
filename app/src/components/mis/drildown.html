@@ -28,7 +28,7 @@
               </div>
               <div class="col-33">
                  <ul class="pagination pagination-sm">
-                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length,MisCtrl.shownGroup)"> <a href="javascript:void(0);" ng-click="MisCtrl.setPage(MisCtrl.shownGroup, n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
+                  <li ng-repeat="n in MisCtrl.range(group.ItemsByPage.length,MisCtrl.shownGroup)"> <a href="#" ng-click="MisCtrl.setPage(MisCtrl.shownGroup, n)" ng-class="{'active': MisCtrl.currentPage[MisCtrl.shownGroup] ==n}" ng-bind="n+1">1</a>
 
                   </li>
               </ul>
