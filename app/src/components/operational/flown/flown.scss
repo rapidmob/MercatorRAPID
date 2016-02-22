@@ -1,34 +1,34 @@
 .tabbed-slidebox-padding{
-	@include padding-horizontal(7em, 7em);
+    @include padding-horizontal(7em, 7em);
 }
 .content-head{
 	.metric-modifier{
-			.icon-align:before{
-				font-size: 24px;
-				vertical-align: middle;
-			}
+		.icon-align:before{
+			font-size: 24px;
+			vertical-align: middle;
 		}
+	}
 }
 .chart_legend.expected:before {
-    border: 7px solid #7ED321;
+    border: 7px solid $chart-legend-one;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
 }
 .chart_legend.not-received:before {
-    border: 7px solid #4EB2F9;
+    border: 7px solid $chart-legend-two;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
 }
 .chart_legend.open:before {
-    border: 7px solid #FFC300;
+    border: 7px solid $chart-legend-three;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
 }
 .chart_legend.closed:before {
-    border: 7px solid #5C6BC0;
+    border: 7px solid $chart-legend-four;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
@@ -62,14 +62,17 @@
             margin-top: -8px;
         }*/
         .row{
+            .col-80{
             padding-top: 20px;
+            }
         }
-    }  
+    } 
+    
 }
 
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) { 
     .arrow-middle{
-        margin-top: 14%;
+        margin: 0px auto;
             .ion-chevron-right:before{
                 padding-left: 0px;
             }
@@ -81,22 +84,28 @@
     .four-bar {
         width: 327px;
         margin: -1em -3em 0 !important;
-    }    
+    }  
+    .four-bar-pop{
+        width: 360px;
+        margin: -1em -1em 0 !important; 
+    }  
     .monthdata-padding {
         padding: 0 7%;  
     }
+    .weekdata-popover-padding{
+        padding-left: 31px;
+    } 
 }
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) { 
     .arrow-middle{
         margin-top: 9%;
     }
-    .four-bar {
+    .four-bar, .four-bar-pop {
         width: 340px;
         margin: -28px auto 0 !important;
     }
     .tab-cust{
-        padding-left: 45px !important;
-        padding-right: 45px !important;
+        @include padding-horizontal(45px, 45px);
     }
     .monthdata-padding {
         padding: 0 17%;  
@@ -113,9 +122,13 @@
     width:340px;
     margin:0 auto;
 }
+.four-bar-pop{
+    width:354px;
+    margin:0 auto; 
+}
 .graph-title-2{
     font-size: 1.3em;
-    color: #5C5C5C;
+    color: $title-color;
     font-weight: bold;
     font-family: helvetica;
 }
@@ -129,7 +142,6 @@
     }
     .ion-chevron-right:before{
         font-size: 30px;
-        padding-left: 15px;
         opacity: 0.3 !important;
     }
     .disable-icon{
@@ -137,19 +149,18 @@
     }
 }
 .weekdata-popover-padding{
-        padding-left: 41px;
+    padding-left: 41px;
 }
-
 .three-bar, .four-bar{ 
-        svg{
-            text{
-            font-size: 14px !important;
-            }
+    svg{
+        text{
+        font-size: 14px !important;
         }
+    }
 }
 .bg-white{
     .row{
-        background-color: #ffffff !important;
+        background-color: $light !important;
     }
 }
 .no-margin-top{
@@ -157,13 +168,16 @@
 }
 #tab-drill .scroll{
     border: 0 !important;
+    box-shadow: none !important;
 }
 .drill-tab{
-    padding-left: 2.5em !important;
-    padding-right: 2.5em !important;
+    @include padding-horizontal(2.5em, 2.5em);
     padding-bottom: 3px !important;
     line-height: 0!important;
     font: 0.9em;  
+}
+.drill-tab-closed{ 
+    @include padding-horizontal(6em, 6em);
 }
 #tab-drill a.active{
     font: 0.9em !important;  
@@ -173,7 +187,6 @@
 }
 .tab-ion-slide{
     text-align: left !important;
-
 }
 @media only screen  and (min-width: 1025px) {
     .metric{
@@ -202,26 +215,33 @@
         }
     }
     .tab-cust{
-        padding-left: 7.5em !important;
-        padding-right: 7.5em !important;        
+        @include padding-horizontal(7.5em, 7.5em);      
     }
     .monthdata-padding {
-    padding: 0 30%;
-  }
+        padding: 0 30%;
+    }
 }
 
 .weekdata-zoom-perecent-margin {
     margin-top: -30px;
 }
 .weekdata-zoom-margin {
-    margin-left: 5%;
+     /*  margin-left: 5%; */
+   margin: 0px auto;
+   padding:0px;
 }
 
 .graph-title-bottom{
     font-size: 18px;
     text-transform: capitalize;
     font-weight: bold;
-    margin-top: -7px;
+    margin: 0;
+}
+.graph-title-percent{
+    font-size: 15px;
+    text-transform: capitalize;
+    font-weight: normal;
+    margin: 0;
 }
 .graph-margin-right{
     margin-right: -30px;
@@ -230,5 +250,95 @@
     font-size: 18px;
     text-transform: capitalize;
     font-weight:bold;
-    color: #5C5B5C;
+    color: $graph-title-bottom-color;
 }
+.graphpopover .popup-close
+{
+    padding: 0px 17px 0px 0px;
+    margin: 0px 0px 0px 15px;
+}
+ .opr-zoom, .mis-zoom
+ {
+    padding: 0px 15px;
+    margin: 0px -10px;
+}
+.opr-cont-height .col-demo
+{
+    min-height: 420px;
+}
+.fcReasonFlag, .ccExceptionFlag, .fpStatusFlag, .day-padding{ 
+    svg{
+        padding-left: 3em;
+    }
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 667px){
+    .arrow-middle{
+        padding-top: 50%;
+        .ion-chevron-left:before{
+            font-size: 30px;        
+            opacity: 0.3 !important;
+            margin-left: -20px;
+        }
+        .ion-chevron-right:before{
+            font-size: 30px;
+            opacity: 0.3 !important;
+            margin-right: -20px;
+        }
+        .disable-icon{
+            opacity: 0.2;
+        }
+    }
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 667px) and (orientation: portrait) { 
+    .weekdata-modifier {
+        .col-10 {
+            max-width: 30px;
+        }
+    }
+    .four-bar {
+        width: 250px;
+        svg{
+            margin-left: -40px;
+        }
+    }
+    .three-bar {
+        svg {
+            margin-left: -47px;
+        }
+    }
+    .arrow-middle{
+        padding-top: 50%;
+        .ion-chevron-left:before{
+            margin-left: 0 !important;
+        }
+        .ion-chevron-right:before{
+            margin-left: -35px;             
+        }
+    }
+    .graph-title-percent {
+        padding-right: 35px;
+        span {
+            padding-right: 0;
+        }
+    }
+    .chart_legend {
+        padding-left: 10px !important;
+        font-size: 12px !important; 
+
+    }
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 667px) and (orientation: landscape) { 
+    .four-bar {
+        svg{
+            margin-left: -72px;
+        }
+    }
+    .three-bar {
+        svg {
+            margin-left: -50px;
+        }
+    }
+}
+

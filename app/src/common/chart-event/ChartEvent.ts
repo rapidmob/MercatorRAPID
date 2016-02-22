@@ -11,7 +11,7 @@ class ChartEvent implements ng.IDirective {
 	link = ($scope: ng.IScope, iElement: JQuery, attributes: ng.IAttributes, $sce: ng.ISCEService): void => {
 		var self = this;
 		var nvd3
-		if(attributes.type == 'metric' || attributes.type == 'target'){
+		if(attributes.type == 'metric' || attributes.type == 'target' || attributes.type == 'passenger-count'){
 			nvd3 = iElement.find('nvd3')[0];
 		}
 		if(attributes.type == 'flight-process' || attributes.type == 'flight-count' || attributes.type == 'coupon-count'){
@@ -26,13 +26,20 @@ class ChartEvent implements ng.IDirective {
 		self.$timeout(
 			() => {
 				selectedElem.ready(function(e) {
+					var first: number;
+					selectedElem.on('mouseover touchend', function(event) {
+						if(!first){
+							self.appendClick(selectedElem, attributes, self);
+							first = 1;
+						}
+					});
+					/*
 					$scope.$watch(function() { return selectedElem.html();	 }, function(newValue, oldValue) {
 						if (newValue) {
 							//console.log(newValue);
 							self.appendClick(selectedElem, attributes, self);
 						}
-					}, true);
-					//var childElem: any = selectedElem.find('rect').parent('g');
+					}, true);*/
 					self.appendClick(selectedElem, attributes, self);
 				});
 			},
@@ -69,7 +76,7 @@ class ChartEvent implements ng.IDirective {
 						var time = (new Date()).getTime();
 						if (time - firstClickTime < dblClickInterval) {
 							var type = attributes.type;
-							if(attributes.type == 'metric' || attributes.type == 'target'){
+							if(attributes.type == 'metric' || attributes.type == 'target' || attributes.type == 'passenger-count'){
 								self.$rootScope.$broadcast('openDrillPopup', {"data" : rectElem[0]['__data__'], "type": type, "event": event}); 
 							}else{
 								console.log(rectElem);

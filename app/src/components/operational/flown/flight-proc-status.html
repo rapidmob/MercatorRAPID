@@ -1,16 +1,18 @@
-	<div class="row section-margin responsive-sm content-head">
+	<div class="row section-margin responsive-md responsive-sm content-head pass-dashboard">
               <div class="col col-67 padding-horizontal padding-vertical metric-modifier pull-left">FLIGHT PROCESSING STATUS <i class="icon ion-ios-information-outline padding-horizontal icon-align curs " ng-click = "OprCtrl.openinfoPopover($event, OprCtrl.flightProcSection)"></i></div>
-              <div class="col col-33">
+              <a href="#" ng-click="hideOptions= !hideOptions" class="hide-option">{{ hideOptions == true ? 'Hide Options' : 'Show Options' }}</a>
+              <div class="col col-33 op-dboard hide-options-margin" ng-class="{'hide-options' : !hideOptions}">
                 <div class="row btn-section responsive-sm">
-                <div class=" pull-right padding-horizontal download-btn"><button class="button export" ng-click="OprCtrl.runReport('fpStatus','FLIGHT PROCESSING STATUS',OprCtrl.header.flownMonth)"><img src="res/img/download.svg"></button></div>
-                <div class=" button-bar button-small button-energized padding-horizontal padding-right-zero">
+                <div class=" pull-right padding-horizontal download-btn"><button class="button export" ng-click="OprCtrl.runReport('fpStatus','FLIGHT PROCESSING STATUS',OprCtrl.header.flownMonth)"><img src="res/img/download.svg"></button>
+                <div class=" button-bar button-small padding-horizontal padding-right-zero two-buttons-only">
 					<a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleFlightStatusView('chart')" ng-class="{'button-custom-color': OprCtrl.toggle.flightStatus=='chart'}"><img src="res/img/graph.svg" /></a>
 					<a class="button button-modifier no-border button-inactive btn-padding-top" ng-click="OprCtrl.toggleFlightStatusView('table')" ng-class="{'button-custom-color': OprCtrl.toggle.flightStatus=='table'}"><img src="res/img/tabular.svg" /></a>
                 </div>
                 </div>
+                </div>
               </div>
             </div>
-            <div class="row no-padding" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+            <div class="row no-padding" ng-show="OprCtrl.toggle.flightStatus=='chart'" ng-class="{'hide-options' : !hideOptions}">
               <div class="col pull-right">
                 <div id="chart-legend-operation">
                   <div class="chart_legend closed">Closed</div>
@@ -21,14 +23,14 @@
               </div>
             </div>
             
-            <div class="row section-margin responsive-sm metric">
+            <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.flightStatus=='chart'}">
               <div ng-show="OprCtrl.flightProcStatus.pieChart !== undefined" class="col col-50 padding-horizontal">
                 <div class="col-demo">
                   <div class="row">
                     <div class="col col-90 no-padding pull-left graph-title">
                       Month Data
                     </div>
-                    <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'monthdata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+                    <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPiePopover($event,'monthdata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightStatus=='chart'">
                           </i></div>        
                   </div>
                   <div class="row">
@@ -65,7 +67,7 @@
 					  <div class="col no-padding pull-left graph-title">
 						Week Data
 					  </div>
-            <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+            <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightStatus=='chart'">
               </i></div>        
 					</div>
 					<div class="row">
@@ -83,13 +85,12 @@
 										  showYAxis="false"
 										  showValues="true"
 										  height="280"
-										  color="OprCtrl.fourBarColorFunction()"
-                              			  width="340">
+										  color="OprCtrl.fourBarColorFunction()">
 									  <svg></svg>
 									</nvd3-discrete-bar-chart>
 									<p class="graph-title-bottom">{{weekData.key}}</p>
 									</div>
-									<p class="pull-right">{{weekData.closedPercent}}</p>
+									<p class="pull-right graph-title-percent">{{weekData.closedPercent}}<br/><span class="graph-title-percent">Close%</span></p>
 								  </div>
 								  
 								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext()"><i ng-class="{'disable-icon': $last}" class="ion-chevron-right"></i></div>
@@ -106,8 +107,8 @@
 								<th>Closed</th>
 							</tr>
 							<tr class="tblcol" ng-repeat="weekData in OprCtrl.flightProcStatus.weekData">   
-								<td class="tblvalname">{{weekData.key}}</td>
-								<td ng-repeat="values in weekData.values">{{values[1]}}</td>
+								<td data-th="Week" class="tblvalname">{{weekData.key}}</td>
+								<td data-th="{{values[0]}}" ng-repeat="values in weekData.values">{{values[1]}}</td>
 							</tr>
 						  </table>
 					</div>   
@@ -117,11 +118,15 @@
             <div class="row" ng-hide="OprCtrl.flightProcStatus.stackedChart.length==0">
 				<div class="col padding-horizontal">
                   <div class="col-demo">
-                  <div class="no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs" ng-show="OprCtrl.toggle.flightStatus=='chart'">
-                      </i></div> 
+					<div class="row">
+                        <div class="col col-80 no-padding pull-left graph-title">Day Data</div>
+                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+                      </i></div>
+                        </div>
+
+
                       <div class="row">
-                        <div class="col no-padding pull-left graph-title fpStatus fpStatusFlag" data-item-title="Day Data" data-item-flag="6" ng-show="OprCtrl.toggle.flightStatus=='chart'" data-item-pdfFlag="dynamicWH">
-                          Day Data
+                        <div class="col no-padding pull-left graph-title fpStatus fpStatusFlag" data-item-title="Day Data" data-item-flag="6" data-item-pdfFlag="dynamicWH" ng-show="OprCtrl.toggle.flightStatus=='chart'">
                           <chartevent type="flight-process">
                           <nvd3-multi-bar-chart                         
                           data="OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems"                         
@@ -137,16 +142,17 @@
                           yAxisLabel="Open Flights Count">
                           <svg></svg></nvd3-multi-bar-chart>
                           </chartevent>
+                        </div>
                         </div>  
 						<table class="resptbl" ng-show="OprCtrl.toggle.flightStatus=='table'">
-						<th class="graph-title">Day Data</th>			
+						
 							<tr class="tblhder">
 								<th>Day</th>
 								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{DayData.key}}</th>
 							</tr>
 							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values">   
-								<td>{{DayData[0]}}</td>
-								<td ng-repeat="values in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>								
+								<td data-th="Day">{{DayData[0]}}</td>
+								<td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>		
 							</tr>
 						  </table>
 						  

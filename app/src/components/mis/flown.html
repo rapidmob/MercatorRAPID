@@ -23,8 +23,8 @@
       </div>
     </div>
   </ion-nav-title>
-  <div class="">
-    <div class="row border-bottom header-padding">
+  <div class="web-view" >
+    <div class="row header-padding">
       <div class="col col-20 no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].flowMonth}})</span></div>
       <div class="no-padding cust-font">(Expected: <span class="heade2-values">
       {{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].expectedCount}}</span></div>&nbsp;&nbsp;
@@ -39,6 +39,25 @@
         <label for="checkbox-1" class="checkbox-custom-label"></label>
         &nbsp;&nbsp;<span class="heade3-values">Surcharge</span></div>
     </div>
+  </div>
+  <div class="row mob-view">
+    <ion-scroll direction="x" class="tsb-hscroll">
+    <div class="row header-padding">
+      <div class="no-padding padding-horizontal cust-font">(Flight loaded upto: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].flowMonth}})</span></div>
+      <div class="no-padding cust-font">(Expected: <span class="heade2-values">
+      {{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].expectedCount}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">Processed: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].processedCount}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">Completed: <span class="heade2-values">{{MisCtrl.subHeader.paxFlownMisMonths[MisCtrl.header.headerIndex].completedCount}}</span>)</div>
+      
+      <div class="no-padding pull-right cust-font">(Currency: <span class="heade2-values">{{MisCtrl.subHeader.currency}}</span></div>&nbsp;&nbsp;
+      <div class="no-padding cust-font">PAX count: <span class="heade2-values">{{MisCtrl.subHeader.paxCount}}</span>)</div>
+    
+      <div class="no-padding pull-right margin-top-1">
+        <input id="checkbox-1" class="checkbox-custom checkbox-custom1" name="checkbox-1" type="checkbox" ng-model="MisCtrl.header.surcharge" ng-click="MisCtrl.toggleSurcharge()">
+        <label for="checkbox-1" class="checkbox-custom-label"></label>
+        &nbsp;&nbsp;<span class="heade3-values">Surcharge</span></div>
+    </div>
+    </ion-scroll>
   </div>
   <ion-content scroll="false" class="title-height">
     <tab-slide-box tab="0">
@@ -107,5 +126,7 @@
         </ion-slide>  
      </ion-slide-box>
     </tab-slide-box>
+	<div style="display:none" id="pdf-render"></div>
+	<canvas style="display:none" id="canvas"></canvas>
   </ion-content>
 </ion-view>

@@ -1,5 +1,12 @@
 /* common global styles */
-$item-bg : #ffffff;
+body{
+    font-family: $roboto_regular !important;
+    overflow: hidden;
+    overflow-x: hidden;
+    width: 100%;
+    height:100%;
+}
+
 .float-left {
 	float: left;
 }
@@ -24,6 +31,18 @@ $item-bg : #ffffff;
 .text-italic {
 	font-style: italic;
 }
+.pull-left{
+    text-align: left;
+}
+.pull-right{
+    text-align: right;
+}
+.no-margin{
+    margin: 0px !important;
+}
+.no-padding{
+    padding: 0px !important;
+}
 .show{
 	display: block;
 }
@@ -39,9 +58,10 @@ $item-bg : #ffffff;
 }
 .no-border{
 	border: none !important;
-
 }
-
+.border-bottom{
+	border-bottom: 1px solid $border-grey;
+}
 @mixin margin-all($value1, $value2, $value3, $value4) {
 	margin-top: $value1 !important;
 	margin-right: $value2 !important;
@@ -127,7 +147,34 @@ $primary-button-color-tr: rgba(245, 166,35, 0.7);
  .metric-modifier, .rev-modifier{
  	text{
  		stroke: none;
- 		font-size: 14px; 		
- 		fill: #5D5B56;
+ 		font-size: 14px;
+ 		fill: $metric-fill-color;
  	}
  }
+ $button-large-icon-size: 152px !default;
+
+.scroll {
+    height: 100%;
+}
+
+.hide-option {
+	float: right;
+	text-align: right;
+	margin-right: 10px;
+	font-size: 14px;
+    font-weight: normal;
+    text-decoration: none;
+    color: $fifth-text-color;
+    display: none;
+}
+.pull-left {
+	.hide-option {
+		margin-right: 0;
+	}
+}
+.hide-options {
+	display: block !important;
+}
+.hide-option {
+	margin-top: 9px;
+}

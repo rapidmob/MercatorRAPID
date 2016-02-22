@@ -6,7 +6,7 @@
         <div class="pas-head-title">Passenger Flown</div>
         <div class="pas-head-subtitle">Month:
           <label>
-          <select class="selectmonth">
+          <select class="selectmonth" ng-change="OprCtrl.updateHeader()" ng-model="OprCtrl.header.flownMonth">
              <option ng-repeat="month in OprCtrl.subHeader.paxFlownOprMonths.values" ng-selected="OprCtrl.selectedFlownMonth(month)" value="{{month}}">{{month}}</option>
           </select>
           <i class="icon ion-chevron-down move-left"></i></label>
@@ -23,7 +23,7 @@
       </div>
     </div>
   </ion-nav-title>
-  <div>
+  <div class="web-view">
     <div class="row border-bottom header-padding">
       <div class="col no-padding padding-horizontal cust-font" 
           ng-repeat="flightCnt in OprCtrl.subHeader.openFlightCount.values">
@@ -32,13 +32,26 @@
       </div>
     </div>
   </div>
+
+  <div class="row mob-view">
+      <ion-scroll direction="x" class="tsb-hscroll">
+      <div class="row header-padding">
+        <div class="padding-horizontal cust-font" 
+          ng-repeat="flightCnt in OprCtrl.subHeader.openFlightCount.values">
+          {{flightCnt.label}} 
+          <span class="heade2-values">{{flightCnt.value}} </span>
+      </div>
+      </div>
+      </ion-scroll>
+    </div>
+
   <ion-content>
     <tab-slide-box tab="0">
       <div class="tsb-icons no-margin">
           <div class="tsb-ic-wrp">
           <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
           <div class="no-padding">
-              <a href="" ng-click="OprCtrl.onSlideMove({'index' : $index})" class="tab text-center text-center tab-cust"  ng-repeat="tab in OprCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a></a>
+              <a href="" class="tab text-center text-center tab-cust"  ng-repeat="tab in OprCtrl.tabs" on-finish-render=""><span>{{tab.title}}</span></a></a>
             </div>
           </ion-scroll>
         </div>
@@ -73,5 +86,6 @@
         </ion-slide-box>
     </tab-slide-box>
     <h1>&nbsp;</h1><h1>&nbsp;</h1>
+  <canvas style="display:none" id="canvas"></canvas>
   </ion-content>
 </ion-view>
