@@ -17,7 +17,7 @@
           </ion-item>
           <ion-item class="item-accordion drilldown-content"
           ng-class="{'drilldown-content-active': MisCtrl.isGroupShown(group.id), 'drilldown-content-inactive': !MisCtrl.isGroupShown(group.id)}" ng-show="MisCtrl.isGroupShown(group.id)">
-            <div class="row " ng-if="group.items[0]">
+            <div class="row responsive-sm" ng-if="group.items[0]">
               <div class="col col-33 search-results">
                 Showing <span ng-if="!group.ItemsByPage[OprCtrl.currentPage[OprCtrl.shownGroup]].length">0</span>{{group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]].length}} out of {{group.items[0].length}} results
               </div>

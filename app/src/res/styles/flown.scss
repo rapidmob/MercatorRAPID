@@ -487,14 +487,21 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .padding-left-zero{
     @include padding-left(0px);
 }
+.web-view {
+    display: block;
+}
+.mob-view {
+    display: none; 
+}
 
 @media only screen  and (min-device-width: 768px) and (max-device-width: 1024px) {
-    .web-view {
-        display: block;
-    }
     .mob-view {
         display: none;
     }
+    .web-view {
+        display: block;
+    }
+    
         .content-head, .sector-head {
         .icon {
             &:before{
@@ -694,8 +701,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         display: block;
     }
     .mob-view {
-        display: block;
+        display: none; 
     }
+
     .rev-pie-modifier{
         @include padding-all(0px, 17%, 0px, 17%);
     }
@@ -1224,6 +1232,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
        background: $fifth-text-color; 
     }
 }
+
 .horizontal-bar-graph-segment:nth-child(2), .net-rev-bar-graph-segment:nth-child(2){
     .horizontal-bar-graph-value-bar, span{
        background: $hor-bar-span-two-bg; 
@@ -1231,6 +1240,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .net-rev-bar-graph-value-bar{
        background: $fifth-text-color; 
     }
+}
+.net-rev-bar-graph-segment:nth-child(2){
+    .net-rev-bar-graph-value-bar{
+       background: $legend-border-two; 
+    } 
 }
 .horizontal-bar-graph-segment:nth-child(3){
     .horizontal-bar-graph-value-bar, span{
@@ -1729,6 +1743,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .margin-top10 {
         margin-top:0 !important
     }
+    .drillpopover .scroll-content {
+        height: 56%;
+    }
+    .rev-pie-modifier svg {
+        height: 302px !important;
+    }
+    .net-revenue-monthly .col-demo {
+        min-height: 305px !important;
+    }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 667px) and (orientation: portrait) {
     .header-logo img {            
@@ -1777,9 +1800,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             max-width: 72%;
         }
     }
-    /* .download-btn {
-        max-width: 57%;
-    } */
+    .download-btn {
+        select {
+            max-width: 57%;
+        }
+    }
     .two-buttons-only {
         width: 65% !important;
         float: right;
@@ -1796,7 +1821,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
     .sector-car-analysis {
         .export {
-            margin-left: 65%;
+            margin-left: 60%;
         }
         .button-bar {
             width: 80%;
@@ -1822,7 +1847,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
     .has-header {
         top: 60px !important;
-    }
+    }  
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 667px){
     .col-demo{
@@ -1875,8 +1900,22 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         width: 50% !important;
         margin-top: 10px;
     }
-    .route-rev-padding-top .border-right {
-        border-right: 0;
-        border-bottom: 1px solid $border-grey;
+    .route-rev-padding-top .col-33 {
+        /* border-right: 0;
+        border-bottom: 1px solid $border-grey; */
+        max-width: 32%;
+    }
+    .download-btn {
+        select {
+            min-width: 80px;
+        }
+    }
+    .horizontal-bar-graph-segment{
+        button{
+            margin-left: 10px;
+        }
+    }
+    .metric-modifier text, .rev-modifier text {
+        font-size: 8px;
     }
 }

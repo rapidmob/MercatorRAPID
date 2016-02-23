@@ -24,7 +24,7 @@
             </div>
             
             <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.flightStatus=='chart'}">
-              <div ng-show="OprCtrl.flightProcStatus.pieChart !== undefined" class="col col-50 padding-horizontal">
+              <div ng-hide="OprCtrl.flightProcStatus.pieChart.length==0" class="col col-50 padding-horizontal">
                 <div class="col-demo">
                   <div class="row">
                     <div class="col col-90 no-padding pull-left graph-title">
@@ -62,7 +62,7 @@
                 </div>
               </div>
 				<div class="col col-50 padding-horizontal">
-				  <div class="col-demo">
+				  <div class="col-demo" ng-hide="OprCtrl.flightProcStatus.weekData.length==0">
 					<div class="row">
 					  <div class="col no-padding pull-left graph-title">
 						Week Data
