@@ -15,7 +15,7 @@ class LoginController {
 				disableBack: true
 			});
 			console.log('navgating to mis-flown..');
-			this.$state.go('app.mis-flown');
+			this.$state.go(this.userService.defaultPage);
 		}
 	}
 
@@ -44,7 +44,7 @@ class LoginController {
 								this.$ionicHistory.nextViewOptions({
 									disableBack: true
 								}); 
-								this.$state.go("app.mis-flown");
+								this.$state.go(this.userService.defaultPage);
 							},
 							(error) => {
 								console.log('an error occured on loading user profile');

@@ -240,7 +240,6 @@ class MisController{
 
     onSlideMove(data: any) {
         this.header.tabIndex = data.index;
-		this.toggle.chartOrTable = "chart";
         switch(this.header.tabIndex){
             case 0:
             this.getFlownFavorites();
@@ -958,17 +957,21 @@ class MisController{
     isGroupShown(group: number) {
         return this.shownGroup == group;
     }
-	toggleChartOrTableView(val: string) {
+    toggleChartOrTableView(val: string) {
         this.toggle.chartOrTable = val;
+        this.onSlideMove({ index: this.header.tabIndex });
     }
     toggleTargetView(val: string) {
         this.toggle.targetView = val;
+        this.onSlideMove({ index: this.header.tabIndex });
     }
     toggleRevenueView(val: string) {
         this.toggle.revenueView = val;
+        this.onSlideMove({ index: this.header.tabIndex });
     }
     toggleSectorView(val: string) {
         this.toggle.sectorView = val;
+        this.onSlideMove({ index: this.header.tabIndex });
     }
 	runReport(chartTitle: string,monthOrYear: string,flownMonth: string){
 		var that = this;

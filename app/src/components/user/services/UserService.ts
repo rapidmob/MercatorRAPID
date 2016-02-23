@@ -7,6 +7,7 @@ class UserService {
 	public userProfile: any;
 	public _user: boolean = false;
 	private menuAccess = [];
+	private defaultPage: string;
 	constructor(private dataProviderService: DataProviderService, private $q: ng.IQService, private localStorageService: LocalStorageService, private $window: ng.IWindowService) {
 
 	}
@@ -72,6 +73,7 @@ class UserService {
 				if (typeof response.data === 'object') {
 					this.userProfile = response.data.response.data;
 					this.localStorageService.setObject('userPermissionMenu', this.userProfile.menuAccess);
+					this.getDefaultPage();
 					def.resolve(response.data);
 				} else {
 					def.reject(response.data);
@@ -99,6 +101,19 @@ class UserService {
 			}
 		} else {
 			return this.isUserLoggedIn();
+		}
+	}
+
+	getDefaultPage() {
+		switch(this.userProfile.userInfo.defaultPage){
+			case 'MIS - Passenger Flown':
+				this.defaultPage = 'app.mis-flown';
+				break;
+			case 'Operational - Passenger Flown':
+				this.defaultPage = 'app.operational-flown';
+				break;
+			default:
+				this.defaultPage = 'app.mis-flown';
 		}
 	}
 }

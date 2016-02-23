@@ -180,7 +180,6 @@ class OperationalFlownController {
 
   onSlideMove(data: any) {
     this.header.tabIndex = data.index;
-    this.toggle.chartOrTable = "chart";
     switch (this.header.tabIndex) {
       case 0:
         this.callMyDashboard();
@@ -457,10 +456,6 @@ class OperationalFlownController {
   ionicLoadingHide() {
     this.$ionicLoading.hide();
   };
-  lockSlide() {
-    console.log('in lockSlide mehtod..');
-    this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').enableSlide(false);
-  };
   tabLockSlide(tabname: string) {
     this.$ionicSlideBoxDelegate.$getByHandle(tabname).enableSlide(false);
   }
@@ -472,6 +467,7 @@ class OperationalFlownController {
   }
   toggleFlightStatusView(val: string) {
     this.toggle.flightStatus = val;
+    this.onSlideMove({ index: this.header.tabIndex });
   }
   toggleFlightReasonView(val: string) {
     this.toggle.flightReason = val;
@@ -480,6 +476,7 @@ class OperationalFlownController {
   }
   toggleCCExceptionView(val: string) {
     this.toggle.ccException = val;
+    this.onSlideMove({ index: this.header.tabIndex });
   }   
   runReport(chartTitle: string, monthOrYear: string, flownMonth: string) {
     var that = this;

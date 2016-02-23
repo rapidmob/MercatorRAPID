@@ -901,6 +901,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     /* @include padding-all(0px, 15px, 0px, 15px); */ 
     /* @include margin-all(0px, -10px, 0px, -10px); */
     position: absolute;
+    right: 0;
 }
 .ion-close:before {
     position:relative;
@@ -933,6 +934,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .popup-close{
     text-align: right;
     cursor: pointer;
+    position: absolute;
+    right: 0;
 }
 .drilldown-head{
     @include padding-all(10px, 5px, 10px, 5px);
