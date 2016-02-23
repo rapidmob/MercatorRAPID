@@ -1,0 +1,26 @@
+<ion-popover-view class="drillpopover">
+  <ion-content class="padding">
+    <div class="row ">
+      <div class="col col-90 drill-page-title">{{OprCtrl.drillName}}</div>
+      <div class="col col-10 popup-close icon-larger ion-close"  ng-click="OprCtrl.closeDrillPopover()"></div>
+    </div>
+    <ion-list class="row col margin-top-10">
+      <div ng-repeat="group in OprCtrl.groups track by $index">
+        <ion-item class="item-stable main-title drilldown-head"
+                    ng-click="OprCtrl.toggleGroup(group.id)"
+                    ng-class="{active: OprCtrl.isGroupShown(group.id)}"> <i class="icon float-right accord-icon" ng-class="OprCtrl.isGroupShown(group.id) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i> &nbsp;
+          {{group.name}}  
+          <span ng-if="OprCtrl.selectedDrill[($index)]"> :: {{OprCtrl.selectedDrill[($index)][OprCtrl.groups[($index)].firstColumns]}}<span ng-if="OprCtrl.groups[($index)].firstColumns == 'countryFrom'"> - {{OprCtrl.selectedDrill[($index)].countryTo}} </span> </span></ion-item>
+        <ion-item class="item-accordion drilldown-content"
+          ng-class="{'drilldown-content-active': OprCtrl.isGroupShown(group.id), 'drilldown-content-inactive': !OprCtrl.isGroupShown(group.id)}" ng-show="OprCtrl.isGroupShown(group.id)">
+          <div ng-if="(OprCtrl.drillType == 'coupon-count' && OprCtrl.shownGroup == 0)"  ng-include="'components/operational/flown/coupon-tab-drill.html'"></div>
+          <div ng-if="(OprCtrl.drillType == 'coupon-count' && OprCtrl.shownGroup != 0)"  ng-include="'components/operational/flown/drill-list.html'"></div>
+          <div ng-if="OprCtrl.drillType != 'coupon-count' && OprCtrl.drillType != 'flight-count'"  ng-include="'components/operational/flown/drill-list.html'"></div>
+          <div ng-if="(OprCtrl.drillType == 'flight-count' && OprCtrl.shownGroup == 0)"  ng-include="'components/operational/flown/flight-tab-drill.html'"></div>
+          <div ng-if="(OprCtrl.drillType == 'flight-count' && OprCtrl.shownGroup != 0)"  ng-include="'components/operational/flown/drill-list.html'"></div>
+
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-popover-view>

@@ -1,0 +1,56 @@
+<ion-view hide-nav-bar="true" cache-view="false">
+  <ion-content class="login-bg">
+
+        <div class="login-topmargin" >
+        <div>
+        
+          <center><img ng-src="res/img/logo.png" alt="" ></center>
+          <center class="login-subtitle">RAPID DASHBOARD VERSION 1.0</center>
+              <form autocomplete="off" name="loginForm" class="list" ng-submit="LoginCtrl.doLogin(loginForm.$invalid)" novalidate>
+                <div class="row invalidErrorMessage" ng-show="LoginCtrl.invalidMessage">
+                    <div class="col">
+                    <i class="icon ion-alert-circled"></i>
+                    <span class="col-center visible invalidError-text ng-binding">&nbsp;{{LoginCtrl.eroormessage}}</span>
+                    </div>
+                </div>
+                  <div class="item item-input row newitem username-bottom">
+                      <span class=""><img ng-src="res/img/icon-username.svg" alt="" ></span>
+                      <input type="text" name="username" ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="Username" ng-model="LoginCtrl.username" required>
+                      <div ng-click="LoginCtrl.username = null" ng-show="!loginForm.username.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
+                  </div>       
+                  <span ng-show="(loginForm.username.$dirty && loginForm.username.$error.required && !LoginCtrl.invalidMessage) || (loginForm.username.$pristine && loginForm.$submitted)" class="help-block errorspan ng-binding">Username is required</span>
+                  <div class="item newitem item-input row  username-bottom">
+                      <span class=""><img ng-src="res/img/icon-password.svg" alt="" ></span>
+                      <input type="password"name="password" ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="Password" ng-model="LoginCtrl.password" required>
+                      <div ng-click="LoginCtrl.password = null" ng-show="!loginForm.password.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
+                  </div>      
+                  <span ng-show="(loginForm.password.$dirty && loginForm.password.$error.required && !LoginCtrl.invalidMessage) || (loginForm.password.$pristine && loginForm.$submitted)" class="help-block errorspan ng-binding">Password is required</span>
+                  <!-- <div class="item newitem item-input row">
+                      
+                      <input type="text" name="ipaddress"  class="login-input" placeholder="IP Address" ng-model="loginData.ipaddress" required>
+                      <div ng-click="loginData.password = null" ng-show="!loginForm.password.$error.required"><i class="icon ion-close placeholder-icon"></i></div>
+                  </div>  -->
+				  <div class="item newitem item-input row">                      
+                      <input type="text" name="ipaddress"  ng-focus="LoginCtrl.clearError()" class="login-input" placeholder="10.91.152.99:8082" ng-model="LoginCtrl.ipaddress">
+                      <div ng-click="LoginCtrl.ipaddress = null" ng-show="LoginCtrl.ipaddress"><i class="icon ion-close placeholder-icon"></i></div>
+                  </div>
+                  <div class="spacer" style="width: 300px; height: 50px;"></div>
+                <center> <button class="button button-custom-color login-btn-width" type="submit">Login</button>
+                <br/>   
+                <div class="row checkbox-wrap login-padding">
+                  <div class="col">   
+                    <input class="checkbox-custom" name="login-checkbox" type="checkbox">
+                    <label for="login-checkbox" class="checkbox-custom-label"></label>
+                      Keep me logged in
+                  </div>
+                  <div class="col">Trouble logging in?</div>
+                </div>
+                </center>
+              </form>
+              </div>
+              
+        </div>
+        <div class="row padding-horizontal custom-footer login-padding"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
+  </ion-content>
+</ion-view>
+
