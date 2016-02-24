@@ -156,15 +156,15 @@
                 </div>
                 <div ng-show="OprCtrl.graphType == 'flight-count-reason'">
                  <div ng-show="OprCtrl.toggle.openOrClosed=='OPEN'" ng-repeat = "legend in OprCtrl.flightReasonLegends.open">
-                  <div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
                  </div>
                 <div ng-show="OprCtrl.toggle.openOrClosed=='CLOSED'" ng-repeat = "legend in OprCtrl.flightReasonLegends.closed">
-                  <div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
                  </div>
                 </div>
                 <div  ng-show="OprCtrl.graphType == 'cc-exception-category'">
                    <div  ng-repeat="legend in OprCtrl.flightCouponLegends">
-                    <div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>
+                    <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
                                   
                   </div>
                 </div>
