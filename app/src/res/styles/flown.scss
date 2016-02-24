@@ -1557,7 +1557,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     top: 44px !important;
 }
 .platform-ios.platform-cordova:not(.fullscreen) .has-header, .platform-ios.platform-cordova:not(.fullscreen) .bar-subheader {
-    top: 34px !important;
+    top: 37px !important;
 }
 .platform-ios.platform-cordova:not(.fullscreen) .has-header-menu, .platform-ios.platform-cordova:not(.fullscreen) .bar-subheader {
     top: 54px !important;
@@ -1631,8 +1631,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 @media screen 
-  and (device-width: 375px) 
-  and (device-height: 627px) 
+  and (min-device-width: 375px) 
+  and (max-device-width: 627px) 
   and (orientation: portrait) {
     .two-buttons-only {
         padding-left: 50% !important;
@@ -1643,6 +1643,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .hide-options {
         display: none !important;
     }
+    .mob-view {
+        display: block !important;
+
+        .cust-font, .margin-top-1{
+            display: inline-block !important;
+        }
+        .header-padding{
+            padding-top: 5px;
+        }
+    } 
 }
 @media only screen 
   and (min-device-width: 375px) 
@@ -1653,6 +1663,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
     .mob-view {
         display: block !important;
+
+        .cust-font, .margin-top-1{
+            display: inline-block !important;
+        }
+        .header-padding{
+            padding-top: 5px;
+        }
     } 
 }
 

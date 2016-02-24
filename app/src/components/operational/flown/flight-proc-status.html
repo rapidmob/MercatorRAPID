@@ -14,15 +14,13 @@
             </div>
             <div class="row no-padding" ng-show="OprCtrl.toggle.flightStatus=='chart'" ng-class="{'hide-options' : !hideOptions}">
               <div class="col pull-right">
-                <div id="chart-legend-operation">
-                  <div class="chart_legend closed">Closed</div>
-                  <div class="chart_legend open">Open</div>
-                  <div class="chart_legend not-received">Not Received</div>
-                  <div class="chart_legend expected">Expected</div>
+              <div class="pull-right">
+                <div  ng-repeat="legend in OprCtrl.flightProcLegends" class="legendcolor">
+                  <div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>
+               </div>                
                 </div>
               </div>
-            </div>
-            
+            </div>            
             <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.flightStatus=='chart'}">
               <div ng-hide="OprCtrl.flightProcStatus.pieChart.length==0" class="col col-50 padding-horizontal">
                 <div class="col-demo">
@@ -61,8 +59,8 @@
                   </div>   
                 </div>
               </div>
-				<div class="col col-50 padding-horizontal">
-				  <div class="col-demo" ng-hide="OprCtrl.flightProcStatus.weekData.length==0">
+				<div class="col col-50 padding-horizontal" ng-show="OprCtrl.flightProcStatus.weekData.length>0">
+				  <div class="col-demo">
 					<div class="row">
 					  <div class="col no-padding pull-left graph-title">
 						Week Data
@@ -115,7 +113,8 @@
 				  </div>
 				</div>
               </div>
-            <div class="row" ng-hide="OprCtrl.flightProcStatus.stackedChart.length==0">
+            <div class="row" ng-if="OprCtrl.flightProcStatus.stackedChart.length==0"></div>
+            <div class="row" ng-if="OprCtrl.flightProcStatus.stackedChart.length">
 				<div class="col padding-horizontal">
                   <div class="col-demo">
 					<div class="row">
@@ -124,12 +123,11 @@
                       </i></div>
                         </div>
 
-
                       <div class="row">
                         <div class="col no-padding pull-left graph-title fpStatus fpStatusFlag" data-item-title="Day Data" data-item-flag="6" data-item-pdfFlag="dynamicWH" ng-show="OprCtrl.toggle.flightStatus=='chart'">
                           <chartevent type="flight-process">
                           <nvd3-multi-bar-chart                         
-                          data="OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems"                         
+                          data="OprCtrl.flightProcStatus.stackedChart"                         
                           showXAxis="true"
                           showYAxis="true"
                           height="300"
@@ -139,7 +137,8 @@
                           interactive="true"
                           useInteractiveGuideline="true"
                           xAxisLabel="Day" 
-                          yAxisLabel="Open Flights Count">
+                          yAxisLabel="Open Flights Count"
+                          color="OprCtrl.fourBarColorFunction()">
                           <svg></svg></nvd3-multi-bar-chart>
                           </chartevent>
                         </div>
@@ -148,11 +147,11 @@
 						
 							<tr class="tblhder">
 								<th>Day</th>
-								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{DayData.key}}</th>
+								<th ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart">{{DayData.key}}</th>
 							</tr>
-							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems[0].values">   
+							<tr class="tblcol" ng-repeat="DayData in OprCtrl.flightProcStatus.stackedChart[0].values">   
 								<td data-th="Day">{{DayData[0]}}</td>
-								<td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightProcStatus.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>		
+								<td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightProcStatus.stackedChart">{{values.values[$parent.$index][1]}}</td>		
 							</tr>
 						  </table>
 						  

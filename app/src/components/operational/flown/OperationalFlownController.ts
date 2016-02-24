@@ -61,8 +61,10 @@ class OperationalFlownController {
   private drillName: string;
   private firstColumns: string[];
   private drillpopover: Ionic.IPopover;
-
-  private flightCountLegends: any;
+  
+  private flightProcLegends: any;
+  private flightReasonLegends: any;
+  private flightCouponLegends: any;
 
   constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
     private $ionicLoading: Ionic.ILoading,
@@ -140,9 +142,7 @@ class OperationalFlownController {
       this.operationalService.getPaxFlownOprHeader(req).then(
         (data) => {
           that.subHeader = data.response.data;
-          // console.log(that.subHeader.paxFlownOprMonths);
           that.header.flownMonth = that.subHeader.defaultMonth;
-          // console.log(that.header.flownMonth);
           that.onSlideMove({ index: 0 });
         },
         (error) => {
@@ -176,7 +176,6 @@ class OperationalFlownController {
     var flownMonth = this.header.flownMonth;
     this.onSlideMove({ index: this.header.tabIndex });
   }
-
 
   onSlideMove(data: any) {
     this.header.tabIndex = data.index;
@@ -213,40 +212,22 @@ class OperationalFlownController {
     this.operationalService.getOprFlightProcStatus(reqdata)
       .then(function(data) {
 		if(data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')){		  
-			var otherChartColors = [{ "color": that.GRAPH_COLORS.FOUR_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[1] },
-			  { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[2] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[3] }];
-			var pieChartColors = [{ "color": that.GRAPH_COLORS.THREE_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[1] }, { "color": that.GRAPH_COLORS.THREE_BARS_CHART[2] }];
-         
-      var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+			var jsonObj = that.applyChartColorCodes(data.response.data);
 			that.flightProcSection = jsonObj.sectionName;
-			var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
-			  if (u) return u.favoriteInd == 'Y';
-			});
-			var multiCharts = _.filter(jsonObj.multibarCharts, function(u: any) {
-			  if (u) return u.favoriteInd == 'Y';
-			});
-			var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
-			  if (u) return u.favoriteInd == 'Y';
-			});          
-			// console.log(stackCharts);
-			if (that.header.tabIndex == 0) {
-			  that.flightProcStatus = {
-				pieChart: (pieCharts) ? pieCharts[0] : [],
-        weekData: (multiCharts.length) ? multiCharts[0].multibarChartItems : [],
-				stackedChart: (stackCharts.length) ? stackCharts[0] : []
-			  }
+      that.flightProcLegends = data.response.data.legends.values;
+      console.log(that.flightProcLegends);
+      if (that.header.tabIndex == 0) {
+        that.flightProcStatus = that.getFavoriteItems(jsonObj);
 			} else {
-			  that.flightProcStatus = {
-				pieChart: jsonObj.pieCharts[0],
-				weekData: jsonObj.multibarCharts[0].multibarChartItems,
-				stackedChart: jsonObj.stackedBarCharts[0]
-			  }
+        that.flightProcStatus = {
+          pieChart: jsonObj.pieCharts[0],
+          weekData: jsonObj.multibarCharts[0].multibarChartItems,
+          stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
+        }
 			}
-      console.log(that.flightProcStatus);
 			that.$timeout(function() {
 			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
 			}, 0);
-			// console.log(JSON.stringify(that.flightProcStatus.weekData));
 			that.ionicLoadingHide();
 		}else{
 			that.ionicLoadingHide();
@@ -274,12 +255,8 @@ class OperationalFlownController {
       .then(function(data) {
       if (data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')) {	
 			// console.log(jsonObj.pieCharts[0]);
-			var otherChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_OTH_COLORS1[2] }];
-			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
-
-			that.flightCountLegends = data.response.data.legends;
-         
-              	var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+      that.flightReasonLegends = data.response.data.legends;
+      var jsonObj = that.applyChartColorCodes(data.response.data);
 			that.flightCountSection = jsonObj.sectionName;
 			if (that.header.tabIndex == 0) {
 			  that.flightCountReason = that.getFavoriteItems(jsonObj);
@@ -287,7 +264,7 @@ class OperationalFlownController {
 			  that.flightCountReason = {
 				pieChart: jsonObj.pieCharts[0],
 				weekData: jsonObj.multibarCharts[0].multibarChartItems,
-				stackedChart: jsonObj.stackedBarCharts[0]
+        stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
 			  }
 			}
 
@@ -322,18 +299,16 @@ class OperationalFlownController {
     this.operationalService.getOprCouponCountByException(reqdata)
       .then(function(data) {
       if (data.response.status === "success" && data.response.data.hasOwnProperty('sectionName')) {
-      var otherChartColors = [{ "color": that.GRAPH_COLORS.FOUR_BARS_CHART[0] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[1] },
-        { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[2] }, { "color": that.GRAPH_COLORS.FOUR_BARS_CHART[3] }];
-			var pieChartColors = [{ "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }, { "color": that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[2] }];
-        	var jsonObj = that.applyChartColorCodes(data.response.data, pieChartColors, otherChartColors);
+			var jsonObj = that.applyChartColorCodes(data.response.data);
 			that.couponCountSection = jsonObj.sectionName;
-			if (that.header.tabIndex == 0) {
+         that.flightCouponLegends = data.response.data.legends.values;
+        	if (that.header.tabIndex == 0) {
 			  that.couponCountException = that.getFavoriteItems(jsonObj);
 			} else {
 			  that.couponCountException = {
 				pieChart: jsonObj.pieCharts[0],
 				weekData: jsonObj.multibarCharts[0].multibarChartItems,
-				stackedChart: jsonObj.stackedBarCharts[0]
+        stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
 			  }
 			}
 			that.$timeout(function() {
@@ -391,21 +366,16 @@ class OperationalFlownController {
       template: '<ion-spinner class="spinner-calm"></ion-spinner>'
     });
   };
-  applyChartColorCodes(jsonObj: any, pieChartColors: any, otherChartColors: any) {
+  applyChartColorCodes(jsonObj: any) {
+    var that = this;
     _.forEach(jsonObj.pieCharts[0].data, function(n: any, value: any) {
       n.label = n.xval;
       n.value = n.yval;
+      n.color = that.GRAPH_COLORS.DB_TWO_PIE_COLORS1[value]
+      console.log(value);
     });
-    _.merge(jsonObj.pieCharts[0].data, pieChartColors);
-    _.merge(jsonObj.multibarCharts[0].multibarChartItems, otherChartColors);	
-	if(jsonObj.stackedBarCharts[0].stackedBarchartItems.length >= 3){
-		_.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, otherChartColors);
-	}else{
-		var tempColors = [{ "color": this.GRAPH_COLORS.DB_TWO_PIE_COLORS1[0] }, { "color": this.GRAPH_COLORS.DB_TWO_PIE_COLORS1[1] }];
-		_.merge(jsonObj.stackedBarCharts[0].stackedBarchartItems, tempColors);
-	}
+   // _.merge(jsonObj.pieCharts[0].data, this.GRAPH_COLORS.DB_TWO_PIE_COLORS1); 
     return jsonObj;
-
   }
   getFavoriteItems(jsonObj: any) {
     var pieCharts = _.filter(jsonObj.pieCharts, function(u: any) {
@@ -417,10 +387,12 @@ class OperationalFlownController {
     var stackCharts = _.filter(jsonObj.stackedBarCharts, function(u: any) {
       if (u) return u.favoriteInd == 'Y';
     });
+    // console.log(jsonObj);
+    // console.log(multiCharts[0]);
     return {
       pieChart: pieCharts[0],
-      weekData: (multiCharts.length) ? multiCharts.multibarCharts[0].multibarChartItems : [],
-      stackedChart: (stackCharts.length) ? stackCharts[0] : []
+      weekData: (multiCharts.length) ? multiCharts[0].multibarChartItems : [],
+      stackedChart: (stackCharts.length) ? stackCharts[0].stackedBarchartItems : []
     }
   }
 
@@ -434,18 +406,6 @@ class OperationalFlownController {
     var that = this;
     return function(d, i) {
       return that.fourBarChartColors[i];
-    };
-  }
-  barColorFunction(e) {
-    var that = this;
-    console.log(e);
-    if (e > 3) {
-      var tempArr: [] = that.fourBarChartColors;
-    } else {
-      var tempArr: [] = that.threeBarChartColors;
-    }
-    return function(d, i) {
-      return tempArr[i];
     };
   }
   openinfoPopover($event, index) {

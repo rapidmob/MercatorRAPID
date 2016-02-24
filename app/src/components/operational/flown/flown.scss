@@ -9,25 +9,25 @@
 		}
 	}
 }
-.chart_legend.expected:before {
+.chart_legend.fp-legend-0:before {
     border: 7px solid $chart-legend-one;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
 }
-.chart_legend.not-received:before {
+.chart_legend.fp-legend-1:before {
     border: 7px solid $chart-legend-two;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
 }
-.chart_legend.open:before {
+.chart_legend.fp-legend-2:before {
     border: 7px solid $chart-legend-three;
     display: inline-block;
     vertical-align: middle;
     margin-top: -2px;
 }
-.chart_legend.closed:before {
+.chart_legend.fp-legend-3:before {
     border: 7px solid $chart-legend-four;
     display: inline-block;
     vertical-align: middle;
@@ -341,4 +341,7 @@
         }
     }
 }
-
+.legendcolor
+{
+    display: inline-block;
+}

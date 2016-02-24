@@ -15,12 +15,10 @@
                 </div>
               </div>
             </div>
-            <div class="row no-padding" ng-show="OprCtrl.toggle.ccException=='chart'" ng-class="{'hide' : !hideOptions}">
+            <div class="row no-padding" ng-show="OprCtrl.toggle.ccException=='chart'" ng-class="{'hide-options' : !hideOptions}">
               <div class="col pull-right">
-                <div id="chart-legend-operation">
-                  <div class="chart_legend closed">Transactional Exception</div>
-                  <div class="chart_legend open">Proration Exception</div>
-                  <div class="chart_legend not-received">Interface Exception</div>
+                <div  ng-repeat="legend in OprCtrl.flightCouponLegends" class="legendcolor">
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>                
                 </div>
               </div>
             </div>
@@ -77,7 +75,7 @@
                               showXAxis="false"
                               showYAxis="false"
                               showValues="true"
-                              color="OprCtrl.fourBarColorFunction()"
+                              color="OprCtrl.colorFunction()"
                               height="280"
                               width="300">
                           <svg></svg>
@@ -109,7 +107,8 @@
       </div>
     </div>
               </div>
-            <div class="row" ng-hide="OprCtrl.couponCountException.stackedChart.length==0">
+            <div class="row" ng-if="OprCtrl.couponCountException.stackedChart.length==0"></div>
+            <div class="row" ng-if="OprCtrl.couponCountException.stackedChart.length">
             <div class="col padding-horizontal">
                   <div class="col-demo">
                       <div class="row">
@@ -122,7 +121,7 @@
                         <div class="col no-padding pull-left graph-title ccException ccExceptionFlag" data-item-title="Day Data" data-item-flag="6" ng-show="OprCtrl.toggle.ccException=='chart'" data-item-pdfFlag="dynamicWH">
                           <chartevent type="coupon-count">
                           <nvd3-multi-bar-chart
-                          data="OprCtrl.couponCountException.stackedChart.stackedBarchartItems"                         
+                          data="OprCtrl.couponCountException.stackedChart"                         
                           showXAxis="true"
                           showYAxis="true"
                           height="300"
@@ -133,20 +132,21 @@
                           useInteractiveGuideline="true"
                           xAxisLabel="Day" 
                           yAxisLabel="Open Flights Count"
+                          color="OprCtrl.colorFunction()"
                           <svg></svg></nvd3-multi-bar-chart>
                           </chartevent>
                         </div> 
             <table class="resptbl" ng-show="OprCtrl.toggle.ccException=='table'">
               <tr class="tblhder">
                 <th>Day</th>
-                <th ng-repeat="DayData in OprCtrl.couponCountException.stackedChart.stackedBarchartItems">{{DayData.key}}</th>
+                <th ng-repeat="DayData in OprCtrl.couponCountException.stackedChart">{{DayData.key}}</th>
               </tr>
-              <tr class="tblcol" ng-repeat="DayData in OprCtrl.couponCountException.stackedChart.stackedBarchartItems[0].values">   
+              <tr class="tblcol" ng-repeat="DayData in OprCtrl.couponCountException.stackedChart[0].values">   
                 <td data-th="Day">{{DayData[0]}}</td>
 
-                <td data-th="Interface exception">{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[0].values[$index][1]}}</td>
-                <td data-th="Proration Exception">{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[1].values[$index][1]}}</td>
-                <td data-th="Transaction Exceptions">{{OprCtrl.couponCountException.stackedChart.stackedBarchartItems[2].values[$index][1]}}</td>
+                <td data-th="Interface exception">{{OprCtrl.couponCountException.stackedChart[0].values[$index][1]}}</td>
+                <td data-th="Proration Exception">{{OprCtrl.couponCountException.stackedChart[1].values[$index][1]}}</td>
+                <td data-th="Transaction Exceptions">{{OprCtrl.couponCountException.stackedChart[2].values[$index][1]}}</td>
          
               </tr>
               </table>

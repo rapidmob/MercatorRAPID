@@ -24,27 +24,23 @@
                 </div>
                 <div class="col col-80 pull-right">
                 <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'flight-proc-status'">
-                  <div class="chart_legend expected">Expected</div>
-                  <div class="chart_legend not-received">Not Received</div>
-                  <div class="chart_legend open">Open</div>
-                  <div class="chart_legend closed">Closed</div>
+                  <div  ng-repeat="legend in OprCtrl.flightProcLegends">
+                  <div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>                
+                </div>
                 </div>
                 <div ng-show="OprCtrl.graphType == 'flight-count-reason'">
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'OPEN'">
-                  <div class="chart_legend not-received">Interface</div>
-                  <div class="chart_legend open">Live not Processed</div>
-                  <div class="chart_legend closed">Processed with Exception</div>
-                </div>
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed == 'CLOSED'">                  
-                  <div class="chart_legend not-received">Balanced</div>
-                  <div class="chart_legend open">Un-balanced</div>                  
-                </div>
+                <div ng-show="OprCtrl.toggle.openOrClosed=='OPEN'" ng-repeat = "legend in OprCtrl.flightReasonLegends.open">
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
+                 </div>
+                <div ng-show="OprCtrl.toggle.openOrClosed=='CLOSED'" ng-repeat = "legend in OprCtrl.flightReasonLegends.closed">
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
+                 </div>
                 </div>
                 
                 <div id="chart-legend-operation" ng-show="OprCtrl.graphType == 'cc-exception-category'">
-                  <div class="chart_legend not-received">Interface Exception</div>
-                  <div class="chart_legend open">Proration Exception</div>
-                  <div class="chart_legend closed">Transactional Exception</div>
+                   <div  ng-repeat="legend in OprCtrl.flightCouponLegends">
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>                
+                </div>
                 </div>
               </div>
             </div>

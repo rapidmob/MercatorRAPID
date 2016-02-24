@@ -19,15 +19,12 @@
             </div>
             <div class="row no-padding" ng-show="OprCtrl.toggle.flightReason=='chart'" ng-class="{'hide-options' : !hideOptions}">
               <div class="col pull-right">
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed=='OPEN'">
-                  <div class="chart_legend closed">{{OprCtrl.flightCountLegends.open[2]}}</div>
-                  <div class="chart_legend open">{{OprCtrl.flightCountLegends.open[1]}}</div>
-                  <div class="chart_legend not-received">{{OprCtrl.flightCountLegends.open[0]}}</div>
-                </div>
-                <div id="chart-legend-operation" ng-show="OprCtrl.toggle.openOrClosed=='CLOSED'">                  
-                  <div class="chart_legend open">{{OprCtrl.flightCountLegends.closed[1]}}</div>
-                  <div class="chart_legend not-received">{{OprCtrl.flightCountLegends.closed[0]}}</div>
-                </div>
+                <div ng-show="OprCtrl.toggle.openOrClosed=='OPEN'" ng-repeat = "legend in OprCtrl.flightReasonLegends.open" class="legendcolor">
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
+                 </div>
+                <div ng-show="OprCtrl.toggle.openOrClosed=='CLOSED'" ng-repeat = "legend in OprCtrl.flightReasonLegends.closed" class="legendcolor">
+                  <div class="chart_legend fp-legend-{{$index+1}}">{{legend}}</div>
+                 </div>
               </div>
             </div>
             <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.flightReason=='chart'}">
@@ -122,10 +119,10 @@
     </div>
               </div>
           
-            <div class="row" ng-hide="OprCtrl.flightCountReason.stackedChart.length==0">
+            <div class="row" ng-if="OprCtrl.flightCountReason.stackedChart.length==0"></div>
+            <div class="row" ng-if="OprCtrl.flightCountReason.stackedChart.length">
             <div class="col padding-horizontal">
-                  <div class="col-demo">
-                  
+                  <div class="col-demo">                  
                       <div class="row">
                         <div class="col col-80 no-padding pull-left graph-title">Day Data</div>
                         <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
@@ -135,7 +132,7 @@
                         <div class="col no-padding pull-left graph-title fcReason fcReasonFlag" data-item-title="Day Data" data-item-flag="6" ng-show="OprCtrl.toggle.flightReason=='chart'" data-item-pdfFlag="dynamicWH">
                           <chartevent type="flight-count">
                           <nvd3-multi-bar-chart                          
-                          data="OprCtrl.flightCountReason.stackedChart.stackedBarchartItems"                         
+                          data="OprCtrl.flightCountReason.stackedChart"                         
                           showXAxis="true"
                           showYAxis="true"
                           height="300"
@@ -146,17 +143,18 @@
                           useInteractiveGuideline="true"
                           xAxisLabel="Day" 
                           yAxisLabel="Open Flights Count"
+                          color="OprCtrl.colorFunction()"
                           <svg></svg></nvd3-multi-bar-chart>
                           </chartevent>
                         </div> 
             <table class="resptbl" ng-show="OprCtrl.toggle.flightReason=='table'"> 
               <tr class="tblhder">              
                 <th>Day</th>
-                <th ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems" >{{DayData.key}}</th>
+                <th ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart" >{{DayData.key}}</th>
               </tr>
-            <tr class="tblcol" ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems[0].values">
+            <tr class="tblcol" ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart[0].values">
                 <td data-th="Day">{{DayData[0]}}</td>
-                <td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightCountReason.stackedChart.stackedBarchartItems">{{values.values[$parent.$index][1]}}</td>
+                <td data-th="{{values.key}}" ng-repeat="values in OprCtrl.flightCountReason.stackedChart">{{values.values[$parent.$index][1]}}</td>
                          
               </tr>
               </table>
