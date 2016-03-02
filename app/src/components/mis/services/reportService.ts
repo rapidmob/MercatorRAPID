@@ -13,11 +13,11 @@
 
 		// RUN ASYNC: runs the report async mode w/ progress updates and delivers a local fileUrl for use
 
-		 function _runReportAsync(statusFlag,title,flownMonth) {
+		 function _runReportAsync(statusFlag,title,flownMonth,tabIndex) {
              var deferred = $q.defer();
 			 
              //showLoading('1.Processing Transcript');
-             generateReportDef(statusFlag,title,flownMonth).then(function(docDef) {
+             generateReportDef(statusFlag,title,flownMonth,tabIndex).then(function(docDef) {
                  //showLoading('2. Generating Report');
                  return generateReportDoc(docDef);
              }).then(function(pdfDoc) {
@@ -42,11 +42,11 @@
 
 		// RUN DATAURL: runs the report async mode w/ progress updates and stops w/ pdfDoc -> dataURL string conversion
 
-		 function _runReportDataURL(statusFlag,title,flownMonth) {
+		 function _runReportDataURL(statusFlag,title,flownMonth,tabIndex) {
              var deferred = $q.defer();
 			 
              //showLoading('1.Processing Transcript');
-             generateReportDef(statusFlag,title,flownMonth).then(function(docDef) {
+             generateReportDef(statusFlag,title,flownMonth,tabIndex).then(function(docDef) {
                  //showLoading('2. Generating Report');
                  return generateReportDoc(docDef);
              }).then(function(pdfDoc) {
@@ -65,7 +65,7 @@
 
 		// 1.GenerateReportDef: use currentTranscript to craft reportDef JSON for pdfMake to generate report
 
-		function generateReportDef(statusFlag,title,flownMonth) {
+		function generateReportDef(statusFlag,title,flownMonth,tabIndex) {
             var deferred = $q.defer();
 			
             // removed specifics of code to process data for drafting the doc
@@ -77,7 +77,7 @@
             // properly generate the doc declaration
             $timeout(function() {
                 var dd = {};
-                dd = generateReport(statusFlag,title,flownMonth)
+                dd = generateReport(statusFlag,title,flownMonth,tabIndex)
 				deferred.resolve(dd);
             }, 100);
             
@@ -218,7 +218,7 @@
 		
 		}
 		
-		function generateReport(param, chartTitle,flownMonth) {
+		function generateReport(param, chartTitle,flownMonth,tabIndex) {
 			var deferred = $q.defer();
 			
 			var title = "";
@@ -279,9 +279,13 @@
 			});			
 			if(param == "revenueAnalysis"){
 				var node = document.getElementById("net-revenue-chart");
-				var pdfRender = angular.element(document.querySelector('#pdf-render'));
-				pdfRender.append(node.childNodes[1]);  
-				html2canvas(document.getElementsByClassName('net-revenue-pdf')).then(function(canvas) {
+				var nodeList = document.getElementsByClassName('net-revenue-pdf');
+				var nodeFlag;
+				if(tabIndex === 0)
+				nodeFlag = nodeList[0];
+				else
+				nodeFlag = nodeList[1];
+				html2canvas(nodeFlag).then(function(canvas) {
 					var c = canvas.toDataURL();
 					var  text = "\n\n\n\n\n\n\n\n\n\n\n\n"+node.getAttribute('data-item-title')+"\n\n";
 					textObj['text'] = text;
@@ -301,7 +305,6 @@
 					imgTemp = {};
 					txtTemp ={};	
 					deferred.resolve({content: content});
-					pdfRender.empty();
 				});				
 			} else if(param == "sectorcarrieranalysis"){
 				var svgNode = d3.selectAll("."+param);

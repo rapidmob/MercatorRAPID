@@ -69,15 +69,15 @@
           <div class="col no-padding pull-left graph-title">
             Week Data
           </div>
-          <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
+          <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-count-reason','oprfWeekDataFC')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
               </i></div>         
         </div>
         <div class="row">
           <div class="col weekdata-modifier bg-white"  ng-show="OprCtrl.toggle.flightReason=='chart'">
-              <ion-slide-box ng-init="OprCtrl.tabLockSlide('oprfWeekData')" show-pager="false" delegate-handle="oprfWeekData">
+              <ion-slide-box ng-init="OprCtrl.tabLockSlide('oprfWeekDataFC')" show-pager="false" delegate-handle="oprfWeekDataFC">
                     <ion-slide ng-repeat="weekData in OprCtrl.flightCountReason.weekData">
                     <div class="row">
-                      <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataPrev()"><i ng-class="{'disable-icon': $first}" class="ion-chevron-left"></i></div>
+                      <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataPrev('oprfWeekDataFC')"><i ng-class="{'disable-icon': $first}" class="ion-chevron-left"></i></div>
                       <div class="col col-80">
                       <div class="fcReason three-bar" data-item-title="Week {{$index+1}}" data-item-flag="{{$index+2}}">
                         <nvd3-discrete-bar-chart
@@ -87,6 +87,7 @@
                               showYAxis="false"
                               showValues="true"
                               color="OprCtrl.colorFunction()"
+                              valueFormat="OprCtrl.valueFormatFunction()"
                               height="280"
                               width="300">
                           <svg></svg>
@@ -96,7 +97,7 @@
                         <p class="pull-right">{{weekData.closedPercent}}</p>
                       </div>
                       
-                      <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext()"><i class="ion-chevron-right" ng-class="{'disable-icon': $last}"></i></div>
+                      <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext('oprfWeekDataFC')"><i class="ion-chevron-right" ng-class="{'disable-icon': $last}"></i></div>
                       </div>
                     </ion-slide>
                   </ion-slide-box>
@@ -141,7 +142,8 @@
                           staggerLabels="true"
                           interactive="true"
                           useInteractiveGuideline="true"
-                          xAxisLabel="Day" 
+                          xAxisLabel="Day"
+                          yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
                           color="OprCtrl.colorFunction()"
                           <svg></svg></nvd3-multi-bar-chart>

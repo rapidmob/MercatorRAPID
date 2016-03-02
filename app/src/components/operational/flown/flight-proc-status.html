@@ -13,13 +13,13 @@
               </div>
             </div>
             <div class="row no-padding" ng-show="OprCtrl.toggle.flightStatus=='chart'" ng-class="{'hide-options' : !hideOptions}">
-              <div class="col pull-right">
-              <div class="pull-right">
-                <div  ng-repeat="legend in OprCtrl.flightProcLegends" class="legendcolor">
-                  <div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>
-               </div>                
-                </div>
-              </div>
+				<div class="col pull-right">
+					<div class="pull-right">
+						<div  ng-repeat="legend in OprCtrl.flightProcLegends" class="legendcolor">
+							<div class="chart_legend fp-legend-{{$index}}">{{legend}}</div>
+						</div>                
+					</div>
+				</div>
             </div>            
             <div class="row section-margin responsive-sm metric" ng-class="{'opr-cont-height': OprCtrl.toggle.flightStatus=='chart'}">
               <div ng-hide="OprCtrl.flightProcStatus.pieChart.length==0" class="col col-50 padding-horizontal">
@@ -65,15 +65,15 @@
 					  <div class="col no-padding pull-left graph-title">
 						Week Data
 					  </div>
-            <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+            <div class="col col-10 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'weekdata','flight-proc-status','oprfWeekDataFS')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightStatus=='chart'">
               </i></div>        
 					</div>
 					<div class="row">
 						<div class="col weekdata-modifier bg-white" ng-show="OprCtrl.toggle.flightStatus=='chart'">
-						  <ion-slide-box ng-init="OprCtrl.tabLockSlide('oprfWeekData')" show-pager="false" delegate-handle="oprfWeekData">
+						  <ion-slide-box ng-init="OprCtrl.tabLockSlide('oprfWeekDataFS')" show-pager="false" delegate-handle="oprfWeekDataFS">
 								<ion-slide ng-repeat="weekData in OprCtrl.flightProcStatus.weekData">
 								<div class="row">
-								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataPrev()"><i ng-class="{'disable-icon': $first}" class="ion-chevron-left"></i></div>
+								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataPrev('oprfWeekDataFS')"><i ng-class="{'disable-icon': $first}" class="ion-chevron-left"></i></div>
 								  <div class="col col-80">
 									<div  class="fpStatus four-bar" data-item-title="Week {{$index+1}}" data-item-flag="{{$index+2}}">
 									<nvd3-discrete-bar-chart
@@ -83,6 +83,7 @@
 										  showYAxis="false"
 										  showValues="true"
 										  height="280"
+										  valueFormat="OprCtrl.valueFormatFunction()"
 										  color="OprCtrl.fourBarColorFunction()">
 									  <svg></svg>
 									</nvd3-discrete-bar-chart>
@@ -91,7 +92,7 @@
 									<p class="pull-right graph-title-percent">{{weekData.closedPercent}}<br/><span class="graph-title-percent">Close%</span></p>
 								  </div>
 								  
-								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext()"><i ng-class="{'disable-icon': $last}" class="ion-chevron-right"></i></div>
+								  <div class="col col-10 arrow-middle" ng-click="OprCtrl.weekDataNext('oprfWeekDataFS')"><i ng-class="{'disable-icon': $last}" class="ion-chevron-right"></i></div>
 								  </div>
 								</ion-slide>
 							  </ion-slide-box>
@@ -136,7 +137,8 @@
                           staggerLabels="true"
                           interactive="true"
                           useInteractiveGuideline="true"
-                          xAxisLabel="Day" 
+                          xAxisLabel="Day"
+                          yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
                           color="OprCtrl.fourBarColorFunction()">
                           <svg></svg></nvd3-multi-bar-chart>

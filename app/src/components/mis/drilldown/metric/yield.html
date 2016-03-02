@@ -1,0 +1,34 @@
+<div class="drill-scroll-width-inner row drilldown-head drilldown-title active " ng-if="group.items[0]">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">Route Code</div>
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">Route Type</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10">Sector</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10">Flight</div>
+  <div ng-if="(MisCtrl.shownGroup == 3)" class="col-10">Flight Date</div>
+  <div class="col-10 text-right">Adult</div>
+  <div class="col-10 text-right">Child</div>
+  <div class="col-10 text-right">Infant</div>
+  <div class="col-10 text-right">Total</div>
+  <div class="col-10 text-right">Gross</div>
+  <div class="col-10 text-right text-right">Discount</div>
+  <div class="col-10 text-right">Commission</div>
+  <div class="col-10 text-right">ORC</div>
+  <div class="col-10 text-right">Nett</div>
+  <div class="col-10 text-right">Yield</div>
+</div>
+<div ng-class="{activedrill: MisCtrl.isDrillRowSelected(MisCtrl.shownGroup,item)}" class="drill-scroll-width-inner row drilldown-list" ng-repeat="item in group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]]"  ng-click="MisCtrl.openBarDrillDown(item,MisCtrl.shownGroup)">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">{{item.routeCode}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">{{item.routeType}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10">{{item.flownSector}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10">{{item.flightNumber}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 3)" class="col-10">{{item.flightDate}}</div>
+  <div class="col-10 text-right">{{item.Adultcount}}</div>
+  <div class="col-10 text-right">{{item.Childcount}}</div>
+  <div class="col-10 text-right">{{item.Infantcount}}</div>
+  <div class="col-10 text-right">{{item.PaxTotcount}}</div>
+  <div class="col-10 text-right">{{item.Gross}}</div>
+  <div class="col-10 text-right">{{item.Discount}}</div>
+  <div class="col-10 text-right">{{item.Commission}}</div>
+  <div class="col-10 text-right">{{item.ORC}}</div>
+  <div class="col-10 text-right">{{item.NetRevenue}}</div>
+  <div class="col-10 text-right">{{item.NetYield}}</div>
+</div>

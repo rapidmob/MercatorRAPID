@@ -130,15 +130,29 @@ class MisController{
 
             this.$scope.$on('openDrillPopup', (event: any, response: any) => {
                 if (response.type == 'metric') {
-                    this.$scope.MisCtrl.openBarDrillDownPopover(response.event, { "point": response.data }, -1);
+                    console.log(response);
+                    if(response.name=="Network Revenue"){
+                        console.log('In network revene');
+                        this.$scope.MisCtrl.openNetworkRevenueDrillDownPopover(response.event, { "point": response.data }, -1);
+                    }else if(response.name=="Yield"){
+                        this.$scope.MisCtrl.openYieldDrillDownPopover(response.event, { "point": response.data }, -1);
+                    }else if(response.name=="RPKM"){
+                        this.$scope.MisCtrl.openRPKMDrillDownPopover(response.event, { "point": response.data }, -1);
+                    }else if(response.name=="ASKM"){
+                        this.$scope.MisCtrl.openASKMDrillDownPopover(response.event, { "point": response.data }, -1);
+                    }else{
+                        this.$scope.MisCtrl.openBarDrillDownPopover(response.event, { "point": response.data }, -1);
+                    }
                 }
                 if (response.type == 'target') {
                     this.$scope.MisCtrl.openTargetDrillDownPopover(response.event, { "point": response.data }, -1);
                 }
                 if (response.type == 'passenger-count') {
-                   // this.$scope.MisCtrl.openRevenuePassengerDrillDownPopover(response.event, { "point": response.data }, -1);
+                    this.$scope.MisCtrl.openRevenuePassengerDrillDownPopover(response.event, { "point": response.data }, -1);
                 }
-                
+                if (response.type == 'oal') {
+                   this.$scope.MisCtrl.openOALContDrillDownPopover(response.event, { "point": response.data }, -1);
+                }
             });
     }
 
@@ -448,7 +462,7 @@ class MisController{
 
 				that.revenueData = {
 					revenuePieChart : jsonObj.pieCharts[0],
-					revenueBarChart : jsonObj.multibarCharts[1].multibarChartItems,
+					revenueBarChart : jsonObj.multibarCharts[1],
 					revenueHorBarChart : jsonObj.multibarCharts[2].multibarChartItems
 				}
 
@@ -623,12 +637,50 @@ class MisController{
         if(drillType == 'passenger-count') {
             var drillLevel = (selFindLevel + 2);
             
-            console.log(data);
-            var regionName = (data.regionName) ? data.regionName : "";
-            var countryFromTo = (data.countryFrom && data.countryTo) ? data.countryFrom + '-' + data.countryTo : "";
-            var ownOalFlag = (data.ownOalFlag) ? data.ownOalFlag : "";
-            var sectorFromTo  = (data.sectorFromTo) ? data.sectorFromTo : "";
+            
+            var toggle1 = (data.toggle1) ? data.toggle1 : "";
+            var toggle2: any = (data.toggle2) ? data.toggle2 : "";
+            var routeCode = (data.routeCode) ? data.routeCode : "";
+            var sector  = (data.flownSector) ? data.flownSector : "";
             var flightNumber  = (data.flightNumber) ? data.flightNumber : "";
+
+            this.ionicLoadingShow();console.log(data);
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "pageNumber": 0,
+                "toggle1": toggle1,
+                "toggle2": toggle2,
+                "routeCode": routeCode,
+                "sector": sector,
+                "flightNumber": flightNumber
+            };  
+        }
+
+        if(drillType == 'network-Revenue') {
+            var drillLevel = (selFindLevel + 2);
+            
+            if (data.label) {
+                this.drillBarLabel = data.label;
+            }
+            console.log(data);
+            var drillBar: string;
+            drillBar = (data.label) ? data.label : "";
+            var toggle1 = (data.toggle1) ? data.toggle1 : "";
+            var POSCountry = (data.POScountry) ? data.POScountry : "";
+            var POSRegion = (data.POSregion) ? data.POSregion : "";
+            var POSCity = (data.POScity) ? data.POScity : "";
+            var documentType = (data.documentType) ? data.documentType : "";
+            var sector = (data.sector) ? data.sector : "";
+
+            if (!drillBar) {
+                drillBar = this.drillBarLabel;
+                console.log(drillBar);
+            }
 
             this.ionicLoadingShow();
 
@@ -638,13 +690,162 @@ class MisController{
                 "userId": this.header.username,
                 "fullDataFlag": "string",
                 "drillLevel": drillLevel,
+                "drillBar": drillBar,
                 "pageNumber": 0,
-                "regionName": regionName,
-                "countryFromTo": countryFromTo,
-                "ownOalFlag": ownOalFlag,
-                "sectorFromTo": sectorFromTo,
+                "toggle1": toggle1,
+                "POSRegion": POSRegion,
+                "POSCountry": POSCountry,
+                "POSCity": POSCity,
+                "documentType": documentType,
+                "sector": sector
+            };  
+        }
+
+        if(drillType == 'yield') {
+            var drillLevel = (selFindLevel + 2);
+            
+            if (data.label) {
+                this.drillBarLabel = data.label;
+            }
+            console.log(data);
+            var drillBar: string;
+            drillBar = (data.label) ? data.label : "";
+            var toggle1 = (data.toggle1) ? data.toggle1 : "";
+            var routeCode = (data.routeCode) ? data.routeCode : "";
+            var sector = (data.flownSector) ? data.flownSector : "";
+            var flightNumber = (data.flightNumber) ? data.flightNumber : "";
+
+            if (!drillBar) {
+                drillBar = this.drillBarLabel;
+                console.log(drillBar);
+            }
+
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "drillBar": drillBar,
+                "pageNumber": 0,
+                "toggle1": toggle1,
+                "routeCode": routeCode,
+                "sector": sector,
+                "flightNumber": flightNumber
+            };  
+        }
+
+        if(drillType == 'rpkm') {
+            var drillLevel = (selFindLevel + 2);
+            
+            if (data.label) {
+                this.drillBarLabel = data.label;
+            }
+            console.log(data);
+            var drillBar: string;
+            drillBar = (data.label) ? data.label : "";
+            var toggle1 = (data.toggle1) ? data.toggle1 : "";
+            var aircrafttype = (data.aircrafttype) ? data.aircrafttype : "";
+            var aircraftregno = (data.aircraftregno) ? data.aircraftregno : "";
+            var aircraftleg = (data.aircraftleg) ? data.aircraftleg : "";
+
+            if (!drillBar) {
+                drillBar = this.drillBarLabel;
+                console.log(drillBar);
+            }
+
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "drillBar": drillBar,
+                "pageNumber": 0,
+                "toggle1": toggle1,
+                "aircrafttype": aircrafttype,
+                "aircraftregno": aircraftregno,
+                "aircraftleg": aircraftleg
+            };  
+        }
+
+        if(drillType == 'askm') {
+            var drillLevel = (selFindLevel + 2);
+            
+            if (data.label) {
+                this.drillBarLabel = data.label;
+            }
+            console.log(data);
+            var drillBar: string;
+            drillBar = (data.label) ? data.label : "";
+            var toggle1 = (data.toggle1) ? data.toggle1 : "";
+            var aircrafttype = (data.aircrafttype) ? data.aircrafttype : "";
+            var aircraftregno = (data.aircraftregno) ? data.aircraftregno : "";
+            var aircraftleg = (data.aircraftleg) ? data.aircraftleg : "";
+
+            if (!drillBar) {
+                drillBar = this.drillBarLabel;
+                console.log(drillBar);
+            }
+
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "drillBar": drillBar,
+                "pageNumber": 0,
+                "toggle1": toggle1,
+                "aircrafttype": aircrafttype,
+                "aircraftregno": aircraftregno,
+                "aircraftleg": aircraftleg
+            };  
+        }
+
+        if(drillType == 'oal-cont') {
+            var drillLevel = (selFindLevel + 2);
+            
+            if (data.label) {
+                this.drillBarLabel = data.label;
+            }
+            console.log(data);
+            var drillBar: string;
+            drillBar = (data.label) ? data.label : "";
+            var toggle1 = (data.toggle1) ? data.toggle1 : "";
+            var toggle2 = (data.toggle2) ? data.toggle2 : "";
+            var carrierCode = (data.carrierCode) ? data.carrierCode : "";
+            var sector = (data.sector) ? data.sector : "";
+            var flightNumber = (data.flightNumber) ? data.flightNumber : "";
+            var flightDate = (data.flightDate) ? data.flightDate : "";
+
+            if (!drillBar) {
+                drillBar = this.drillBarLabel;
+                console.log(drillBar);
+            }
+
+            this.ionicLoadingShow();
+
+            reqdata = {
+                "flownMonth": this.header.flownMonth,
+                "includeSurcharge": (this.header.surcharge) ? 'Y' : 'N',
+                "userId": this.header.username,
+                "fullDataFlag": "string",
+                "drillLevel": drillLevel,
+                "drillBar": drillBar,
+                "pageNumber": 0,
+                "toggle1": toggle1,
+                "toggle2": toggle2,
+                "carrierCode": carrierCode,
+                "sector": sector,
                 "flightNumber": flightNumber,
-                "flightDate": 0
+                "flightDate": flightDate
             };  
         }
         return reqdata;
@@ -662,9 +863,23 @@ class MisController{
                 url = "/paxflnmis/netrevenueownoaldrill";
             break;
             case 'passenger-count':
-                url = "/paxflnmis/netrevenueownoaldrill";
+                url = "/paxflnmis/mspaxcntctadrill";
             break;
-            
+            case 'network-Revenue':
+                url = "/paxflnmis/msnetrevdrill";
+            break;
+            case 'yield':
+                url = "/paxflnmis/mspaxnetylddrill";
+            break;
+            case 'rpkm':
+                url = "/paxflnmis/mspaxrpkmrevdrill";
+            break;
+            case 'askm':
+                url = "/paxflnmis/mspaxaskmrevdrill";
+            break;
+            case 'oal-cont':
+                url = "/paxflnmis/oalcarrieranalysisdrill";
+            break;
         }
         return url;
     }
@@ -685,10 +900,22 @@ class MisController{
                     var data = data.response;
                     console.log(data);
                     var findLevel = drillLevel - 1;
-                    console.log(data.status);
+
                     if (data.status == 'success') {
-                        that.groups[findLevel].items[0] = data.data.rows;
-                        that.groups[findLevel].orgItems[0] = data.data.rows;
+                        if(that.drillType == 'oal-cont'){
+                            if(that.toggle.sectorRevOrPax == "paxcount"){
+                                that.groups[findLevel].items[0] = data.data.paxcountrows;
+                                that.groups[findLevel].orgItems[0] = data.data.paxcountrows;
+                            }else{
+                                that.groups[findLevel].items[0] = data.data.revenuerows;
+                                that.groups[findLevel].orgItems[0] = data.data.revenuerows;    
+                            }
+                            
+                        }else{
+                            that.groups[findLevel].items[0] = data.data.rows;
+                            that.groups[findLevel].orgItems[0] = data.data.rows;    
+                        }
+                        
                         that.shownGroup = findLevel;
                         that.sort('paxCount', findLevel, false);
                         that.clearDrill(drillLevel);
@@ -730,6 +957,76 @@ class MisController{
         }, 50);
         this.openBarDrillDown(selData.point, selFindLevel);
     };
+
+    openRPKMDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'RPKM';
+        this.drillType = 'rpkm';
+        this.groups = [];
+        this.drilltabs = ['RPKM at Aircraft Type Level', 'RPKM at Aircraft  Registration Number Level', 'RPKM at Aircraft Leg Level', 'RPKM at Flight Number and Date Level'];
+        this.firstColumns = ['aircrafttype', 'aircraftregno', 'aircraftleg', 'flightNumber'];
+        this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    }
+    openASKMDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'ASKM';
+        this.drillType = 'askm';
+        this.groups = [];
+        this.drilltabs = ['ASKM at Aircraft Type Level', 'ASKM at Aircraft  Registration Number Level', 'ASKM at Aircraft Leg Level', 'ASKM at Flight Number and Date Level'];
+        this.firstColumns = ['aircrafttype', 'aircraftregno', 'aircraftleg', 'flightNumber'];
+        this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    }
+    openOALContDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'Top 5 OAL Contribution';
+        this.drillType = 'oal-cont';
+        this.groups = [];
+        if(this.toggle.sectorRevOrPax == "paxcount") { 
+            this.drilltabs = ['Pax Count at Sector Level - From Carrier EK', 'Pax Count at Flight Number Level - From Carrier EK', 'Pax Count at Flight Date Level - From Carrier EK', 'Pax Count at Document type Level - From Carrier EK'];
+        } else {
+            this.drilltabs = ['Revenue at Sector Level', 'Revenue at Flight Number Level - From Carrier EK', 'Revenue at Flight Date Level - From Carrier EK', 'Revenue at Doctype Level - From Carrier EK'];            
+        }
+        this.firstColumns = ['sector', 'flightNumber', 'flightDate', 'documentType'];
+        this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    }
+    openYieldDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'Yield';
+        this.drillType = 'yield';
+        this.groups = [];
+        this.drilltabs = ['Yield at Route Level', 'Yield at Sector Level', 'Yield at Flight Level', 'Yield at Flight Date Level'];
+        this.firstColumns = ['routeCode', 'flownSector', 'flightNumber', 'flightDate'];
+        this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    };
+    openNetworkRevenueDrillDownPopover($event, selData, selFindLevel) {
+        this.drillName = 'Network Revenue';
+        this.drillType = 'network-Revenue';
+        this.groups = [];
+        this.drilltabs = ['Network Revenue at Region POS Level', 'Network Revenue by Country of POS', 'Network Revenue by City of POS', 'Network Revenue by Document Type', 'Network Revenue by Sector','Network Revenue by Flight Number'];
+        this.firstColumns = ['POSregion', 'POScountry', 'POScity', 'documentType', 'sector', 'flightnumber'];
+        this.initiateArray(this.drilltabs);
+        var that = this;
+        this.$timeout(function() {
+          that.drillBarpopover.show($event);
+        }, 50);
+        this.openBarDrillDown(selData.point, selFindLevel);
+    };
     openTargetDrillDownPopover($event, selData, selFindLevel) {
         this.drillName = 'Target Vs Actual';
         this.drillType = 'target';
@@ -761,8 +1058,8 @@ class MisController{
         this.drillName = 'Passenger Count by Class of Travel';
         this.drillType = 'passenger-count';
         this.groups = [];
-        this.drilltabs = ['Country Level', 'Sector Level', 'Flight Level', 'Document Level'];
-        this.firstColumns = ['countryFrom', 'flownSector', 'flightNumber', 'netRevenue'];
+        this.drilltabs = ['Pax Count at Route Level', 'Pax Count at Sector Level', 'Pax Count at Flight Number Level', 'Pax Count at Flight Date Level'];
+        this.firstColumns = ['routeCode', 'flownSector', 'flightNumber', 'flightDate'];
         this.initiateArray(this.drilltabs);
         this.drillBarpopover.show($event);
         this.openBarDrillDown(selData.point, selFindLevel);
@@ -978,7 +1275,7 @@ class MisController{
 		//if no cordova, then running in browser and need to use dataURL and iframe
 		if (!window.cordova) {
 			that.ionicLoadingShow();
-			this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth)
+			this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth,that.header.tabIndex)
 				.then(function(dataURL) {
 					that.ionicLoadingHide();
 					//set the iframe source to the dataURL created
@@ -994,7 +1291,7 @@ class MisController{
 		//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
 		else {
 			that.ionicLoadingShow();
-			this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth)
+			this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth,that.header.tabIndex)
 				.then(function(filePath) {
 					that.ionicLoadingHide();
 					//log the file location for debugging and oopen with inappbrowser

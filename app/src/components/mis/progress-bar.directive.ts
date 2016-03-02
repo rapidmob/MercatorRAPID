@@ -1,7 +1,8 @@
 (function () {
   'use strict';
   angular.module('rapidMobile')
-  .directive('heProgressBar', function () {
+  .directive('heProgressBar', function ($rootScope) {
+    var rootScope = $rootScope;
     var directiveDefinitionObject = {
       restrict: 'E',
       replace: false,
@@ -23,7 +24,12 @@
 
         var barSegment = segment.append("div").classed("horizontal-bar-graph-value", true)
                                 .append("div").classed("horizontal-bar-graph-value-scale", true)
-                                .append("div").classed("horizontal-bar-graph-value-bar", true);
+                                .append("div").classed("horizontal-bar-graph-value-bar", true).on('click', function(obj){
+                                  if(attrs.name == "Top 5 OAL Contribution"){
+                                    rootScope.$broadcast('openDrillPopup', {"data" : obj, "type": 'oal', "event": window.event, "name": attrs.name});   
+                                  }
+                                  
+                                });
 
         barSegment
                .style("background-color", function(d) { return d.color })              

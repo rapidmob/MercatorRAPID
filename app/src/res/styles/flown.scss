@@ -256,12 +256,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 }
 .chart_legend {
-    float: right;
+    /*float: right;*/
     padding-bottom: 9px;
     padding-right: 10px;
     padding-left: 14px;
     font-weight: normal;
     font-size: 14px;
+    display: inline-block;
 }
 .graphpopover .chart_legend {
     float: left;
@@ -615,7 +616,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
        }
     }
     .rev-footer{
-        position: inherit !important;
+        padding-bottom: 40px;
+        position: relative !important;
+        bottom: 0 !important;
     }
     .percentpadding-revenuechart {
         padding: 0 21% !important;
@@ -817,7 +820,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     width: 23% !important;
     margin-top:10px;
     max-height: 242px;
-    overflow:visible;
+    overflow:visible !important;
+    .scroll-bar-v {
+        display: none;
+    }
 }
 .Info-page-title {
     font-size: 18px;
@@ -945,6 +951,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     position: absolute;
     right: 0;
 }
+.revenue-width{
+    min-width: 600px;
+}
 .drilldown-head{
     @include padding-all(10px, 5px, 10px, 5px);
     font-size: 14px;
@@ -994,14 +1003,14 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .drill-search{
     border-bottom: 1px solid $drilldown-header-bg !important;
     margin: -25px 0 10px 0px;
-    @include padding-all(12px, 0px, 20px, 25px);
+    @include padding-all(12px, 35px, 20px, 25px);
 }
 .search-icon{
     color: $drilldown-header-bg;
 }
 .search-close{
     float: right;
-    margin-top: -35px;
+    margin-top: -45px;
 }
 .activedrill{
     background: $drilldown-active-bg !important;
@@ -1235,7 +1244,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 .horizontal-bar-graph-segment:nth-child(2), .net-rev-bar-graph-segment:nth-child(2){
     .horizontal-bar-graph-value-bar, span{
-       background: $hor-bar-span-two-bg; 
+       background: $hor-bar-span-two-bg;
     }
     .net-rev-bar-graph-value-bar{
        background: $fifth-text-color; 
@@ -1330,7 +1339,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             background: $table-th;
             color: $light;
         }
-
     }
 }
 
@@ -1340,7 +1348,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
 }
 .sector-padding{
-    padding: 5%;   
+    padding: 5%;
 }
 .net-rev-title{
     text-align:left;
@@ -1374,7 +1382,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     appearance:none;
     background: $light url("res/img/arrow-down.png") no-repeat;
     background-size: 25% 76%;
-    background-position: right center;   
+    background-position: right center;
 }
 .custom-footer{
     color: $light;
@@ -1388,7 +1396,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 .btn-section{
     .btn-padding-top {
-        padding-top:2px;    
+        padding-top:2px;
     }
 }
 .font-normal:before{
@@ -1401,7 +1409,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     color: $light;
     width: 98%;
     margin: auto;
-    text-align: center; 
+    text-align: center;
 }
 
 .row tblhder .col:first-child {
@@ -1411,26 +1419,26 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .tblvalues:nth-of-type(even) {
     background: $even-tr;
     margin: auto;
-    width: 98%; 
+    width: 98%;
 }
 
 .tblvalues:nth-of-type(odd) {
     background: $light;
     margin: auto;
-    width: 98%; 
+    width: 98%;
 }
 
 .tbltxt {
     text-align: left;
     margin: auto;
     width: 98%;
-    border-right: 1px solid $light; 
+    border-right: 1px solid $light;
 }
 .tblcol, .tblhdrttl {
-    border-right: 1px solid $light; 
+    border-right: 1px solid $light;
 }
 .tblcol:last-child, .tblhdrttl:last-child {
-    border-right: 0px none; 
+    border-right: 0px none;
 }
 .gridview {
     width: 98%;
@@ -1440,26 +1448,25 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     margin-bottom: 10px;
     border-radius: 3px;
     border: 1px solid $border-transparent-two;
-    box-shadow: 0px 0px 11px $second-shadow-color; 
+    box-shadow: 0px 0px 11px $second-shadow-color;
 }
 
 .resptbl {
     background: $light;
     color: $dark;
     border-radius: .4em;
-    overflow: hidden; 
+    overflow: hidden;
 }
 .resptbl tr {
-    border-color: $table-tr-border; 
+    border-color: $table-tr-border;
 }
 .resptbl th, .resptbl td {
-    margin: .5em 1em; 
+    margin: .5em 0em;
 }
 
 @media (min-width: 600px) {
     .resptbl th, .resptbl td {
-        padding-left: 1em !important;
-        border-right: 1px solid $light; 
+        border-right: 1px solid $light;
     } 
 }
 .resptbl th:before {
@@ -1474,35 +1481,37 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     /*min-width: 300px;*/
     width: 98%;
     margin: 1em auto;
-    border-radius: 1px; 
+    border-radius: 1px;
 }
 .resptbl .tblcol:nth-child(even) {
     background: $even-tr-two; 
 }
 .resptbl .tblcol:nth-child(odd) {
-    background: $light; 
+    background: $light;
 }
 .resptbl tr {
     border-bottom: 1px solid $fourth-border-color; 
 }
 .resptbl th {
-    display: none; 
+    display: none;
 }
 .resptbl td {
     display: block;
-    text-align:left; 
+    text-align:left;
+    font-size:0.9em;
 }
 .resptbl td:first-child {
-    padding-top: .5em; 
+     
 }
 .resptbl td:last-child {
-    padding-bottom: .5em; 
+    padding-bottom: .5em;
 }
 .resptbl td:before {
     content: attr(data-th) " : ";
     font-weight: bold;
-    width: 15em;
-    display: inline-block; 
+    width: 14.7em;
+    display: inline-block;
+    padding-left: 0.5em; 
 }
   
 @media (min-width: 600px) {
@@ -1572,8 +1581,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .drill-scroll-width{
     width:100%;
 }
+.drill-scroll-section .scroll{
+    box-shadow: 0px 0px 0px 0px transparent !important;
+    border: 0 !important;
+    min-height: 20px !important;
+}
 .drill-scroll-width-inner{
     min-width:1500px;
+    display: table !important;
+}
+.drill-scroll-width-revenue{
+    min-width:2000px !important;
     display: table !important;
 }
 .drill-scroll-width-inner .col-10{
@@ -1634,9 +1652,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   and (min-device-width: 375px) 
   and (max-device-width: 627px) 
   and (orientation: portrait) {
-    .two-buttons-only {
+    /*.two-buttons-only {
         padding-left: 50% !important;
-    }
+    }*/
     .hide-option {
         display: block !important;
     }
@@ -1670,7 +1688,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         .header-padding{
             padding-top: 5px;
         }
-    } 
+    }   
 }
 
 
@@ -1733,7 +1751,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         display: none !important;
     }
     .metric-modifier .hide-option {
-        margin-top: 0; 
+        margin-top: 0;
     }
     .web-view {
         display: none !important;
@@ -1766,6 +1784,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .rev-pie-modifier svg {
         height: 302px !important;
     }
+    .metric-height-fix .col-demo {
+        min-height: 336px !important;
+    }
     .net-revenue-monthly .col-demo {
         min-height: 305px !important;
     }
@@ -1774,6 +1795,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .header-logo img {            
         width: 119%;
         margin-left: -34px;
+    }
+    .checkbox-custom + .checkbox-custom-label:before
+    {
+        width:16px;
+        height:16px;
+    }
+    .otherscls
+    {
+        display:none !important;
     }
     .net-revenue{
         .col-60{
@@ -1864,7 +1894,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
     .has-header {
         top: 60px !important;
-    }  
+    }
+    .chart_legend { 
+        /*display: block;*/
+    }
+    .db-two-leg .chart_legend { 
+        display: inline-block;
+        padding-left: 5px !important;
+    }
+    .checkbox-custom1:checked + .checkbox-custom-label:before { 
+        line-height: 14px;
+    }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 667px){
     .col-demo{
@@ -1903,6 +1943,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
     .mob-view {
         display: block !important;
+        .header-padding > div {
+            display: inline-block;
+        }
     }
     .custom-footer {
         display: none;
@@ -1932,7 +1975,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             margin-left: 10px;
         }
     }
-    .metric-modifier text, .rev-modifier text {
+    /*.metric-modifier text, .rev-modifier text {
         font-size: 8px;
-    }
+    }*/
+}
+.platform-android .popover {
+    margin-top: 10px;
+}
+.platform-ios .popover-arrow:after {
+    background: transparent;
 }

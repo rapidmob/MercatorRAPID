@@ -3,7 +3,8 @@
 class ChartEvent implements ng.IDirective {
 	restrict = 'E';
 	scope = {
-		type: "="
+		type: "=",
+		name: "@"
 	};
 	constructor(private $timeout: ng.ITimeoutService, private $rootScope: ng.IRootScopeService) {
 	};
@@ -77,7 +78,7 @@ class ChartEvent implements ng.IDirective {
 						if (time - firstClickTime < dblClickInterval) {
 							var type = attributes.type;
 							if(attributes.type == 'metric' || attributes.type == 'target' || attributes.type == 'passenger-count'){
-								self.$rootScope.$broadcast('openDrillPopup', {"data" : rectElem[0]['__data__'], "type": type, "event": event}); 
+								self.$rootScope.$broadcast('openDrillPopup', {"data" : rectElem[0]['__data__'], "type": type, "event": event, "name": attributes.name}); 
 							}else{
 								console.log(rectElem);
 								self.$rootScope.$broadcast('openDrillPopup1', {"data" : rectElem[0]['__data__'], "type": type, "event": event}); 

@@ -1,0 +1,36 @@
+<div class="drill-scroll-width-inner row drilldown-head drilldown-title active " ng-if="group.items[0]">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10 intial-header">Sector</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10 intial-header">Flight Number</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10 intial-header">Flight Date</div>
+  <div ng-if="(MisCtrl.shownGroup == 3)" class="col-10 intial-header">Type</div>
+  <div class="col-30" >
+    <div class="col text-center" >OWN</div>
+    <div class="col" >
+      <div class="col-10 text-right">Adult </div>
+      <div class="col-10 text-right">Child</div>
+      <div class="col-10 text-right">Infant</div>
+    </div>
+  </div>
+  <div class="col-30" >
+    <div class="col text-center" >OAL</div>
+    <div class="col" >
+      <div class="col-10 text-right">Adult </div>
+      <div class="col-10 text-right">Child</div>
+      <div class="col-10 text-right">Infant</div>
+    </div>
+  </div>
+</div>
+<div ng-class="{activedrill: MisCtrl.isDrillRowSelected(MisCtrl.shownGroup,item)}" class="drill-scroll-width-inner row drilldown-list" ng-repeat="item in group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]]"  ng-click="MisCtrl.openBarDrillDown(item,MisCtrl.shownGroup)">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">{{item.sector}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10">{{item.flightNumber}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10">{{item.flightDate}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 3)" class="col-10">{{item.documentType}}</div>
+  <div class="col-10 text-right">{{item.ownAdult}}</div>
+  <div class="col-10 text-right">{{item.ownChild}}</div>
+  <div class="col-10 text-right">{{item.ownInfant}}</div>
+
+  <div class="col-10 text-right">{{item.oalAdult}}</div>
+  <div class="col-10 text-right">{{item.oalChild}}</div>
+  <div class="col-10 text-right">{{item.oalInfant}}</div>
+
+</div>

@@ -65,6 +65,7 @@ class OperationalFlownController {
   private flightProcLegends: any;
   private flightReasonLegends: any;
   private flightCouponLegends: any;
+  private format: any = d3.format(',.0f');
 
   constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
     private $ionicLoading: Ionic.ILoading,
@@ -179,6 +180,9 @@ class OperationalFlownController {
 
   onSlideMove(data: any) {
     this.header.tabIndex = data.index;
+    this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFS').slide(0);
+	this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFC').slide(0);
+	this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataCC').slide(0);
     switch (this.header.tabIndex) {
       case 0:
         this.callMyDashboard();
@@ -226,7 +230,7 @@ class OperationalFlownController {
         }
 			}
 			that.$timeout(function() {
-			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFS').update();
 			}, 0);
 			that.ionicLoadingHide();
 		}else{
@@ -269,7 +273,7 @@ class OperationalFlownController {
 			}
 
 			that.$timeout(function() {
-			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFC').update();
 			}, 0);
 			that.ionicLoadingHide();
 		}else{
@@ -312,7 +316,7 @@ class OperationalFlownController {
 			  }
 			}
 			that.$timeout(function() {
-			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').update();
+			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataCC').update();
 			}, 0);
 			that.ionicLoadingHide();		
 		}else{
@@ -329,9 +333,9 @@ class OperationalFlownController {
         that.ionicLoadingHide();
       });
   }
-  openPopover($event, charttype, index) {
+  openPopover($event, charttype, index,oprfWeekData) {
     var that = this;
-    var temp = this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData');
+    var temp = this.$ionicSlideBoxDelegate.$getByHandle(oprfWeekData);
     that.currentIndex = temp.currentIndex();
     $event.preventDefault();
     this.charttype = charttype;
@@ -408,6 +412,22 @@ class OperationalFlownController {
       return that.fourBarChartColors[i];
     };
   }
+  valueFormatFunction() {
+    var that = this;
+    return function(d) {
+      return d3.format(",")(d);
+    }
+  }
+  toolTipContentFunction(){
+    return function(key, x, y, e, graph) {
+      return key +' '+ Math.ceil(y) + ' at ' + x
+    }
+  }
+  yAxisTickFormatFunction(){
+    return function(d){
+      return d3.format(",")(d);
+    }
+  }
   openinfoPopover($event, index) {
     if (typeof index == "undefined" || index == "") {
       this.infodata = 'No info available';
@@ -431,11 +451,11 @@ class OperationalFlownController {
   tabLockSlide(tabname: string) {
     this.$ionicSlideBoxDelegate.$getByHandle(tabname).enableSlide(false);
   }
-  weekDataPrev() {
-    this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').previous();
+  weekDataPrev(oprfWeekData: any) {
+    this.$ionicSlideBoxDelegate.$getByHandle(oprfWeekData).previous();
   };
-  weekDataNext() {
-    this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekData').next();
+  weekDataNext(oprfWeekData: any) {
+    this.$ionicSlideBoxDelegate.$getByHandle(oprfWeekData).next();
   }
   toggleFlightStatusView(val: string) {
     this.toggle.flightStatus = val;

@@ -102,7 +102,7 @@ function searchUtil(item, toSearch, level, drilltype) {
     }
   }
 
-  if(drilltype == 'analysis' || drilltype == 'passenger-count') {
+  if(drilltype == 'analysis' ) {
     if(item.regionName && level == 0) {
       return (item.regionName.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
     } else if(item.countryFrom && item.countryTo && level == 1) {
@@ -111,6 +111,80 @@ function searchUtil(item, toSearch, level, drilltype) {
       return (item.flownSector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
     } else if(item.flightNumber && level == 3) {
       return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  if(drilltype == 'network-Revenue') {
+    if(item.POSregion && level == 0) {
+      return (item.POSregion.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.POScountry && level == 1) {
+      return (item.POScountry.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.POScity && level == 2) {
+      return (item.POScity.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.documentType && level == 3) {
+      return (item.documentType.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.sector && level == 4) {
+      return (item.sector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightnumber && level == 5) {
+      return (item.flightnumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  if(drilltype == 'yield') {
+    if(item.routeCode && level == 0) {
+      return (item.routeCode.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flownSector && level == 1) {
+      return (item.flownSector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightNumber && level == 2) {
+      return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightDate && level == 3) {
+      return (item.flightDate.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  if(drilltype == 'rpkm' || drilltype == 'askm' ) {
+    if(item.aircrafttype && level == 0) {
+      return (item.aircrafttype.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.aircraftregno && level == 1) {
+      return (item.aircraftregno.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.aircraftleg && level == 2) {
+      return (item.aircraftleg.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightNumber && level == 3) {
+      return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  if(drilltype == 'oal-cont') {
+    if(item.sector && level == 0) {
+      return (item.sector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightNumber && level == 1) {
+      return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightDate && level == 2) {
+      return (item.flightDate.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.documentType && level == 3) {
+      return (item.documentType.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else {
+      return false;
+    }
+  }
+
+  if(drilltype == 'passenger-count') {
+    if(item.routeCode && level == 0) {
+      return (item.routeCode.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flownSector && level == 1) {
+      return (item.flownSector.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightNumber && level == 2) {
+      return (item.flightNumber.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
+    } else if(item.flightDate && level == 3) {
+      return (item.flightDate.toLowerCase().indexOf(toSearch.toLowerCase()) > -1) ? true : false;
     } else {
       return false;
     }

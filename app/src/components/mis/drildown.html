@@ -19,7 +19,7 @@
           ng-class="{'drilldown-content-active': MisCtrl.isGroupShown(group.id), 'drilldown-content-inactive': !MisCtrl.isGroupShown(group.id)}" ng-show="MisCtrl.isGroupShown(group.id)">
             <div class="row responsive-sm" ng-if="group.items[0]">
               <div class="col col-33 search-results">
-                Showing <span ng-if="!group.ItemsByPage[OprCtrl.currentPage[OprCtrl.shownGroup]].length">0</span>{{group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]].length}} out of {{group.items[0].length}} results
+                Showing <span ng-if="!group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]].length">0</span>{{group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]].length}} out of {{group.items[0].length}} results
               </div>
               <div class="col col-33 ">
               <span class="ion-android-search search-icon"></span>
@@ -39,7 +39,8 @@
             <div class="row drilldown-list " ng-if="!group.items[0]">
             No Records Available
             </div>
-            <div class="row drilldown-head drilldown-title active " ng-if="group.items[0]">
+            <ion-scroll direction="x" class="drill-scroll-section drill-scroll-width">
+            <div class="row drilldown-head revenue-width drilldown-title active " ng-if="group.items[0]">
               <div ng-if="(MisCtrl.shownGroup == 0)" class="col col-25">Country From-To</div>
               <div ng-if="(MisCtrl.shownGroup == 1)" class="col col-25">Flown Sector</div>
               <div ng-if="(MisCtrl.shownGroup == 2)" class="col col-25">Flight Number</div>
@@ -49,7 +50,7 @@
               <div ng-if="(MisCtrl.shownGroup == 0)" class="col col-25 text-right">%Contribution <span class="ion-arrow-up-b" ng-show="!contribution" ng-click="contribution = !contribution;MisCtrl.sort('contribution',MisCtrl.shownGroup,true);"></span><span ng-show="contribution" ng-click="contribution = !contribution;MisCtrl.sort('contribution',MisCtrl.shownGroup,false)" class="ion-arrow-down-b"></span></div>
               <div class="col col-25 text-right">Pax Count <span class="ion-arrow-up-b larger" ng-show="!paxCount" ng-click="paxCount = !paxCount;MisCtrl.sort('paxCount',MisCtrl.shownGroup,true);"></span><span ng-show="paxCount" ng-click="paxCount = !paxCount;MisCtrl.sort('paxCount',MisCtrl.shownGroup,false)" class="ion-arrow-down-b larger"></span></div>
             </div>
-            <div ng-class="{activedrill: MisCtrl.isDrillRowSelected(MisCtrl.shownGroup,item)}" class="row drilldown-list" ng-repeat="item in group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]]"  ng-click="MisCtrl.openDrillDown(item,MisCtrl.shownGroup)">
+            <div ng-class="{activedrill: MisCtrl.isDrillRowSelected(MisCtrl.shownGroup,item)}" class="row revenue-width drilldown-list" ng-repeat="item in group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]]"  ng-click="MisCtrl.openDrillDown(item,MisCtrl.shownGroup)">
               <div ng-if="(MisCtrl.shownGroup == 0)" class="col col-25">{{item.countryFrom}} - {{item.countryTo}}</div>
               <div ng-if="(MisCtrl.shownGroup == 1)" class="col col-25">{{item.flownSector}}</div>
               <div ng-if="(MisCtrl.shownGroup == 2)" class="col col-25">{{item.flightNumber}}</div>
@@ -59,7 +60,7 @@
               <div ng-if="(MisCtrl.shownGroup == 0)" class="col col-25 text-right padding-right">{{item.contribution}}</div>
               <div class="col col-25 text-right padding-right">{{item.paxCount}}</div>
             </div>
-            {{item}}
+            </ion-scroll>
           </ion-item>
         </div>
       </ion-list>

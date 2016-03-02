@@ -1,0 +1,14 @@
+<div class="drill-scroll-width-inner row drilldown-head drilldown-title active " ng-if="group.items[0]">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">Route Code</div>
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">Route Type</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10">Aircraft Type</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10">Flight Number</div>
+  <div class="col-10">Seat Factor</div>
+</div>
+<div ng-class="{activedrill: MisCtrl.isDrillRowSelected(MisCtrl.shownGroup,item)}" class="drill-scroll-width-inner row drilldown-list" ng-repeat="item in group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]]"  ng-click="MisCtrl.openBarDrillDown(item,MisCtrl.shownGroup)">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">{{item.routeCode}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">{{item.routeType}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10">{{item.aircraftType}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10">{{item.flightNumber}}</div>
+  <div class="col-10 text-right">{{item.seatFactor}}</div>
+</div>

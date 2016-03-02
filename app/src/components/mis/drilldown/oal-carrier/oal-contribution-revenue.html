@@ -1,0 +1,76 @@
+<div class="drill-scroll-width-inner drill-scroll-width-revenue row drilldown-head drilldown-title active " ng-if="group.items[0]">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10 intial-header">Sector</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10 intial-header">Flight Number</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10 intial-header">Flight Date</div>
+  <div ng-if="(MisCtrl.shownGroup == 3)" class="col-10 intial-header">Type</div>
+  <div class="col-40" >
+    <div class="col text-center" >MPA</div>
+    <div class="col" >
+      <div class="col-10 text-right">Gross </div>
+      <div class="col-10 text-right">Discount</div>
+      <div class="col-10 text-right">ISC</div>
+      <div class="col-10 text-right">ORC</div>
+    </div>
+  </div>
+  <div class="col-40" >
+    <div class="col text-center" >SPA</div>
+    <div class="col" >
+      <div class="col-10 text-right">Gross</div>
+      <div class="col-10 text-right">Discount</div>
+      <div class="col-10 text-right">ISC</div>
+      <div class="col-10 text-right">ORC</div>
+    </div>
+  </div>
+  <div class="col-40" >
+    <div class="col text-center" >Code Share</div>
+    <div class="col" >
+      <div class="col-10 text-right">Gross</div>
+      <div class="col-10 text-right">Discount</div>
+      <div class="col-10 text-right">ISC</div>
+      <div class="col-10 text-right">ORC</div>
+    </div>
+  </div>
+  <div class="col-40" >
+    <div class="col text-center" >RAA</div>
+    <div class="col" >
+      <div class="col-10 text-right">Gross</div>
+      <div class="col-10 text-right">Discount</div>
+      <div class="col-10 text-right">ISC</div>
+      <div class="col-10 text-right">ORC</div>
+    </div>
+  </div>
+</div>
+<div ng-class="{activedrill: MisCtrl.isDrillRowSelected(MisCtrl.shownGroup,item)}" class="drill-scroll-width-inner drill-scroll-width-revenue row drilldown-list" ng-repeat="item in group.ItemsByPage[MisCtrl.currentPage[MisCtrl.shownGroup]]"  ng-click="MisCtrl.openBarDrillDown(item,MisCtrl.shownGroup)">
+  <div ng-if="(MisCtrl.shownGroup == 0)" class="col-10">{{item.sector}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 1)" class="col-10">{{item.flightNumber}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 2)" class="col-10">{{item.flightDate}}</div>
+  <div ng-if="(MisCtrl.shownGroup == 3)" class="col-10">{{item.documentType}}</div>
+
+  <div class="col-40" ><div class="col" >
+  <div class="col-10 text-right">{{item.mpaGross}}</div>
+  <div class="col-10 text-right">{{item.mpaDiscount}}</div>
+  <div class="col-10 text-right">{{item.mpaISC}}</div>
+  <div class="col-10 text-right">{{item.mpaORC}}</div>
+  </div></div>
+
+  <div class="col-40" ><div class="col" >
+  <div class="col-10 text-right">{{item.spaGross}}</div>
+  <div class="col-10 text-right">{{item.spaDiscount}}</div>
+  <div class="col-10 text-right">{{item.spaISC}}</div>
+  <div class="col-10 text-right">{{item.spaORC}}</div>
+  </div></div>
+
+  <div class="col-40" ><div class="col" >
+  <div class="col-10 text-right">{{item.csGross}}</div>
+  <div class="col-10 text-right">{{item.csDiscount}}</div>
+  <div class="col-10 text-right">{{item.csISC}}</div>
+  <div class="col-10 text-right">{{item.csORC}}</div>
+  </div></div>
+
+  <div class="col-40" ><div class="col" >
+  <div class="col-10 text-right">{{item.raaGross}}</div>
+  <div class="col-10 text-right">{{item.raaDiscount}}</div>
+  <div class="col-10 text-right">{{item.raaISC}}</div>
+  <div class="col-10 text-right">{{item.raaORC}}</div>
+  </div></div>
+</div>

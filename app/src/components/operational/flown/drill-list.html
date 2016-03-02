@@ -11,8 +11,8 @@
   </div>
 </div>
 <div class="row drilldown-list " ng-if="!group.items[0].length"> No Records Available </div>
-<div class="drill-scroll-section drill-scroll-width" ng-if="group.items[0].length">
+<ion-scroll direction="x" class="drill-scroll-section drill-scroll-width"  ng-if="group.items[0].length">
   <div ng-if="OprCtrl.drillType == 'flight-process'"  ng-include="'components/operational/flown/flight-process-drill.html'"></div>
   <div ng-if="OprCtrl.drillType == 'coupon-count'"  ng-include="'components/operational/flown/coupon-count-drill.html'"></div>
   <div ng-if="OprCtrl.drillType == 'flight-count'"  ng-include="'components/operational/flown/flight-count-drill.html'"></div>
-</div>
+</ion-scroll>
