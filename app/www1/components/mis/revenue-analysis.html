@@ -54,7 +54,7 @@
 		  <div class="row responsive-sm">
 			<div class="col col-90 no-padding pull-left graph-title">
 			{{MisCtrl.revenueData.revenuePieChart.chartName | limitTo : 27}}
-			{{MisCtrl.revenueData.revenuePieChart.chartName.length > 27 ? '' : ''}}
+			{{MisCtrl.revenueData.revenuePieChart.chartName.length > 27 ? '...' : ''}}
 			<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.revenueData.revenueHorBarChart.chartInfo)"></i>
 			</div>
 			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,1,'revenue')" class="icon icon-larger font-normal ion-android-open curs mis-zoom" ng-show="MisCtrl.toggle.revenueView=='chart'"></i></div>
@@ -84,7 +84,9 @@
 	  <div class="col col-33 col-offset-5 padding-horizontal">
 		<div class="col-demo">
 		  <div class="row responsive-sm">
-			<div class="col col-90 no-padding pull-left graph-title">Passenger Count by class of Travel
+			<div class="col col-90 no-padding pull-left graph-title">
+			{{MisCtrl.revenueData.revenueBarChart.chartName | limitTo : 27}}
+			{{MisCtrl.revenueData.revenueBarChart.chartName.length > 27 ? '...' : ''}}
 			  <i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, MisCtrl.revenueData.revenueHorBarChart.chartInfo)"></i>
 			</div>
 			<div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openPopover($event,2,'revenue')" class="icon icon-larger font-normal ion-android-open curs mis-zoom" ng-show="MisCtrl.toggle.revenueView=='chart'"></i></div>
@@ -92,7 +94,7 @@
 		  <div class="row">
 			<div class="col box-cont-rev net-rev-height rev-bar-modifier revenueAnalysis" data-item-title="Passenger Count by class of Travel" data-item-flag="3" ng-show="MisCtrl.toggle.revenueView=='chart'">
 				<chartevent type="passenger-count">
-			  		<nvd3 data="MisCtrl.revenueData.revenueBarChart" options="MisCtrl.options.passengerChart"></nvd3>
+			  		<nvd3 data="MisCtrl.revenueData.revenueBarChart.multibarChartItems" options="MisCtrl.options.passengerChart"></nvd3>
 			  	</chartevent>
 			  <div class="chart-legend-rev from">OWN</div><div class="chart-legend-rev to">OAL</div>
 			</div>
@@ -103,7 +105,7 @@
 					<th>Business</th>
 					<th>Economy</th>
 					</tr>
-					<tr class="tblcol" ng-repeat="revenueData in MisCtrl.revenueData.revenueBarChart">              
+					<tr class="tblcol" ng-repeat="revenueData in MisCtrl.revenueData.revenueBarChart.multibarChartItems">              
 					<td data-th="First">{{revenueData.values[0].value}}</td>
 					<td data-th="Business">{{revenueData.values[1].value}}</td>
 					<td data-th="Economy">{{revenueData.values[2].value}}</td>

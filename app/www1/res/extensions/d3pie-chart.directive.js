@@ -47,7 +47,7 @@
 							"tooltips": {
 								"enabled": true,
 								"type": "placeholder",
-								"string": "{label}: {value}%",
+								"string": "{label}: {value}",
 								"styles": {
 									"backgroundColor": "#ffffff",
 									"backgroundOpacity": 1,

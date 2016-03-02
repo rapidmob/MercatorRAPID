@@ -66,7 +66,8 @@
                           showValues="true"
                           height="280"
                           color="OprCtrl.fourBarColorFunction()"
-                                          width="340">
+                          valueFormat="OprCtrl.valueFormatFunction()"
+                          width="340">
                         <svg></svg>
                       </nvd3-discrete-bar-chart>
                       <p class="graph-title-bottom text-center">{{weekdata.key}}</p>
@@ -88,6 +89,7 @@
                               showYAxis="false"
                               showValues="true"
                               color="OprCtrl.colorFunction()"
+                              valueFormat="OprCtrl.valueFormatFunction()"
                               height="280"
                               width="300">
                           <svg></svg>
@@ -111,6 +113,7 @@
                               showYAxis="false"
                               showValues="true"
                               color="OprCtrl.colorFunction()"
+                              valueFormat="OprCtrl.valueFormatFunction()"
                               height="280"
                               width="300">
                           <svg></svg>
@@ -186,7 +189,8 @@
                           staggerLabels="true"
                           interactive="true"
                           useInteractiveGuideline="true"
-                          xAxisLabel="Day" 
+                          xAxisLabel="Day"
+                          yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count">
                           <svg></svg></nvd3-multi-bar-chart> </div>
 
@@ -202,7 +206,8 @@
                           staggerLabels="true"
                           interactive="true"
                           useInteractiveGuideline="true"
-                          xAxisLabel="Day" 
+                          xAxisLabel="Day"
+                          yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
                           <svg></svg></nvd3-multi-bar-chart></div>
 
@@ -218,7 +223,8 @@
                           staggerLabels="true"
                           interactive="true"
                           useInteractiveGuideline="true"
-                          xAxisLabel="Day" 
+                          xAxisLabel="Day"
+                          yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
                           <svg></svg></nvd3-multi-bar-chart> </div>
                     </div>  

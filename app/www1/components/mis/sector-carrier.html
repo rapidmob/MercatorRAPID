@@ -33,11 +33,10 @@
         </div> -->
       </div>
     </div>
-</div>
 <div class="row section-margin responsive-sm">
   <div class="col col-50 padding-horizontal" ng-repeat="sector in MisCtrl.SectorCarrierAnalysisCharts | filter: MisCtrl.sectorCarrierFilter(MisCtrl)">
     <div class="col-demo sectorcarrieranalysis" id="sector-carrier-chart{{$index}}" data-item-title="{{sector.heading1}}">
-      <div class="row">
+      <div class="row responsive-sm">
         <div class="col col-90 no-padding pull-left graph-title">{{sector.heading1}}<i class="icon ion-ios-information-outline padding-horizontal icon-larger curs" ng-click = "MisCtrl.openinfoPopover($event, sector.chartInfo)"></i></div>
         <div class="col col-10 no-padding pull-right"><i ng-click="MisCtrl.openSectorPopover($event,$index,'sector')" class="icon icon-larger font-normal ion-android-open curs mis-zoom" ng-show="MisCtrl.toggle.sectorView=='chart'"
         ></i></div>
@@ -46,7 +45,7 @@
         <div class="col box-cont" ng-class="{'sector-padding': MisCtrl.toggle.sectorView=='chart'}">
       <!-- <nvd3 data="topSectorsResult" options="options.sectorChart" class="with-3d-shadow with-transitions"></nvd3> -->
       <div ng-show="MisCtrl.toggle.sectorView=='chart'">
-        <he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items"></he-progress-bar>
+        <he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items" name="{{sector.heading1}}"></he-progress-bar>
         <p class="float-right">Others {{sector.others[0].progress}}</p>
       </div>
       
@@ -59,7 +58,7 @@
           <td class="tblvalname" data-th="{{sector.heading1}}">{{items.name}}</td>
           <td data-th="Progress">{{items.progress}}</td>        
           </tr>
-          <tr class="tblcol"><td class="tblvalname">Others</td> <td data-th="Others">{{sector.others[0].progress}}</td></tr>
+          <tr class="tblcol"><td class="tblvalname otherscls">Others</td> <td data-th="Others">{{sector.others[0].progress}}</td></tr>
         </table>
       
         </div>
