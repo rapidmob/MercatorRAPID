@@ -35,7 +35,7 @@
                .style("background-color", function(d) { return d.color })              
                .transition()
                .duration(1000)
-               .style("min-width", function(d) { return x(+d.progress) + "%" });
+               .style("width", function(d) { return x(+d.progress) + "%" });
 
         var boxSegment = barSegment.append("span").classed("horizontal-bar-graph-value-box", true)
                                    .text(function(d) { return d.progress ? d.progress : "" });

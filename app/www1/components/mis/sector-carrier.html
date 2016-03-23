@@ -45,7 +45,7 @@
         <div class="col box-cont" ng-class="{'sector-padding': MisCtrl.toggle.sectorView=='chart'}">
       <!-- <nvd3 data="topSectorsResult" options="options.sectorChart" class="with-3d-shadow with-transitions"></nvd3> -->
       <div ng-show="MisCtrl.toggle.sectorView=='chart'">
-        <he-progress-bar class="horizontal-bar-graph" show-tooltip="true" chart-data="sector.items" name="{{sector.heading1}}"></he-progress-bar>
+        <he-progress-bar class="horizontal-bar-graph mar-fix" show-tooltip="true" chart-data="sector.items" name="{{sector.heading1}}"></he-progress-bar>
         <p class="float-right">Others {{sector.others[0].progress}}</p>
       </div>
       

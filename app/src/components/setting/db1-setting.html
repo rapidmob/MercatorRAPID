@@ -1,0 +1,94 @@
+<ion-item class="item-stable main-title drilldown-head ext-margin" ng-click="appCtrl.toggleGroup(0)" ng-class="{active: appCtrl.isGroupShown(0)}"> <i class="icon float-right accord-icon" ng-class="appCtrl.isGroupShown(0) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i> &nbsp;
+  Metric Snapshot </ion-item>
+<ion-item class="item-accordion setting-accordion" ng-class="{'drilldown-content-active': appCtrl.isGroupShown(0), 'drilldown-content-inactive': !appCtrl.isGroupShown(0)}" ng-show="appCtrl.isGroupShown(0)">
+    <ion-item class="setting-select-all" >
+    <div class="setting-all col col-50"> <span>Select all</span>
+    <ion-checkbox ng-model="appCtrl.favemetricall" ng-click="appCtrl.selectAll(MisCtrl.metricOrgResult,appCtrl.favemetricall)" ></ion-checkbox>
+    </div>
+  </ion-item>
+
+    <ion-item class="setting-item" ng-repeat="result in appCtrl.selectFavourite(MisCtrl.metricOrgResult,'metric')">{{result.chartName}}
+    <div class="setting-check">
+    <ion-checkbox ng-model="favitems" ng-click="appCtrl.storeFavourite(result,favitems)" ng-checked="result.status || appCtrl.favemetricall"></ion-checkbox>
+    </div>
+  </ion-item>
+</ion-item>
+
+
+<ion-item class="item-stable main-title drilldown-head ext-margin" ng-click="appCtrl.toggleGroup(1)" ng-class="{active: appCtrl.isGroupShown(1)}"> <i class="icon float-right accord-icon" ng-class="appCtrl.isGroupShown(1) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i> &nbsp;
+  Target vs Actual - Net Revenue </ion-item>
+<ion-item class="item-accordion setting-accordion" ng-class="{'drilldown-content-active': appCtrl.isGroupShown(1), 'drilldown-content-inactive': !appCtrl.isGroupShown(1)}" ng-show="appCtrl.isGroupShown(1)">
+    <ion-item class="setting-select-all" >
+    <div class="setting-all col col-50"> <span>Select all</span>
+    <ion-checkbox ng-model="appCtrl.favetargetall" ng-click="appCtrl.selectAll(MisCtrl.targetOrgActualData,appCtrl.favetargetall)" ></ion-checkbox>
+    </div>
+  </ion-item>
+
+    <ion-item class="setting-item" ng-repeat="result in appCtrl.selectFavourite(MisCtrl.targetOrgActualData,'target1')">{{result.chartName}}
+    <div class="setting-check">
+    <ion-checkbox ng-model="favitems" ng-click="appCtrl.storeFavourite(result,favitems)" ng-checked="result.status || appCtrl.favetargetall"></ion-checkbox>
+    </div>
+  </ion-item>
+
+</ion-item>
+
+<ion-item class="item-stable main-title drilldown-head ext-margin" ng-click="appCtrl.toggleGroup(2)" ng-class="{active: appCtrl.isGroupShown(2)}"> <i class="icon float-right accord-icon" ng-class="appCtrl.isGroupShown(2) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i> &nbsp;
+  Revenue Analysis </ion-item>
+<ion-item class="item-accordion setting-accordion" ng-class="{'drilldown-content-active': appCtrl.isGroupShown(2), 'drilldown-content-inactive': !appCtrl.isGroupShown(2)}" ng-show="appCtrl.isGroupShown(2)">
+    <ion-item class="setting-select-all" >
+    <div class="setting-all col col-50"> <span>Select all</span>
+    <ion-checkbox ng-model="appCtrl.faverevenueall" ng-click="appCtrl.selectAll(MisCtrl.orgRevenueData,appCtrl.faverevenueall)" ></ion-checkbox>
+    </div>
+  </ion-item>
+
+    <ion-item class="setting-item" ng-repeat="result in appCtrl.selectFavourite(MisCtrl.orgRevenueData,'revenue')">{{result.chartName}}
+    <div class="setting-check">
+    <ion-checkbox ng-model="favitems" ng-click="appCtrl.storeFavourite(result,favitems)" ng-checked="result.status || appCtrl.faverevenueall"></ion-checkbox>
+    </div>
+  </ion-item>
+
+</ion-item>
+
+
+<ion-item class="item-stable main-title drilldown-head ext-margin" ng-click="appCtrl.toggleGroup(3)" ng-class="{active: appCtrl.isGroupShown(3)}"> <i class="icon float-right accord-icon" ng-class="appCtrl.isGroupShown(3) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i> &nbsp;
+  Sector & Carrier Analysis</ion-item>
+<ion-item class="item-accordion setting-accordion" ng-class="{'drilldown-content-active': appCtrl.isGroupShown(3), 'drilldown-content-inactive': !appCtrl.isGroupShown(3)}" ng-show="appCtrl.isGroupShown(3)">
+    <ion-item class="setting-select-all" >
+    <div class="setting-all col col-50"> <span>Select all</span>
+    <ion-checkbox ng-model="appCtrl.favesectorall" ng-click="appCtrl.selectAll(MisCtrl.SectorOrgCarrierAnalysisCharts,appCtrl.favesectorall)" ></ion-checkbox>
+    </div>
+  </ion-item>
+
+    <ion-item class="setting-item" ng-repeat="result in appCtrl.selectFavourite(MisCtrl.SectorOrgCarrierAnalysisCharts,'sector')">{{result.chartName}}
+    <div class="setting-check">
+    <ion-checkbox ng-model="favitems" ng-click="appCtrl.storeFavourite(result,favitems)" ng-checked="result.status || appCtrl.favesectorall"></ion-checkbox>
+    </div>
+  </ion-item>
+
+</ion-item>
+ 
+<ion-item class="item-stable main-title drilldown-head ext-margin" ng-click="appCtrl.toggleGroup(4)" ng-class="{active: appCtrl.isGroupShown(4)}"> <i class="icon float-right accord-icon" ng-class="appCtrl.isGroupShown(4) ? 'ion-ios-arrow-up' : 'ion-ios-arrow-down'"></i> &nbsp;
+  Route Revenue </ion-item>
+<ion-item class="item-accordion setting-accordion" ng-class="{'drilldown-content-active': appCtrl.isGroupShown(4), 'drilldown-content-inactive': !appCtrl.isGroupShown(4)}" ng-show="appCtrl.isGroupShown(4)">
+ <ion-item class="setting-select-all" >
+    <div class="setting-all col col-50"> <span>Select all</span>
+    <ion-checkbox ng-model="appCtrl.faveRouteRevall" ng-click="appCtrl.selectAll(MisCtrl.routeOrgRevData.RouteRevenueCharts,appCtrl.faveRouteRevall)" ></ion-checkbox>
+    </div>
+  </ion-item>
+
+  <ion-item class="setting-item" ng-repeat="result in appCtrl.selectFavourite(MisCtrl.routeOrgRevData.RouteRevenueCharts,'routerev')"  >{{result.chartName}}
+    <div class="setting-check">
+    <ion-checkbox ng-model="favitems" ng-click="appCtrl.storeFavourite(result,favitems)" ng-checked="result.status || appCtrl.faveRouteRevall"></ion-checkbox>
+    </div>
+  </ion-item>
+</ion-item>
+<div>
+  <div class="row settings-buttons">
+    <div class=" button-bar col col-50">
+        <a class="button button-custom-color button-modifier no-border button-inactive rev btn-padding-top" ng-click="appCtrl.saveFavourite()" ng-class="">Save my preference</a>
+    </div>
+    <div class=" button-bar col col-50">
+        <a class="button button-modifier no-border button-inactive rev btn-padding-top" ng-click="appCtrl.saveFavourite()" ng-class="">Reset to Default</a>
+    </div>
+  </div>
+</div>

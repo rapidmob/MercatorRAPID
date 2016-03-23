@@ -84,9 +84,7 @@
 										  showValues="true"
 										  height="280"
 										  valueFormat="OprCtrl.valueFormatFunction()"
-										  color="OprCtrl.fourBarColorFunction()">
-									  <svg></svg>
-									</nvd3-discrete-bar-chart>
+										  color="OprCtrl.fourBarColorFunction()"><svg></svg></nvd3-discrete-bar-chart>
 									<p class="graph-title-bottom">{{weekData.key}}</p>
 									</div>
 									<p class="pull-right graph-title-percent">{{weekData.closedPercent}}<br/><span class="graph-title-percent">Close%</span></p>
@@ -120,12 +118,12 @@
                   <div class="col-demo">
 					<div class="row">
                         <div class="col col-80 no-padding pull-left graph-title">Day Data</div>
-                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-proc-status')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-if="OprCtrl.toggle.flightStatus=='chart'">
                       </i></div>
                         </div>
 
                       <div class="row">
-                        <div class="col no-padding pull-left graph-title fpStatus fpStatusFlag" data-item-title="Day Data" data-item-flag="6" data-item-pdfFlag="dynamicWH" ng-show="OprCtrl.toggle.flightStatus=='chart'">
+                        <div class="col no-padding pull-left graph-title fpStatus fpStatusFlag" data-item-title="Day Data" data-item-flag="6" data-item-pdfFlag="dynamicWH" ng-if="OprCtrl.toggle.flightStatus=='chart'">
                           <chartevent type="flight-process">
                           <nvd3-multi-bar-chart                         
                           data="OprCtrl.flightProcStatus.stackedChart"                         
@@ -140,12 +138,12 @@
                           xAxisLabel="Day"
                           yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
-                          color="OprCtrl.fourBarColorFunction()">
-                          <svg></svg></nvd3-multi-bar-chart>
+                          margin="{left:100,top:20,bottom:50,right:50}"
+                          color="OprCtrl.fourBarColorFunction()"><svg></svg></nvd3-multi-bar-chart>
                           </chartevent>
                         </div>
                         </div>  
-						<table class="resptbl" ng-show="OprCtrl.toggle.flightStatus=='table'">
+						<table class="resptbl" ng-if="OprCtrl.toggle.flightStatus=='table'">
 						
 							<tr class="tblhder">
 								<th>Day</th>

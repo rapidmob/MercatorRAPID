@@ -57,7 +57,7 @@
                     <div ng-repeat="weekdata in OprCtrl.flightProcStatus.weekData" ng-if="$index == OprCtrl.currentIndex">
                     <div class="row">
                       <div class="col col-80 weekdata-zoom-margin">
-                      <div  class="flightprocessStatus four-bar-pop weekdata-popover-padding" data-item-title="Month Data">
+                      <div  class="flightprocessStatus four-bar-pop weekdata-popover-padding align-weekdata" data-item-title="Month Data">
                       <nvd3-discrete-bar-chart
                           data="[weekdata]"                              
                           tooltips="true"
@@ -81,7 +81,7 @@
                     <div ng-repeat="weekData in OprCtrl.flightCountReason.weekData" ng-if="$index == OprCtrl.currentIndex">
                     <div class="row">
                      <div class="col col-80 weekdata-zoom-margin">
-                      <div class="openflightcountbyreason three-bar weekdata-popover-padding" data-item-title="Month Data" data-item-flag="{{$index+2}}">
+                      <div class="openflightcountbyreason three-bar-pop weekdata-popover-padding align-weekdata" data-item-title="Month Data" data-item-flag="{{$index+2}}">
                         <nvd3-discrete-bar-chart
                               data="[weekData]"                              
                               tooltips="true"
@@ -105,7 +105,7 @@
                     <div ng-repeat="weekData in OprCtrl.couponCountException.weekData" ng-if="$index == OprCtrl.currentIndex">
                     <div class="row">
                       <div class="col col-80 weekdata-zoom-margin">
-                        <div class="couponcountbyexceptioncategory three-bar weekdata-popover-padding" data-item-title="Month Data" data-item-flag="{{$index+2}}">
+                        <div class="couponcountbyexceptioncategory three-bar-pop weekdata-popover-padding align-weekdata" data-item-title="Month Data" data-item-flag="{{$index+2}}"> 
                         <nvd3-discrete-bar-chart
                               data="[weekData]"                             
                               tooltips="true"
@@ -191,7 +191,8 @@
                           useInteractiveGuideline="true"
                           xAxisLabel="Day"
                           yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
-                          yAxisLabel="Open Flights Count">
+                          yAxisLabel="Open Flights Count"
+                          margin="{left:100,top:20,bottom:50,right:50}">
                           <svg></svg></nvd3-multi-bar-chart> </div>
 
                           <div ng-if = "OprCtrl.graphType == 'flight-count-reason'">
@@ -209,6 +210,7 @@
                           xAxisLabel="Day"
                           yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
+                          margin="{left:100,top:20,bottom:50,right:50}">
                           <svg></svg></nvd3-multi-bar-chart></div>
 
                           <div ng-if = "OprCtrl.graphType == 'cc-exception-category'">
@@ -226,6 +228,7 @@
                           xAxisLabel="Day"
                           yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
+                          margin="{left:100,top:20,bottom:50,right:50}">
                           <svg></svg></nvd3-multi-bar-chart> </div>
                     </div>  
                 </div>

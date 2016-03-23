@@ -35,7 +35,7 @@
                    .style("background-color", function(d) { return d.color })              
                    .transition()
                    .duration(1000)
-                   .style("min-width", function(d) { return x(d.value) + "%" });            
+                   .style("width", function(d) { return x(d.value) + "%" });            
                                  
           }               
         }, true);

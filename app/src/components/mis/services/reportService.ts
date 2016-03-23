@@ -240,12 +240,12 @@
 			angular.forEach(svgNode, function(value, key) {				
 				var html = "";
 				if(nodeExists.indexOf(svgNode[key].parentNode.getAttribute("data-item-flag")) == -1 && svgNode[key].length >= 1){
-					html = svgNode[key][0].outerHTML;
+					html = svgNode[key][0].parentElement.innerHTML;
 					if(svgNode[key].parentNode.getAttribute("data-item-pdfFlag") === "dynamicWH"){
 						d3.select("."+param+"Flag").select("svg").attr("width",1500);
 						d3.select("."+param+"Flag").select("svg").attr("height",600);
 						var node = d3.select("."+param+"Flag").select("svg");
-						html = node[0][0].outerHTML;
+						html = node[0][0].parentElement.innerHTML;
 						imagesObj['width'] = 500;
 						imagesObj['height'] = 500;
 					}
@@ -307,13 +307,24 @@
 					deferred.resolve({content: content});
 				});				
 			} else if(param == "sectorcarrieranalysis"){
-				var svgNode = d3.selectAll("."+param);
-				angular.forEach(svgNode[0], function(value, key) {
-					var node = document.getElementById('sector-carrier-chart'+key);
-					var eleID = 'sector-carrier-chart'+key;
-					html2canvas(document.getElementById(eleID)).then(function(canvas) {
+				var nodeList = document.getElementsByClassName('sectorcarrieranalysis');				
+				var nodeFlag = [];
+				if(tabIndex == 0 && nodeList.length == 2){
+					nodeFlag.push(nodeList[0]);
+				}else if(tabIndex == 0 && nodeList.length == 4){
+					nodeFlag.push(nodeList[0]);nodeFlag.push(nodeList[1]);
+				}else if(tabIndex != 0 && nodeList.length == 2){
+					nodeFlag.push(nodeList[1]);
+				}else if(tabIndex != 0 && nodeList.length == 4){
+					nodeFlag.push(nodeList[2]);nodeFlag.push(nodeList[3]);
+				}
+			
+			
+				
+				angular.forEach(nodeFlag, function(value, key) {			
+					html2canvas(nodeFlag[key]).then(function(canvas) {
 						var c = canvas.toDataURL();
-						var  text = "\n\n"+node.getAttribute('data-item-title')+"\n\n";
+						var  text = "\n\n"+nodeFlag[key].getAttribute('data-item-title')+"\n\n";
 						textObj['text'] = text;
 						textColumn.push(textObj);
 						imagesObj['width'] = 500;
@@ -331,14 +342,19 @@
 						textObj = {};
 						imgTemp = {};
 						txtTemp ={};	
-						if(key == svgNode[0].length-1){
+						if(key == nodeFlag.length-1){
 							deferred.resolve({content: content});
 						}
 					});					
 				});		
 			}else if(param == "routerevenue"){				
-				var eleID = 'route-revenue-pdf';					
-				html2canvas(document.getElementById(eleID)).then(function(canvas) {
+				var nodeList = document.getElementsByClassName('route-revenue-pdf');
+				var nodeFlag;
+				if(tabIndex === 0)
+				nodeFlag = nodeList[0];
+				else
+				nodeFlag = nodeList[1];
+				html2canvas(nodeFlag).then(function(canvas) {
 					var c = canvas.toDataURL();
 					var  text = "";
 					textObj['text'] = text;

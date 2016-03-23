@@ -60,7 +60,7 @@
     </ion-scroll>
   </div>
   <ion-content scroll="false" class="title-height">
-    <tab-slide-box tab="0">
+    <tab-slide-box tab="0" type="mis">
       <div class="tsb-icons no-margin">
           <div class="tsb-ic-wrp">
           <ion-scroll direction="x" class="tsb-hscroll" id="tab-id">
@@ -73,9 +73,11 @@
       <ion-slide-box show-pager="false" on-slide-changed="slideHasChanged($index)">
         <ion-slide >
           <ion-scroll style="height:100%">
-			<div  ng-include="'components/mis/metric.html'"></div>
-			<div ng-include="'components/mis/target-actual.html'"></div>
-			<div ng-include="'components/mis/revenue-analysis.html'"></div> 
+			<div ng-if="MisCtrl.metricResult.length" ng-include="'components/mis/metric.html'"></div>
+			<div ng-if="MisCtrl.targetActualData.horBarChart.length || MisCtrl.targetActualData.lineChart.length" ng-include="'components/mis/target-actual.html'"></div>
+			<div ng-if="MisCtrl.orgRevenueData.revenuePieChart.favoriteInd =='Y' || MisCtrl.orgRevenueData.revenueBarChart.favoriteInd =='Y' || MisCtrl.orgRevenueData.revenueHorBarChart.favoriteInd == 'Y'" ng-include="'components/mis/revenue-analysis.html'"></div> 
+      <div ng-if="MisCtrl.SectorCarrierAnalysisCharts.length" ng-include="'components/mis/sector-carrier.html'"></div> 
+      <div ng-if="MisCtrl.routeRevData.RouteRevenueCharts.length" ng-include="'components/mis/route-revenue.html'"></div> 
       <div class="row padding-horizontal"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>       
       		<div class="clear"></div>
         	<h1>&nbsp;</h1>    
@@ -95,7 +97,7 @@
         <ion-slide>
 			<ion-scroll class="scroll-height">
 				<div ng-include="'components/mis/target-actual.html'"></div>
-        <div class="row padding-horizontal" ng-class="{'flown-footer': MisCtrl.toggle.targetView=='chart'}"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
+        <div class="row padding-horizontal tva-footer" ng-class="{'flown-footer': MisCtrl.toggle.targetView=='chart'}"><div class="col pull-left">&copy; Mercator 2015</div><div class="col pull-right">About Rapid</div></div>
 				<div class="clear"></div>
 				<h1>&nbsp;</h1>	
 			</ion-scroll>

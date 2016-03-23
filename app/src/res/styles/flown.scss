@@ -64,7 +64,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     left: 50%;
     width:80em;
     height:29em;
-    margin-top: 14em; 
+    margin-top: 14em;
     margin-left: -15em;
     
 }
@@ -249,11 +249,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     color: $secondary-text-color;
 }
 .graph-title{
-    font-size: 1em;
+    font-size: 0.95em;
     color: $title-color;
     font-weight: bold;
     font-family: $roboto_regular;
-
+    white-space: nowrap;
 }
 .chart_legend {
     /*float: right;*/
@@ -266,7 +266,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 .graphpopover .chart_legend {
     float: left;
-    padding-right: 10px; 
+    padding-right: 10px;
     padding-bottom: 9px;
     padding-left: 14px;
     font-weight: normal;
@@ -398,7 +398,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .checkbox-custom:checked + .checkbox-custom-label:before {
     content: '✔';
     font-family: 'FontAwesome';
-    color: $light;
+    color: $light !important;
 }
 .checkbox-custom1:checked + .checkbox-custom-label:before {
     content: '✔';
@@ -421,7 +421,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 /* login checkbox custom ends */
 .margin-top-1{
-    @include margin-top(-1px);  
+    @include margin-top(-1px);
 }
 .button-custom-color{
     background-color: $button-bg-color !important;
@@ -477,6 +477,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
     select {
         margin-top: 0;
+        padding-left: 5px;
     }
 }
 .header-padding{
@@ -492,7 +493,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     display: block;
 }
 .mob-view {
-    display: none; 
+    display: none;
 }
 
 @media only screen  and (min-device-width: 768px) and (max-device-width: 1024px) {
@@ -512,7 +513,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         }
         .extra-small{
             max-width: 140px !important;
-        }        
+        }
     }
         .content-head{
             .btn-section{
@@ -560,6 +561,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
                     padding: 0 11%;
             }*/
     }
+    .tva-footer {
+        padding-top: 30px;
+        padding-bottom: 40px;
+    }
+    .tva-footer.flown-footer {
+        padding-bottom: 0px;
+    }
+    .percentpadding-revenuechart {
+        padding: 0 28%;
+    }
 }
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {     
     .content-head, .sector-head {
@@ -590,8 +601,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             @include padding-all(0px, 0px, 0px, 0px);
         }
     }
-    .footer{ 
-        bottom:12% !important; 
+    .footer{
+        bottom:12% !important;
     }
     .route-rev-section{
         .row{
@@ -602,7 +613,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
             flex: none !important;
             float: left;
         }
-        .col-33{                
+        .col-33{
             max-width: 50%;
         }
         .net-rev-height{
@@ -704,7 +715,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         display: block;
     }
     .mob-view {
-        display: none; 
+        display: none;
     }
 
     .rev-pie-modifier{
@@ -719,7 +730,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         flex: 1;
         display: block;
         @include padding-all(5px, 5px, 5px, 5px);
-
         width: 100%;
     }
     .sector-head {
@@ -781,18 +791,27 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .pie-popover-cust{
         height: 550px;
         top: 10% !important;
-        margin-top: -5% !important; 
+        margin-top: -5% !important;
     }
     .bar-popover-cust{
         height: 450px;
         top: 10% !important;
-        margin-top: -5% !important; 
+        margin-top: -5% !important;
     }
     .content-head .two-buttons-only {
         width: 50% !important; 
     } 
     .op-dboard .two-buttons-only {
         width: 70% !important; 
+    }
+    .nvtooltip p{
+        display: block;
+    }
+    .nvtooltip h3{
+        font-size: 10px !important;
+    }
+    .percentpadding-revenuechart {
+        padding: 0 37%;
     }
 }
 .menu-bg{
@@ -816,6 +835,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 } */
 .infopopover {
     background: $info-popup-bg !important;
+    position: relative;
     @include padding-all(0.5em, 0.5em, 0.5em, 0.5em);
     width: 23% !important;
     margin-top:10px;
@@ -861,7 +881,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     border: 1px solid rgba(115, 114, 114, 0.4);
     box-shadow: 0px 0px 11px $second-shadow-color !important;
     @include border-radius(1px);
-    background: $light;  
+    background: $light;
 }
 .graphpopover {
     min-height: 440px !important;
@@ -906,7 +926,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     @include border-radius(3px);
     content: '';
     -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg); }
+    transform: rotate(-45deg); 
+}
+/* Incase of any issue related to info pop over comment the below css */
+.infopopover.popover-bottom .popover-arrow {
+    border-bottom: 12px !important;
+    top: 100% !important;
+}
+.infopopover.popover-bottom .popover-arrow:after {
+    border-bottom: 12px !important;
+    top: -50% !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+/* comment Till here */
+
 .popover-wrapper .drillpopover .popover-arrow, 
 .popover-wrapper .drillpopover .popover-arrow:after {
     display:none;
@@ -942,9 +975,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .percentpadding{
     padding: 0 20%;
 }
-.percentpadding-revenuechart {
-    padding: 0 26%;
-}
 .popup-close{
     text-align: right;
     cursor: pointer;
@@ -971,7 +1001,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 .drilldown-content{
     color: $dropdown-text !important;
-    background: $light !important; 
+    background: $light !important;
     border: 0;
     padding: 0;
     @include margin-all(10px, 0px, 15px, 0px);
@@ -1205,6 +1235,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     vertical-align: baseline;*/
     width: 100%;
     /* padding-top: 1.4em;*/
+    vertical-align: top; 
 }
 .net-rev-bar-graph-value {
     display: table-cell;
@@ -1235,10 +1266,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 .horizontal-bar-graph-segment:nth-child(1), .net-rev-bar-graph-segment:nth-child(1){
     .horizontal-bar-graph-value-bar, span{
-       background: $hor-bar-span-one-bg; 
+       background: $hor-bar-span-one-bg;
     }
     .net-rev-bar-graph-value-bar{
-       background: $fifth-text-color; 
+       background: $fifth-text-color;
     }
 }
 
@@ -1247,27 +1278,27 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
        background: $hor-bar-span-two-bg;
     }
     .net-rev-bar-graph-value-bar{
-       background: $fifth-text-color; 
+       background: $fifth-text-color;
     }
 }
 .net-rev-bar-graph-segment:nth-child(2){
     .net-rev-bar-graph-value-bar{
-       background: $legend-border-two; 
-    } 
+       background: $legend-border-two;
+    }
 }
 .horizontal-bar-graph-segment:nth-child(3){
     .horizontal-bar-graph-value-bar, span{
-           background: $hor-bar-span-three-bg; 
+           background: $hor-bar-span-three-bg;
         }
 }
 .horizontal-bar-graph-segment:nth-child(4){
     .horizontal-bar-graph-value-bar, span{
-            background: $hor-bar-span-four-bg; 
+            background: $hor-bar-span-four-bg;
         }
 }
 .horizontal-bar-graph-segment:nth-child(5){
     .horizontal-bar-graph-value-bar, span{
-        background: $hor-bar-span-five-bg; 
+        background: $hor-bar-span-five-bg;
     }
 }
 .horizontal-bar-graph-value-bar{
@@ -1342,7 +1373,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
 }
 
-.tick { 
+.tick {
     line {
        display: none;
     }
@@ -1355,7 +1386,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     padding-top: 1.5em;
 }
 .net-rev-height{
-    min-height: 316px;
+    height: 316px;
 }
 
 .button-bg{
@@ -1413,7 +1444,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .row tblhder .col:first-child {
-    display: none; 
+    display: none;
 }
 
 .tblvalues:nth-of-type(even) {
@@ -1470,10 +1501,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     } 
 }
 .resptbl th:before {
-    color: $light; 
+    color: $light;
 }
 .resptbl td:before {
-    color: $dark; 
+    color: $dark;
 }
 
 .resptbl {
@@ -1511,12 +1542,12 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     font-weight: bold;
     width: 14.7em;
     display: inline-block;
-    padding-left: 0.5em; 
+    padding-left: 0.5em;
 }
   
 @media (min-width: 600px) {
     .resptbl td:before {
-        display: none; 
+        display: none;
     } 
     .resptbl th, .resptbl td {
         display: table-cell;
@@ -1524,7 +1555,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         .resptbl th:first-child {
           padding-left: 0; }
         .resptbl th:last-child {
-          padding-right: 0; } 
+          padding-right: 0; }
           .resptbl td:last-child{
             padding-right: .5em;
             }
@@ -1645,7 +1676,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .col {
         flex: none !important;
         float: left;
-    }            
+    }
 }
 
 @media screen 
@@ -1703,7 +1734,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
                 flex: none !important;
                 float: left;
             }
-            .col-33{                
+            .col-33{
                 max-width: 50%;
             }
             .net-rev-height{
@@ -1720,7 +1751,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
                 flex: none !important;
                 float: left;
             }
-            .col-33{                
+            .col-33{
                 max-width: 50%;
             }
             .net-rev-height{
@@ -1790,9 +1821,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .net-revenue-monthly .col-demo {
         min-height: 305px !important;
     }
+    .checkbox-custom:checked + .checkbox-custom-label:before {
+        font-size: 12px !important;
+        line-height: 20px;
+    }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 667px) and (orientation: portrait) {
-    .header-logo img {            
+    .header-logo img {
         width: 119%;
         margin-left: -34px;
     }
@@ -1898,18 +1933,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     .chart_legend { 
         /*display: block;*/
     }
-    .db-two-leg .chart_legend { 
+    .db-two-leg .chart_legend {
         display: inline-block;
         padding-left: 5px !important;
     }
-    .checkbox-custom1:checked + .checkbox-custom-label:before { 
+    .checkbox-custom1:checked + .checkbox-custom-label:before {
         line-height: 14px;
     }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 667px){
     .col-demo{
         .col-10, .col-20{
-            .icon-larger:before {
+            .icon-larger, .icon-larger:before {
                 display:none;
             }
         }
@@ -1978,10 +2013,33 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     /*.metric-modifier text, .rev-modifier text {
         font-size: 8px;
     }*/
+    .tva-footer {
+        padding-top: 30px;
+        padding-bottom: 40px;
+    }
+    .tva-footer.flown-footer {
+        padding-bottom: 0px;
+    }
+    .checkbox-custom:checked + .checkbox-custom-label:before {
+        font-size: 10px !important;
+    }
 }
 .platform-android .popover {
     margin-top: 10px;
 }
 .platform-ios .popover-arrow:after {
     background: transparent;
+}
+
+.mar-fix .horizontal-bar-graph-value-scale {
+    margin-top: -5px !important;
+}
+.nvd3 .nv-discretebar .nv-groups text,
+.nvd3 .nv-multibarHorizontal .nv-groups text
+{
+    stroke-width:25px !important;
+}
+.nv-y .nv-axis .nv-axisMaxMin text
+{
+  stroke-width: 30px !important;
 }

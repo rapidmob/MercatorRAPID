@@ -7,7 +7,7 @@
       <div class=" pull-right padding-horizontal download-btn">
         <button class="button export" ng-click="MisCtrl.runReport('targetActual',MisCtrl.toggle.targetRevOrPax,MisCtrl.header.flownMonth)"><img src="res/img/download.svg" /></button>
 		<div class=" button-bar">
-			<a class="button button-custom-color button-modifier no-border button-inactive rev btn-padding-top" ng-click="MisCtrl.toggleTarget('revenue')" ng-class="{'button-custom-color': MisCtrl.toggle.targetRevOrPax=='revenue'}">Revenue</a>
+			<a class="button button-modifier no-border button-inactive rev btn-padding-top" ng-click="MisCtrl.toggleTarget('revenue')" ng-class="{'button-custom-color': MisCtrl.toggle.targetRevOrPax=='revenue'}">Revenue</a>
 			<a class="button button-modifier no-border button-inactive pax btn-padding-top" ng-click="MisCtrl.toggleTarget('paxcount')" ng-class="{'button-custom-color': MisCtrl.toggle.targetRevOrPax=='paxcount'}">PAX Count</a>
 
 			<a class="button button-custom-color button-modifier no-border button-inactive btn-padding-top" ng-click="MisCtrl.toggleTargetView('chart')" ng-class="{'button-custom-color': MisCtrl.toggle.targetView=='chart'}"><img src="res/img/graph.svg" /></a>

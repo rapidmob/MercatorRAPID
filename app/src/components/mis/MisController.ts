@@ -33,8 +33,8 @@ interface headerObject {
 
 class MisController{
 
-    public static $inject = ['$state', '$scope', '$ionicLoading', '$timeout', '$window', '$ionicPopover',
-        '$filter', 'MisService', 'ChartoptionService', 'FilteredListService', 'UserService', '$ionicHistory', 'ReportSvc', 'GRAPH_COLORS', 'TABS', '$ionicPopup'];
+    public static $inject = ['$state', '$scope', '$ionicLoading', '$timeout', '$window',
+        '$filter', 'MisService', 'ChartoptionService', 'FilteredListService', 'UserService', '$ionicHistory', 'ReportSvc', 'GRAPH_COLORS', 'TABS', '$ionicPopup', '$ionicPopover'];
 
     private tabs: [tabObject];
     private toggle: toggleObject;
@@ -61,6 +61,7 @@ class MisController{
     private shownGroup: number;
 
     private metricResult: any;
+    private metricOrgResult: any;
     private metricLegends: any;
     private favMetricResult: any;
 
@@ -82,10 +83,10 @@ class MisController{
 
     constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
         private $ionicLoading: Ionic.ILoading, private $timeout: ng.ITimeoutService,
-        private $window: ng.IWindowService, private $ionicPopover: Ionic.IPopover,
+        private $window: ng.IWindowService,
         private $filter: ng.IFilterService, private misService: MisService,
         private chartoptionService: ChartoptionService, private filteredListService: FilteredListService,
-        private userService: UserService, private $ionicHistory: any, private reportSvc: ReportSvc, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup) {
+        private userService: UserService, private $ionicHistory: any, private reportSvc: ReportSvc, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup, private $ionicPopover: Ionic.IPopover) {
 
             this.that = this;
 
@@ -109,17 +110,20 @@ class MisController{
                 username: ''
             };
 
-            /*
-            angular.element(window).bind('orientationchange', function (e, scope) {
-                this.onSlideMove({index: this.header.tabIndex});
-            }); */
+            if (this.$window.localStorage) { 
+				this.$window.localStorage.setItem('controller', 'MIS');
+			}
+			
             angular.element(window).bind('orientationchange', this.orientationChange); 
         
             //this.$scope.$watch('MisCtrl.header.surcharge', () => { this.onSlideMove({index:this.header.tabIndex}); }, true);
             this.initData();
 
-            this.$scope.$on('onSlideMove', (event: any, response: any) => {
-                this.$scope.MisCtrl.onSlideMove(response);
+            this.$scope.$on('onMISSlideMove', (event: any, response: any) => {
+                if(this.$state.current.name == 'app.mis-flown'){
+                  this.$scope.MisCtrl.onSlideMove(response);
+                }
+                
             });
             var self = this;
             this.$scope.$on('$ionicView.enter', () => {
@@ -158,24 +162,30 @@ class MisController{
 
     initData() {
         var that = this;
-        this.$ionicPopover.fromTemplateUrl('components/mis/infotooltip.html', {
-            scope: that.$scope
-        }).then(function(infopopover) {
-            that.infopopover = infopopover;
-        });
+        if (this.$ionicPopover) {
+            if (Object.keys(this.$ionicPopover).length) {
+                this.$ionicPopover.fromTemplateUrl('components/mis/infotooltip.html', {
+                    scope: that.$scope,
+                    animation: 'none'
+                }).then(function(infopopover) {
+                    that.infopopover = infopopover;
+                });
 
-        this.$ionicPopover.fromTemplateUrl('components/mis/drildown.html', {
-            scope: that.$scope
-        }).then(function(drillpopover) {
-            that.drillpopover = drillpopover;
-        });
-        
-        this.$ionicPopover.fromTemplateUrl('components/mis/bardrildown.html', {
-            scope: that.$scope
-        }).then(function(drillBarpopover) {
-            that.drillBarpopover = drillBarpopover;
-        });
+                this.$ionicPopover.fromTemplateUrl('components/mis/drildown.html', {
+                    scope: that.$scope,
+                    animation: 'none'
+                }).then(function(drillpopover) {
+                    that.drillpopover = drillpopover;
+                });
 
+                this.$ionicPopover.fromTemplateUrl('components/mis/bardrildown.html', {
+                    scope: that.$scope,
+                    animation: 'none'
+                }).then(function(drillBarpopover) {
+                    that.drillBarpopover = drillBarpopover;
+                });
+            }
+        }
         this.options = {
             metric: this.chartoptionService.metricBarChartOptions(this),
             targetLineChart: this.chartoptionService.lineChartOptions(),
@@ -218,9 +228,12 @@ class MisController{
     }
     orientationChange = (): boolean => {
         var that = this;
-        that.$timeout(function(){
-            that.onSlideMove({ index: that.header.tabIndex });
-        },200)
+        var obj = this.$window.localStorage.getItem('controller');
+		if (obj === 'MIS') {
+			that.$timeout(function(){
+				that.onSlideMove({ index: that.header.tabIndex });
+			},200)
+		}
     } 
     openinfoPopover ($event, index) {
         if (typeof index == "undefined" || index == "") {
@@ -308,6 +321,7 @@ class MisController{
 				that.metricResult  = _.sortBy(data.response.data.metricSnapshotCharts, function(u: any) {
 					if (u) return [u.favoriteChartPosition]; 
 				});
+                that.metricOrgResult = that.metricResult;
 
 				_.forEach(that.metricResult, function (n: any, value: any) {
 					n.values[0].color = that.GRAPH_COLORS.METRIC[0];
@@ -369,12 +383,22 @@ class MisController{
 					_.merge(n.lineChartItems, lineColors);
 				});
 
-				console.log(data.response.data.lineCharts);
 
-				that.targetActualData = {
-					horBarChart: data.response.data.verBarCharts,
-					lineChart: data.response.data.lineCharts
-				};
+				if(that.header.tabIndex == 0) {
+					that.targetActualData = {
+						horBarChart: that.favTargetBarResult,
+						lineChart: that.favTargetLineResult
+					};
+				}else{
+					that.targetActualData = {
+						horBarChart: data.response.data.verBarCharts,
+						lineChart: data.response.data.lineCharts
+					};				
+				}
+                that.selectTargetRevOrPax(that.targetActualData);
+
+                that.targetOrgActualData = data.response.data.verBarCharts.concat(data.response.data.lineCharts);
+                console.log(that.targetOrgActualData);
 
 				that.ionicLoadingHide();
 			}else{
@@ -402,7 +426,22 @@ class MisController{
         this.misService.getRouteRevenue(routeRevRequest)
         .then(function(data) {
 			if(data.response.status === "success"){
-				that.routeRevData = data.response.data;
+                // fav Items to display in dashboard
+                var jsonObj = data.response.data;
+                var sortedData = _.sortBy(jsonObj.RouteRevenueCharts, function(u: any) {
+                    if (u) return [u.favoriteChartPosition];
+                });
+                var favrouteRevData = _.filter(sortedData, function(u: any) {
+                    if (u) return u.favoriteInd == 'Y';
+                });
+
+                if(that.header.tabIndex == 0) {
+                    that.routeRevData = { RouteRevenueCharts: favrouteRevData };
+                }else{
+                    that.routeRevData = jsonObj;
+                }
+
+                that.routeOrgRevData = jsonObj;
 			}else{
 				that.ionicLoadingHide();
 				  that.$ionicPopup.alert({
@@ -460,12 +499,17 @@ class MisController{
 
 				_.merge(jsonObj.pieCharts[0].data, pieColors);
 
+                that.orgRevenueData = {
+                    revenuePieChart : jsonObj.pieCharts[0],
+                    revenueBarChart : jsonObj.multibarCharts[1],
+                    revenueHorBarChart : jsonObj.multibarCharts[2]
+                }
+
 				that.revenueData = {
 					revenuePieChart : jsonObj.pieCharts[0],
 					revenueBarChart : jsonObj.multibarCharts[1],
 					revenueHorBarChart : jsonObj.multibarCharts[2].multibarChartItems
 				}
-
 				that.ionicLoadingHide();
 			}else{
 				that.ionicLoadingHide();
@@ -1120,7 +1164,14 @@ class MisController{
                     if (u) return u.favoriteInd == 'Y';
                 });
 
-                that.SectorCarrierAnalysisCharts = jsonObj.SectorCarrierAnalysisCharts;
+                if(that.header.tabIndex == 0) {
+                    that.SectorCarrierAnalysisCharts = favSectorCarrierResult;
+                }else{
+                    that.SectorCarrierAnalysisCharts = jsonObj.SectorCarrierAnalysisCharts;                
+                }
+
+                that.SectorOrgCarrierAnalysisCharts = jsonObj.SectorCarrierAnalysisCharts;
+                
                 that.ionicLoadingHide();
             }
             else {
@@ -1165,8 +1216,25 @@ class MisController{
         this.callMetricSnapshot();
         this.callTargetVsActual();
         this.callRevenueAnalysis();
+        this.callRouteRevenue();
+        this.callSectorCarrierAnalysis();
     }
-
+    selectTargetRevOrPax(data){
+        if(data.horBarChart && data.lineChart) {
+            var barRevData = _.filter(this.targetActualData.horBarChart, function(u: any) { 
+                if(u) return u.toggle1 != 'paxcount';
+            });
+            var lineRevData = _.filter(this.targetActualData.lineChart, function(u: any) { 
+                if(u) return u.toggle1 != 'paxcount';
+            });
+            if(!barRevData.length && !lineRevData.length && this.header.tabIndex == 0){
+                this.toggle.targetRevOrPax = 'paxcount';
+            }else{
+               this.toggle.targetRevOrPax = 'revenue'; 
+            }
+        }
+        
+    }
     ionicLoadingShow() {
         this.$ionicLoading.show({
             template: '<ion-spinner class="spinner-calm"></ion-spinner>'
@@ -1271,57 +1339,84 @@ class MisController{
         this.onSlideMove({ index: this.header.tabIndex });
     }
 	runReport(chartTitle: string,monthOrYear: string,flownMonth: string){
-		var that = this;
-		//if no cordova, then running in browser and need to use dataURL and iframe
-		if (!window.cordova) {
-			that.ionicLoadingShow();
-			this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth,that.header.tabIndex)
-				.then(function(dataURL) {
-					that.ionicLoadingHide();
-					//set the iframe source to the dataURL created
-					//console.log(dataURL);
-					//document.getElementById('pdfImage').src = dataURL;
-					window.open(dataURL,"_system");
-				}, function(error) {
-					that.ionicLoadingHide();
-					console.log('Error ');
-				});
-			return true;
-		}
-		//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
-		else {
-			that.ionicLoadingShow();
-			this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth,that.header.tabIndex)
-				.then(function(filePath) {
-					that.ionicLoadingHide();
-					//log the file location for debugging and oopen with inappbrowser
-					console.log('report run on device using File plugin');
-					console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-					var lastPart = filePath.split("/").pop();
-					var fileName = "/mnt/sdcard/"+lastPart;					
-					if(device.platform !="Android")
-					fileName = filePath;
-					//window.openPDF(fileName);
-					//else
-					//window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
-										
-					cordova.plugins.fileOpener2.open(
-						fileName, 
-						'application/pdf', 
-						{ 
-							error : function(e) { 
-								console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
-							},
-							success : function () {
-								console.log('file opened successfully');                
+        var newTab;
+        var  that = this;
+        var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+        var chartOrTable = "";
+		if(chartTitle === "targetActual")
+			chartOrTable = that.toggle.targetView;
+		else if(chartTitle === "revenueAnalysis")
+			chartOrTable = that.toggle.revenueView;
+		else if(chartTitle === "sectorcarrieranalysis")
+			chartOrTable = that.toggle.sectorView;
+		else
+			chartOrTable = that.toggle.chartOrTable;
+			
+		if(chartOrTable === "chart"){
+			 if(isSafari) newTab = window.open("", "_system");
+			//if no cordova, then running in browser and need to use dataURL and iframe
+			if (!window.cordova) {
+				that.ionicLoadingShow();
+				this.reportSvc.runReportDataURL(chartTitle,monthOrYear,flownMonth,that.header.tabIndex)
+					.then(function(dataURL) {
+						that.ionicLoadingHide();
+						//set the iframe source to the dataURL created
+						//console.log(dataURL);
+						//document.getElementById('pdfImage').src = dataURL;
+                        if(isSafari) 
+                            newTab.location = dataURL;                        
+                        else 
+						 window.open(dataURL,"_system");
+                       
+
+					}, function(error) {
+						that.ionicLoadingHide();
+						console.log('Error ');
+					});
+				return true;
+			}
+			//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
+			else {
+				that.ionicLoadingShow();
+				this.reportSvc.runReportAsync(chartTitle,monthOrYear,flownMonth,that.header.tabIndex)
+					.then(function(filePath) {
+						that.ionicLoadingHide();
+						//log the file location for debugging and oopen with inappbrowser
+						console.log('report run on device using File plugin');
+						console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
+						var lastPart = filePath.split("/").pop();
+						var fileName = "/mnt/sdcard/"+lastPart;					
+						if(device.platform !="Android")
+						fileName = filePath;
+						//window.openPDF(fileName);
+						//else
+						//window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
+											
+						cordova.plugins.fileOpener2.open(
+							fileName, 
+							'application/pdf', 
+							{ 
+								error : function(e) { 
+									console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
+								},
+								success : function () {
+									console.log('file opened successfully');                
+								}
 							}
-						}
-					);
-				}, function(error) {
-					that.ionicLoadingHide();
-					console.log('Error ');
-				});
-			return true;
+						);
+					}, function(error) {
+						that.ionicLoadingHide();
+						console.log('Error ');
+					});
+				return true;
+			}
+		}else{
+			that.$ionicPopup.alert({
+				title: 'Info',
+				content: 'Download option not available for table view!!!'
+			  }).then(function(res) {
+				  console.log('done');
+			  });
 		}
 	}
 	

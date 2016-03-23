@@ -89,9 +89,7 @@
                               color="OprCtrl.colorFunction()"
                               valueFormat="OprCtrl.valueFormatFunction()"
                               height="280"
-                              width="300">
-                          <svg></svg>
-                        </nvd3-discrete-bar-chart>
+                              width="300"><svg></svg></nvd3-discrete-bar-chart>
                         <p class="graph-title-bottom">{{weekData.key}}</p>
                         </div>
                         <p class="pull-right">{{weekData.closedPercent}}</p>
@@ -126,11 +124,11 @@
                   <div class="col-demo">                  
                       <div class="row">
                         <div class="col col-80 no-padding pull-left graph-title">Day Data</div>
-                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-show="OprCtrl.toggle.flightReason=='chart'">
+                        <div class="col col-20 no-padding pull-right"><i ng-click="OprCtrl.openPopover($event,'daydata','flight-count-reason')" class="icon icon-larger font-normal ion-android-open curs opr-zoom" ng-if="OprCtrl.toggle.flightReason=='chart'">
                       </i></div>
                         </div>
                       <div class="row">
-                        <div class="col no-padding pull-left graph-title fcReason fcReasonFlag" data-item-title="Day Data" data-item-flag="6" ng-show="OprCtrl.toggle.flightReason=='chart'" data-item-pdfFlag="dynamicWH">
+                        <div class="col no-padding pull-left graph-title fcReason fcReasonFlag" data-item-title="Day Data" data-item-flag="6" ng-if="OprCtrl.toggle.flightReason=='chart'" data-item-pdfFlag="dynamicWH">
                           <chartevent type="flight-count">
                           <nvd3-multi-bar-chart                          
                           data="OprCtrl.flightCountReason.stackedChart"                         
@@ -145,11 +143,11 @@
                           xAxisLabel="Day"
                           yAxisTickFormat="OprCtrl.yAxisTickFormatFunction()"
                           yAxisLabel="Open Flights Count"
-                          color="OprCtrl.colorFunction()"
-                          <svg></svg></nvd3-multi-bar-chart>
+                          margin="{left:100,top:20,bottom:50,right:50}"
+                          color="OprCtrl.colorFunction()"><svg></svg></nvd3-multi-bar-chart>
                           </chartevent>
                         </div> 
-            <table class="resptbl" ng-show="OprCtrl.toggle.flightReason=='table'"> 
+            <table class="resptbl" ng-if="OprCtrl.toggle.flightReason=='table'"> 
               <tr class="tblhder">              
                 <th>Day</th>
                 <th ng-repeat="DayData in OprCtrl.flightCountReason.stackedChart" >{{DayData.key}}</th>

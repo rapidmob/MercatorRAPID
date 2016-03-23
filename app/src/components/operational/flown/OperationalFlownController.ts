@@ -23,17 +23,20 @@ interface headerObject {
 }
 
 class OperationalFlownController {
-  public static $inject = ['$state', '$scope', '$ionicLoading', '$ionicPopover', '$filter',
-    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService', 'UserService', '$ionicHistory', 'GRAPH_COLORS', 'TABS', '$ionicPopup'];
+  public static $inject = ['$state', '$scope', '$ionicLoading', '$filter',
+    'OperationalService', '$ionicSlideBoxDelegate', '$timeout', '$window', 'ReportSvc', 'FilteredListService', 'UserService', '$ionicHistory', 'GRAPH_COLORS', 'TABS', '$ionicPopup', '$ionicPopover'];
   private tabs: [tabObject];
   private toggle: toggleObject;
   private header: headerObject;
   private subHeader: any;
   private flightProcStatus: any;
+  private orgflightProcStatus: any;
   private favFlightProcResult: any;
   private carouselIndex: number = 0;
   private flightCountReason: any;
+  private orgFlightCountReason: any;
   private couponCountException: any;
+  private orgCouponCountException: any;
   private charttype: string;
   private graphType: string;
   private graphpopover: Ionic.IPopover;
@@ -68,13 +71,13 @@ class OperationalFlownController {
   private format: any = d3.format(',.0f');
 
   constructor(private $state: angular.ui.IStateService, private $scope: ng.IScope,
-    private $ionicLoading: Ionic.ILoading,
-    private $ionicPopover: Ionic.IPopover, private $filter: ng.IFilterService,
+    private $ionicLoading: Ionic.ILoading, private $filter: ng.IFilterService,
     private operationalService: OperationalService,
     private $ionicSlideBoxDelegate: Ionic.ISlideBoxDelegate,
     private $timeout: ng.ITimeoutService, private $window: ng.IWindowService,
     private reportSvc: ReportSvc, private filteredListService: FilteredListService,
-    private userService: UserService, private $ionicHistory: any, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup) {
+    private userService: UserService, private $ionicHistory: any, private GRAPH_COLORS: string, private TABS: string, private $ionicPopup: Ionic.IPopup,
+    private $ionicPopover: Ionic.IPopover) {
       
     this.tabs = this.TABS.DB2_TABS;
 
@@ -91,12 +94,17 @@ class OperationalFlownController {
       tabIndex: 0,
       userName: ''
     };
+	if (this.$window.localStorage) { 
+		this.$window.localStorage.setItem('controller', 'OFS');
+	}
   angular.element(window).bind('orientationchange', this.orientationChange); 
     this.initData();
     var that = this;
 
-      this.$scope.$on('onSlideMove', (event: any, response: any) => {
+      this.$scope.$on('onOPRSlideMove', (event: any, response: any) => {
+        if(this.$state.current.name == 'app.operational-flown'){
           that.$scope.OprCtrl.onSlideMove(response);
+        }
       });
 
       this.$scope.$on('$ionicView.enter', () => {
@@ -121,22 +129,28 @@ class OperationalFlownController {
 
   initData() {
     var that = this;
+    if (this.$ionicPopover) {
+      if (Object.keys(this.$ionicPopover).length) {
+        this.$ionicPopover.fromTemplateUrl('components/operational/flown/drildown.html', {
+          scope: that.$scope,
+          animation: 'none'
+        }).then(function(drillpopover) {
+          that.drillpopover = drillpopover;
+        });
 
-    this.$ionicPopover.fromTemplateUrl('components/operational/flown/drildown.html', {
-      scope: that.$scope
-    }).then(function(drillpopover) {
-      that.drillpopover = drillpopover;
-    });
 
+        this.$ionicPopover.fromTemplateUrl('components/operational/flown/infotooltip.html', {
+          scope: that.$scope,
+          animation: 'none'
+        }).then(function(infopopover) {
+          that.infopopover = infopopover;
+        });
+      }
+    }
 
-    this.$ionicPopover.fromTemplateUrl('components/operational/flown/infotooltip.html', {
-      scope: that.$scope
-    }).then(function(infopopover) {
-      that.infopopover = infopopover;
-    });
-
+    console.log(this.$window);
     var req = {
-      userId: that.$window.localStorage.getItem('rapidMobile.user')
+      userId: this.$window.localStorage.getItem('rapidMobile.user')
     }
 
     if (req.userId != "null") {
@@ -168,9 +182,12 @@ class OperationalFlownController {
   
   orientationChange = (): boolean => {
     var that = this;
-    that.$timeout(function() {
-      that.onSlideMove({ index: that.header.tabIndex });
-    }, 200)
+    var obj = this.$window.localStorage.getItem('controller');
+      if (obj === 'OFS') {
+		that.$timeout(function() {
+		  that.onSlideMove({ index: that.header.tabIndex });
+		}, 200)
+	}
   }
 
   updateHeader() {
@@ -180,9 +197,11 @@ class OperationalFlownController {
 
   onSlideMove(data: any) {
     this.header.tabIndex = data.index;
-    this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFS').slide(0);
-	this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFC').slide(0);
-	this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataCC').slide(0);
+    if(this.graphpopover === undefined || this.graphpopover.isShown() == false){
+      this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFS').slide(0);
+  	  this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFC').slide(0);
+  	  this.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataCC').slide(0);
+   }
     switch (this.header.tabIndex) {
       case 0:
         this.callMyDashboard();
@@ -220,15 +239,23 @@ class OperationalFlownController {
 			that.flightProcSection = jsonObj.sectionName;
       that.flightProcLegends = data.response.data.legends.values;
       console.log(that.flightProcLegends);
+
+      that.orgflightProcStatus = {
+        pieChart: jsonObj.pieCharts[0],
+        weekData: jsonObj.multibarCharts[0],
+        stackedChart: jsonObj.stackedBarCharts[0]
+        }
+
       if (that.header.tabIndex == 0) {
         that.flightProcStatus = that.getFavoriteItems(jsonObj);
 			} else {
         that.flightProcStatus = {
-          pieChart: jsonObj.pieCharts[0],
-          weekData: jsonObj.multibarCharts[0].multibarChartItems,
-          stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
-        }
+        pieChart: jsonObj.pieCharts[0],
+        weekData: jsonObj.multibarCharts[0].multibarChartItems,
+        stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
+        };
 			}
+      
 			that.$timeout(function() {
 			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFS').update();
 			}, 0);
@@ -262,16 +289,23 @@ class OperationalFlownController {
       that.flightReasonLegends = data.response.data.legends;
       var jsonObj = that.applyChartColorCodes(data.response.data);
 			that.flightCountSection = jsonObj.sectionName;
+
+      that.orgFlightCountReason = {
+        pieChart: jsonObj.pieCharts[0],
+        weekData: jsonObj.multibarCharts[0],
+        stackedChart: jsonObj.stackedBarCharts[0]
+        }
+
 			if (that.header.tabIndex == 0) {
 			  that.flightCountReason = that.getFavoriteItems(jsonObj);
 			} else {
-			  that.flightCountReason = {
-				pieChart: jsonObj.pieCharts[0],
-				weekData: jsonObj.multibarCharts[0].multibarChartItems,
+        that.flightCountReason = {
+        pieChart: jsonObj.pieCharts[0],
+        weekData: jsonObj.multibarCharts[0].multibarChartItems,
         stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
-			  }
+        };
 			}
-
+console.log(that.orgFlightCountReason);
 			that.$timeout(function() {
 			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataFC').update();
 			}, 0);
@@ -306,14 +340,21 @@ class OperationalFlownController {
 			var jsonObj = that.applyChartColorCodes(data.response.data);
 			that.couponCountSection = jsonObj.sectionName;
          that.flightCouponLegends = data.response.data.legends.values;
+
+     that.orgCouponCountException = {
+       pieChart: jsonObj.pieCharts[0],
+       weekData: jsonObj.multibarCharts[0],
+       stackedChart: jsonObj.stackedBarCharts[0]
+     };
+
         	if (that.header.tabIndex == 0) {
 			  that.couponCountException = that.getFavoriteItems(jsonObj);
 			} else {
-			  that.couponCountException = {
-				pieChart: jsonObj.pieCharts[0],
-				weekData: jsonObj.multibarCharts[0].multibarChartItems,
+        that.couponCountException = {
+        pieChart: jsonObj.pieCharts[0],
+        weekData: jsonObj.multibarCharts[0].multibarChartItems,
         stackedChart: jsonObj.stackedBarCharts[0].stackedBarchartItems
-			  }
+        };
 			}
 			that.$timeout(function() {
 			  that.$ionicSlideBoxDelegate.$getByHandle('oprfWeekDataCC').update();
@@ -471,58 +512,80 @@ class OperationalFlownController {
     this.onSlideMove({ index: this.header.tabIndex });
   }   
   runReport(chartTitle: string, monthOrYear: string, flownMonth: string) {
-    var that = this;
-    //if no cordova, then running in browser and need to use dataURL and iframe
-    if (!window.cordova) {
-      that.ionicLoadingShow();
-      this.reportSvc.runReportDataURL(chartTitle, monthOrYear, flownMonth)
-        .then(function(dataURL) {
-          that.ionicLoadingHide();
-          //set the iframe source to the dataURL created
-          //console.log(dataURL);
-          //document.getElementById('pdfImage').src = dataURL;
-		  window.open(dataURL,"_system");
-        }, function(error) {
-          that.ionicLoadingHide();
-          console.log('Error ');
-        });
-      return true;
-    }
-    //if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
-    else {
-      that.ionicLoadingShow();
-      this.reportSvc.runReportAsync(chartTitle, monthOrYear, flownMonth)
-        .then(function(filePath) {
-          that.ionicLoadingHide();
-          //log the file location for debugging and oopen with inappbrowser
-          console.log('report run on device using File plugin');
-          console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-          var lastPart = filePath.split("/").pop();
-          var fileName = "/mnt/sdcard/" + lastPart;
-          if (device.platform != "Android")
-            fileName = filePath;
-          //window.openPDF(fileName);
-          //else
-          //window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
-                    
-          cordova.plugins.fileOpener2.open(
-            fileName,
-            'application/pdf',
-            {
-              error: function(e) {
-                console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
-              },
-              success: function() {
-                console.log('file opened successfully');
-              }
-            }
-          );
-        }, function(error) {
-          that.ionicLoadingHide();
-          console.log('Error ');
-        });
-      return true;
-    }
+    var that = this; var newTab;
+    var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+	var chartOrTable = "";
+		if(chartTitle === "fpStatus")
+			chartOrTable = that.toggle.flightStatus;
+		else if(chartTitle === "fcReason")
+			chartOrTable = that.toggle.flightReason;
+		else if(chartTitle === "ccException")
+			chartOrTable = that.toggle.ccException;
+	
+		if(chartOrTable === "chart"){
+		if (isSafari) newTab = window.open("", "_system");
+		//if no cordova, then running in browser and need to use dataURL and iframe
+		if (!window.cordova) {
+		  that.ionicLoadingShow();
+		  this.reportSvc.runReportDataURL(chartTitle, monthOrYear, flownMonth)
+			.then(function(dataURL) {
+			  that.ionicLoadingHide();
+			  //set the iframe source to the dataURL created
+			  //console.log(dataURL);
+			  //document.getElementById('pdfImage').src = dataURL;
+        if (isSafari)
+          newTab.location = dataURL;
+        else
+          window.open(dataURL, "_system");
+			}, function(error) {
+			  that.ionicLoadingHide();
+			  console.log('Error ');
+			});
+		  return true;
+		}
+		//if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
+		else {
+		  that.ionicLoadingShow();
+		  this.reportSvc.runReportAsync(chartTitle, monthOrYear, flownMonth)
+			.then(function(filePath) {
+			  that.ionicLoadingHide();
+			  //log the file location for debugging and oopen with inappbrowser
+			  console.log('report run on device using File plugin');
+			  console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
+			  var lastPart = filePath.split("/").pop();
+			  var fileName = "/mnt/sdcard/" + lastPart;
+			  if (device.platform != "Android")
+				fileName = filePath;
+			  //window.openPDF(fileName);
+			  //else
+			  //window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');*/
+						
+			  cordova.plugins.fileOpener2.open(
+				fileName,
+				'application/pdf',
+				{
+				  error: function(e) {
+					console.log('Error status: ' + e.status + ' - Error message: ' + e.message);
+				  },
+				  success: function() {
+					console.log('file opened successfully');
+				  }
+				}
+			  );
+			}, function(error) {
+			  that.ionicLoadingHide();
+			  console.log('Error ');
+			});
+		  return true;
+		}
+	}else{
+		that.$ionicPopup.alert({
+			title: 'Info',
+			content: 'Download option not available for table view!!!'
+		  }).then(function(res) {
+			  console.log('done');
+		  });
+	}
   }
 
   openFlightProcessDrillPopover($event, data, selFindLevel) {
@@ -556,10 +619,11 @@ class OperationalFlownController {
   };
 
   openFlightCountDrillPopover($event, data, selFindLevel) {
-    this.drillName = 'LIST OF OPEN FLIGHTS FOR ' + data.point[0] + '-' + this.header.flownMonth + ' BY REASON ';
+    var openclsTxt = (this.toggle.openOrClosed == 'OPEN')? 'Open' : 'Closed';
+    this.drillName = 'LIST OF ' + openclsTxt + ' FLIGHTS FOR ' + data.point[0] + '-' + this.header.flownMonth + ' BY REASON ';
     this.drillType = 'flight-count';
     this.groups = [];
-    this.drilltabs = ['Open Flight Status', 'Document Level'];
+    this.drilltabs = [openclsTxt + ' Flight Status', 'Document Level'];
     this.firstColumns = ['flightNumber', 'carrierCode'];
     this.initiateArray(this.drilltabs);
     var that = this;

@@ -11,9 +11,13 @@
 /// <reference path="./components/mis/services/FilteredListService.ts"/>
 /// <reference path="./components/operational/services/OperationalService.ts"/>
 /// <reference path="./components/user/services/UserService.ts"/>
+/// <reference path="./components/setting/SettingService.ts"/>
+
 /// <reference path="./components/mis/MisController.ts"/>
 /// <reference path="./components/operational/flown/OperationalFlownController.ts"/>
 /// <reference path="./components/user/LoginController.ts"/>
+/// <reference path="./components/setting/SettingMisController.ts"/>
+/// <reference path="./components/setting/SettingOptController.ts"/>
 
 /// <reference path="./common/chart-event/ChartEvent.ts" />
 
@@ -80,11 +84,14 @@ angular.module('rapidMobile', ['ionic', 'rapidMobile.config', 'tabSlideBox', 'nv
 .service('OperationalService', OperationalService)
 .service('FilteredListService', FilteredListService)
 .service('ChartoptionService', ChartoptionService)
+.service('SettingService', SettingService)
 
 .controller('AppController', AppController)
 .controller('MisController', MisController)
 .controller('OperationalFlownController', OperationalFlownController)
 .controller('LoginController', LoginController)
+.controller('SettingMisController', SettingMisController)
+.controller('SettingOptController', SettingOptController)
 
 .directive('chartevent', ChartEvent.factory())
 // .directive('fetchList', FetchList.factory())

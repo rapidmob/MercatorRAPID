@@ -159,7 +159,12 @@ angular.module('tabSlideBox', [])
 					$scope.events.trigger("slideChange", {"index" : index});
 					//$timeout(function(){if($scope.onSlideMove) $scope.onSlideMove({"index" : eval(index)});},100);
 					if(!$attrs.popup){
-						$rootScope.$broadcast('onSlideMove', {"index" : eval(index)});
+						if($attrs.type == 'mis'){
+							$rootScope.$broadcast('onMISSlideMove', {"index" : eval(index)});
+						}
+						if($attrs.type == 'operational'){
+							$rootScope.$broadcast('onOPRSlideMove', {"index" : eval(index)});
+						}
 					}
 				};
 				
